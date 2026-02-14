@@ -1,7 +1,7 @@
 import type { ExpressiveCodeConfig } from "../types/config";
 
 /**
- * expressive-code配置
+ * Configuración de expressive-code
  * @see https://expressive-code.com/
  * Después de modificar esta configuración, es necesario reiniciar el servidor de desarrollo de Astro para que surta efecto.
  */

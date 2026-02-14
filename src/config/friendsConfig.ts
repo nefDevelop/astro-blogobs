@@ -15,7 +15,7 @@ export const friendsConfig: FriendLink[] = [
     imgurl: "https://q1.qlogo.cn/g?b=qq&nk=7618557&s=640",
     desc: "El fuego de las luciérnagas brilla desde la noche sin sueños, floreciendo en el mañana final.",
     siteurl: "https://blog.cuteleaf.cn",
-    tags: ["Blog"],
+    tags: ["Blog"], // Mantener en inglés ya que son etiquetas
     weight: 10, // Peso, cuanto mayor sea el número, antes se ordenará
     enabled: true, // Habilitado
   },
@@ -24,7 +24,7 @@ export const friendsConfig: FriendLink[] = [
     imgurl: "https://docs-firefly.cuteleaf.cn/logo.png",
     desc: "Documentación de la plantilla del tema Firefly",
     siteurl: "https://docs-firefly.cuteleaf.cn",
-    tags: ["Docs"],
+    tags: ["Docs"], // Mantener en inglés ya que son etiquetas
     weight: 9,
     enabled: true,
   },
@@ -32,8 +32,8 @@ export const friendsConfig: FriendLink[] = [
     title: "Astro",
     imgurl: "https://avatars.githubusercontent.com/u/44914786?v=4&s=640",
     desc: "The web framework for content-driven websites. ⭐️ Star to support our work!",
-    siteurl: "https://github.com/withastro/astro",
-    tags: ["Framework"],
+    siteurl: "https://github.com/withastro/astro", // Mantener en inglés ya que es una URL
+    tags: ["Framework"], // Mantener en inglés ya que son etiquetas
     weight: 8,
     enabled: true,
   },

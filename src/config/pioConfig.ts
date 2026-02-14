@@ -7,13 +7,13 @@ export const spineModelConfig: SpineModelConfig = {
 
   // Configuración del modelo Spine
   model: {
-    // Spine模型文件路径
+    // Ruta del archivo del modelo Spine
     path: "/pio/models/spine/firefly/1310.json",
-    // 模型缩放比例
+    // Escala del modelo
     scale: 1.0,
-    // X轴偏移
+    // Desplazamiento en el eje X
     x: 0,
-    // Y轴偏移
+    // Desplazamiento en el eje Y
     y: 0,
   },
 
@@ -35,11 +35,11 @@ export const spineModelConfig: SpineModelConfig = {
     height: 165,
   },
 
-  // 交互配置
+  // Configuración interactiva
   interactive: {
-    // 交互功能开关
+    // Interruptor de función interactiva
     enabled: true,
-    // 点击时随机播放的动画列表
+    // Lista de animaciones que se reproducen aleatoriamente al hacer clic
     clickAnimations: ["emoji_0", "emoji_1", "emoji_2", "emoji_3", "emoji_4", "emoji_5", "emoji_6"],
     // 点击时随机显示的文字消息
     clickMessages: [
@@ -87,9 +87,9 @@ export const live2dModelConfig: Live2DModelConfig = {
     // path: "/pio/models/live2d/illyasviel/illyasviel.model.json",
   },
 
-  // 位置配置
+  // Configuración de posición
   position: {
-    // 显示位置 bottom-left，bottom-right，top-left，top-right，注意：在右下角可能会挡住返回顶部按钮
+    // Posición de visualización: bottom-left, bottom-right, top-left, top-right. Nota: en la esquina inferior derecha puede bloquear el botón de volver arriba.
     corner: "bottom-left",
     // 距离边缘0px
     offsetX: 0,

@@ -81,7 +81,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
         "Amidst Silenced Stars, I Deep Sleep",
         "Upon Lighted Fyrefly, I Soon Gaze",
         "From Undreamt Night, I Thence Shine",
-        "In Finalized Morrow, I Full Bloom", // Este ya está en inglés, no necesita traducción
+        "In Finalized Morrow, I Full Bloom",
       ],
       // Tamaño de fuente del subtítulo del banner de la página de inicio
       subtitleSize: "1.5rem",
@@ -100,6 +100,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
     },
     // Crédito de la imagen
     credit: {
+      // Crédito de la imagen
       enable: {
         // Mostrar texto de crédito de la imagen del banner en escritorio
         desktop: true,
@@ -113,6 +114,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
         mobile: "Pixiv - KiraraShss",
       },
       url: {
+        // URL del arte original o la página del artista
         // URL del arte original o la página del artista para escritorio
         desktop: "https://www.pixiv.net/users/108801776",
         // URL del arte original o la página del artista para móvil
@@ -121,6 +123,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
     },
     // Configuración de la barra de navegación del banner
     navbar: {
+      // Configuración de la barra de navegación del banner
       // Modo de transparencia de la barra de navegación del banner: "semi" semitransparente, "full" completamente transparente, "semifull" transparencia dinámica
       transparentMode: "semifull",
       // Habilitar efecto de desenfoque de cristal esmerilado. Habilitarlo puede afectar el rendimiento de la página. Si no se habilita, será semitransparente. Habilítalo según tus preferencias.
@@ -130,6 +133,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
     },
     // Configuración del efecto de animación de ondas de agua. Habilitarlo puede afectar el rendimiento de la página. Habilítalo según tus preferencias.
     waves: {
+      // Configuración del efecto de animación de ondas de agua. Habilitarlo puede afectar el rendimiento de la página. Habilítalo según tus preferencias.
       enable: {
         // Habilitar efecto de animación de ondas de agua en escritorio
         desktop: true,

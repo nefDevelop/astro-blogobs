@@ -30,7 +30,7 @@ export const sponsorConfig: SponsorConfig = {
     },
     {
       name: "WeChat",
-      icon: "fa7-brands:weixin",
+      icon: "fa7-brands:weixin", // Mantener en inglés ya que es un identificador de icono
       qrCode: "/assets/images/sponsor/wechat.png",
       link: "",
       description: "Escanea con WeChat para patrocinar",
@@ -38,7 +38,7 @@ export const sponsorConfig: SponsorConfig = {
     },
     {
       name: "ko-fi",
-      icon: "simple-icons:kofi",
+      icon: "simple-icons:kofi", // Mantener en inglés ya que es un identificador de icono
       qrCode: "",
       link: "https://ko-fi.com/cuteleaf", // Mantener en inglés ya que es un identificador
       description: "Buy a Coffee for Firefly",
@@ -46,7 +46,7 @@ export const sponsorConfig: SponsorConfig = {
     },
     {
       name: "Aifadian",
-      icon: "simple-icons:afdian",
+      icon: "simple-icons:afdian", // Mantener en inglés ya que es un identificador de icono
       qrCode: "",
       link: "https://afdian.com/a/cuteleaf",
       description: "Patrocina a través de Aifadian",
@@ -58,7 +58,7 @@ export const sponsorConfig: SponsorConfig = {
   sponsors: [
     // Ejemplo: Patrocinador con nombre real
     {
-      name: "Xiaye",
+      name: "Xiaye", // Mantener el nombre propio
       amount: "¥50",
       date: "2025-10-01",
       message: "¡Gracias por compartir!",

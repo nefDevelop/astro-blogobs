@@ -21,6 +21,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 
     // 子菜单
     children: [
+      // Submenú
       {
         name: "GitHub",
         url: "https://github.com/CuteLeaf/Firefly",
@@ -61,11 +62,11 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
     ],
   });
 
-  // 仅返回链接，其它导航搜索相关配置在模块顶层常量中独立导出
+  // Solo devuelve los enlaces, otras configuraciones relacionadas con la búsqueda de navegación se exportan de forma independiente en constantes de nivel superior del módulo.
   return { links } as NavBarConfig;
 };
 
-// 导航搜索配置
+// Configuración de búsqueda de navegación
 export const navBarSearchConfig: NavBarSearchConfig = {
   method: NavBarSearchMethod.PageFind,
 };

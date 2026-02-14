@@ -22,7 +22,7 @@ export const coverImageConfig: CoverImageConfig = {
   randomCoverImage: {
     // Interruptor de la función de imagen de portada aleatoria
     enable: false,
-    // 封面图API列表
+    // Lista de APIs de imágenes de portada
     apis: ["https://t.alcy.cc/pc", "https://www.dmoe.cc/random.php", "https://uapis.cn/api/v1/random/image?category=acg&type=pc"],
     // Imagen de respaldo cuando la API falla
     fallback: "assets/images/cover.avif",

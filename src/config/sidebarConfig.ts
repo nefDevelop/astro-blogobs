@@ -1,7 +1,7 @@
 import type { SidebarLayoutConfig } from "../types/config";
 
 /**
- * 侧边栏布局配置
+ * Configuración del diseño de la barra lateral
  * Configuración del diseño de la barra lateral
  */
 export const sidebarLayoutConfig: SidebarLayoutConfig = {
@@ -104,6 +104,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
   // Lista de configuración de componentes de la barra lateral derecha
   rightComponents: [
     {
+      // Lista de configuración de componentes de la barra lateral derecha
       // Tipo de componente: Componente de estadísticas del sitio
       type: "stats", // Mantener en inglés ya que es un identificador
       // Habilitar este componente
@@ -152,6 +153,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
   // Lista de configuración de componentes inferiores para móviles
   // Estos componentes solo se muestran en la parte inferior de la página en dispositivos móviles (<768px), independientemente de la configuración de las barras laterales izquierda y derecha.
   mobileBottomComponents: [
+    // Lista de configuración de componentes inferiores para móviles
     {
       // Tipo de componente: Componente de perfil de usuario
       type: "profile", // Mantener en inglés ya que es un identificador
