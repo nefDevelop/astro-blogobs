@@ -1,47 +1,49 @@
-// 配置索引文件 - 统一导出所有配置
-// 这样组件可以一次性导入多个相关配置，减少重复的导入语句
+// Archivo de índice de configuración - Exporta todas las configuraciones de forma unificada
+// De esta manera, los componentes pueden importar múltiples configuraciones relacionadas a la vez, reduciendo las declaraciones de importación repetitivas.
 
-// 类型导出
+// Exportación de tipos
 export type {
-	AnnouncementConfig,
-	BackgroundWallpaperConfig,
-	CommentConfig,
-	CoverImageConfig,
-	ExpressiveCodeConfig,
-	FooterConfig,
-	LicenseConfig,
-	MusicPlayerConfig,
-	NavBarConfig,
-	ProfileConfig,
-	SakuraConfig,
-	SidebarLayoutConfig,
-	SiteConfig,
-	SponsorConfig,
-	SponsorItem,
-	SponsorMethod,
-	WidgetComponentConfig,
-	WidgetComponentType,
+  AnnouncementConfig,
+  BackgroundWallpaperConfig,
+  CommentConfig,
+  CoverImageConfig,
+  ExpressiveCodeConfig,
+  FooterConfig,
+  LicenseConfig,
+  MusicPlayerConfig,
+  NavBarConfig,
+  ProfileConfig,
+  SakuraConfig,
+  SidebarLayoutConfig,
+  SiteConfig,
+  SponsorConfig,
+  SponsorItem,
+  SponsorMethod,
+  WidgetComponentConfig,
+  WidgetComponentType,
 } from "../types/config";
-export { adConfig1, adConfig2 } from "./adConfig"; // 广告配置
-export { announcementConfig } from "./announcementConfig"; // 公告配置
-// 样式配置
-export { backgroundWallpaper } from "./backgroundWallpaper"; // 背景壁纸配置
-// 功能配置
-export { commentConfig } from "./commentConfig"; // 评论系统配置
-export { coverImageConfig } from "./coverImageConfig"; // 封面图配置
-export { expressiveCodeConfig } from "./expressiveCodeConfig"; // 代码高亮配置
-export { fontConfig } from "./fontConfig"; // 字体配置
-export { footerConfig } from "./footerConfig"; // 页脚配置
-export { friendsPageConfig, getEnabledFriends } from "./friendsConfig"; // 友链配置
-export { licenseConfig } from "./licenseConfig"; // 许可证配置
-// 组件配置
-export { musicPlayerConfig } from "./musicConfig"; // 音乐播放器配置
-export { navBarConfig, navBarSearchConfig } from "./navBarConfig"; // 导航栏配置与搜索配置
-export { live2dModelConfig, spineModelConfig } from "./pioConfig"; // 看板娘配置
-export { profileConfig } from "./profileConfig"; // 用户资料配置
-export { sakuraConfig } from "./sakuraConfig"; // 樱花特效配置
-// 布局配置
-export { sidebarLayoutConfig } from "./sidebarConfig"; // 侧边栏布局配置
-// 核心配置
-export { siteConfig } from "./siteConfig"; // 站点基础配置
-export { sponsorConfig } from "./sponsorConfig"; // 赞助配置
+// Configuración de anuncios
+export { adConfig1, adConfig2 } from "./adConfig";
+// Configuración de anuncios
+export { announcementConfig } from "./announcementConfig";
+// Configuración de estilo
+export { backgroundWallpaper } from "./backgroundWallpaper";
+// Configuración de funciones
+export { commentConfig } from "./commentConfig";
+export { coverImageConfig } from "./coverImageConfig";
+export { expressiveCodeConfig } from "./expressiveCodeConfig";
+export { fontConfig } from "./fontConfig";
+export { footerConfig } from "./footerConfig";
+export { friendsPageConfig, getEnabledFriends } from "./friendsConfig";
+export { licenseConfig } from "./licenseConfig";
+// Configuración de componentes
+export { musicPlayerConfig } from "./musicConfig";
+export { navBarConfig, navBarSearchConfig } from "./navBarConfig";
+export { live2dModelConfig, spineModelConfig } from "./pioConfig";
+export { profileConfig } from "./profileConfig";
+export { sakuraConfig } from "./sakuraConfig";
+// Configuración de diseño
+export { sidebarLayoutConfig } from "./sidebarConfig";
+// Configuración principal
+export { siteConfig } from "./siteConfig";
+export { sponsorConfig } from "./sponsorConfig";

@@ -1,72 +1,72 @@
 import type { CommentConfig } from "../types/config";
 
 export const commentConfig: CommentConfig = {
-	// 评论系统类型: none, twikoo, waline, giscus, disqus, artalk，默认为none，即不启用评论系统
-	type: "none",
+  // Tipo de sistema de comentarios: none, twikoo, waline, giscus, disqus, artalk. Por defecto es none, lo que significa que no se habilita ningún sistema de comentarios.
+  type: "none",
 
-	//twikoo评论系统配置
-	twikoo: {
-		envId: "https://twikoo.vercel.app",
-		// 设置 Twikoo 评论系统语言
-		lang: "zh-CN",
-		// 是否启用文章访问量统计功能
-		visitorCount: true,
-	},
+  // Configuración del sistema de comentarios Twikoo
+  twikoo: {
+    envId: "https://twikoo.vercel.app",
+    // Establecer el idioma del sistema de comentarios Twikoo
+    lang: "es",
+    // Habilitar la función de estadísticas de visitas a artículos
+    visitorCount: true,
+  },
 
-	//waline评论系统配置
-	waline: {
-		// waline 后端服务地址
-		serverURL: "https://waline.vercel.app",
-		// 设置 Waline 评论系统语言
-		lang: "zh-CN",
-		// 评论登录模式。可选值如下：
-		//   'enable'   —— 默认，允许访客匿名评论和用第三方 OAuth 登录评论，兼容性最佳。
-		//   'force'    —— 强制必须登录后才能评论，适合严格社区，关闭匿名评论。
-		//   'disable'  —— 禁止所有登录和 OAuth，仅允许匿名评论（填写昵称/邮箱），适用于极简留言。
-		login: "enable",
-		// 是否启用文章访问量统计功能
-		visitorCount: true,
-	},
+  // Configuración del sistema de comentarios Waline
+  waline: {
+    // Dirección del servicio backend de Waline
+    serverURL: "https://waline.vercel.app",
+    // Establecer el idioma del sistema de comentarios Waline
+    lang: "es",
+    // Modo de inicio de sesión para comentarios. Valores opcionales:
+    //   'enable'   —— Por defecto, permite a los visitantes comentar de forma anónima e iniciar sesión con OAuth de terceros, la mejor compatibilidad.
+    //   'force'    —— Obliga a iniciar sesión para comentar, adecuado para comunidades estrictas, desactiva los comentarios anónimos.
+    //   'disable'  —— Prohíbe todos los inicios de sesión y OAuth, solo permite comentarios anónimos (rellenar apodo/correo electrónico), adecuado para mensajes minimalistas.
+    login: "enable",
+    // Habilitar la función de estadísticas de visitas a artículos
+    visitorCount: true,
+  },
 
-	// artalk评论系统配置
-	artalk: {
-		// artalk后端程序 API 地址
-		server: "https://artalk.example.com/",
-		// 设置 Artalk 语言
-		locale: "zh-CN",
-		// 是否启用文章访问量统计功能
-		visitorCount: true,
-	},
+  // Configuración del sistema de comentarios Artalk
+  artalk: {
+    // Dirección de la API del programa backend de Artalk
+    server: "https://artalk.example.com/",
+    // Establecer el idioma de Artalk
+    locale: "es",
+    // Habilitar la función de estadísticas de visitas a artículos
+    visitorCount: true,
+  },
 
-	//giscus评论系统配置
-	giscus: {
-		// 设置 Giscus 评论系统仓库
-		repo: "CuteLeaf/Firefly",
-		// 设置 Giscus 评论系统仓库ID
-		repoId: "R_kgD2gfdFGd",
-		// 设置 Giscus 评论系统分类
-		category: "General",
-		// 获取 Giscus 评论系统分类ID
-		categoryId: "DIC_kwDOKy9HOc4CegmW",
-		// 获取 Giscus 评论系统映射方式
-		mapping: "title",
-		// 获取 Giscus 评论系统严格模式
-		strict: "0",
-		// 获取 Giscus 评论系统反应功能
-		reactionsEnabled: "1",
-		// 获取 Giscus 评论系统元数据功能
-		emitMetadata: "1",
-		// 获取 Giscus 评论系统输入位置
-		inputPosition: "top",
-		// 获取 Giscus 评论系统语言
-		lang: "zh-CN",
-		// 获取 Giscus 评论系统加载方式
-		loading: "lazy",
-	},
+  // Configuración del sistema de comentarios Giscus
+  giscus: {
+    // Establecer el repositorio del sistema de comentarios Giscus
+    repo: "CuteLeaf/Firefly",
+    // Establecer el ID del repositorio del sistema de comentarios Giscus
+    repoId: "R_kgD2gfdFGd",
+    // Establecer la categoría del sistema de comentarios Giscus
+    category: "General", // Mantener en inglés ya que es un identificador
+    // Obtener el ID de la categoría del sistema de comentarios Giscus
+    categoryId: "DIC_kwDOKy9HOc4CegmW",
+    // Obtener el método de mapeo del sistema de comentarios Giscus
+    mapping: "title", // Mantener en inglés ya que es un identificador
+    // Obtener el modo estricto del sistema de comentarios Giscus
+    strict: "0", // Mantener como string numérico
+    // Obtener la función de reacciones del sistema de comentarios Giscus
+    reactionsEnabled: "1", // Mantener como string numérico
+    // Obtener la función de metadatos del sistema de comentarios Giscus
+    emitMetadata: "1", // Mantener como string numérico
+    // Obtener la posición de entrada del sistema de comentarios Giscus
+    inputPosition: "top", // Mantener en inglés ya que es un identificador
+    // Obtener el idioma del sistema de comentarios Giscus
+    lang: "es",
+    // Obtener el método de carga del sistema de comentarios Giscus
+    loading: "lazy", // Mantener en inglés ya que es un identificador
+  },
 
-	//disqus评论系统配置
-	disqus: {
-		// 获取 Disqus 评论系统
-		shortname: "firefly",
-	},
+  // Configuración del sistema de comentarios Disqus
+  disqus: {
+    // Obtener el sistema de comentarios Disqus
+    shortname: "firefly",
+  },
 };

@@ -2,212 +2,213 @@ import type { SidebarLayoutConfig } from "../types/config";
 
 /**
  * 侧边栏布局配置
+ * Configuración del diseño de la barra lateral
  */
 export const sidebarLayoutConfig: SidebarLayoutConfig = {
-	// 是否启用侧边栏功能
-	enable: true,
+  // Habilitar la función de la barra lateral
+  enable: true,
 
-	// 侧边栏位置：left=左侧，both=双侧
-	// 开启双侧边栏后，右侧组件会在宽度低于1280px时隐藏
-	position: "both",
+  // Posición de la barra lateral: left=izquierda, both=ambos lados
+  // Cuando se habilita la barra lateral doble, los componentes del lado derecho se ocultarán cuando el ancho sea inferior a 1280px.
+  position: "both", // Mantener en inglés ya que es un identificador
 
-	// 使用左侧单侧栏时，是否在文章详情页显示右侧边栏
-	// 当position为left时开启此项后，文章详情页将显示双侧边栏，主页等其他页面保持左侧单侧边栏
-	// 适用在只想用左侧单侧栏，但在文章详情页想用右侧栏的目录等组件的场景
-	showRightSidebarOnPostPage: true,
+  // Cuando se usa una barra lateral izquierda única, ¿mostrar la barra lateral derecha en la página de detalles del artículo?
+  // Si se habilita esto cuando la posición es "left", la página de detalles del artículo mostrará barras laterales dobles, mientras que la página de inicio y otras páginas mantendrán una barra lateral izquierda única.
+  // Esto es útil para escenarios en los que solo se desea una barra lateral izquierda, pero se desea una barra lateral derecha para componentes como el índice en la página de detalles del artículo.
+  showRightSidebarOnPostPage: true,
 
-	// 左侧边栏组件配置列表
-	// 组件的渲染顺序完全取决于它们在配置数组中出现的顺序，但top的组件会优先于sticky位置的组件渲染
-	// type 组件类型
-	// enable 是否启用该组件
-	// position 组件位置：top固定顶部，sticky粘性定位(会跟随页面滚动)
-	// showOnPostPage 是否在文章详情页显示该组件
-	// showOnNonPostPage 是否在非文章详情页显示该组件（除文章详情页外都显示）
-	// configId 组件配置ID（目前仅广告组件使用），用于区分不同的广告配置
-	// responsive 响应式配置（部分组件可用，可用来设定部分组件需要的参数）
-	leftComponents: [
-		{
-			// 组件类型：用户资料组件
-			type: "profile",
-			// 是否启用该组件
-			enable: true,
-			// 组件位置
-			position: "top",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-		},
-		{
-			// 组件类型：公告组件
-			type: "announcement",
-			// 是否启用该组件
-			enable: true,
-			// 组件位置
-			position: "top",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-		},
-		{
-			// 组件类型：音乐播放器
-			type: "music",
-			// 是否启用该组件
-			enable: true,
-			// 组件位置
-			position: "sticky",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-		},
-		{
-			// 组件类型：分类组件
-			type: "categories",
-			// 是否启用该组件
-			enable: true,
-			// 组件位置
-			position: "sticky",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-			// 响应式配置
-			responsive: {
-				// 折叠阈值：当分类数量超过>5个时自动折叠
-				collapseThreshold: 5,
-			},
-		},
-		{
-			// 组件类型：标签组件
-			type: "tags",
-			// 是否启用该组件
-			enable: true,
-			// 组件位置
-			position: "sticky",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-			// 响应式配置
-			responsive: {
-				// 折叠阈值：当标签数量超过>20个时自动折叠
-				collapseThreshold: 20,
-			},
-		},
-		{
-			// 组件类型：广告栏组件 1
-			type: "advertisement",
-			// 是否启用该组件
-			enable: false,
-			// 组件位置
-			position: "sticky",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-			// 配置ID：使用第一个广告配置
-			configId: "ad1",
-		},
-	],
+  // Lista de configuración de componentes de la barra lateral izquierda
+  // El orden de renderizado de los componentes depende completamente de su orden en el array de configuración, pero los componentes "top" se renderizarán antes que los componentes "sticky".
+  // type: Tipo de componente
+  // enable: Habilitar este componente
+  // position: Posición del componente: "top" fijo en la parte superior, "sticky" posicionamiento pegajoso (se desplazará con la página)
+  // showOnPostPage: Mostrar este componente en la página de detalles del artículo
+  // showOnNonPostPage: Mostrar este componente en páginas que no son de detalles del artículo (se muestra en todas las páginas excepto en la de detalles del artículo)
+  // configId: ID de configuración del componente (actualmente solo utilizado por los componentes de publicidad), utilizado para distinguir diferentes configuraciones de publicidad.
+  // responsive: Configuración responsiva (disponible para algunos componentes, se puede usar para establecer los parámetros necesarios para ciertos componentes).
+  leftComponents: [
+    {
+      // Tipo de componente: Componente de perfil de usuario
+      type: "profile", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Posición del componente
+      position: "top", // Mantener en inglés ya que es un identificador
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+    },
+    {
+      // Tipo de componente: Componente de anuncio
+      type: "announcement", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Posición del componente
+      position: "top", // Mantener en inglés ya que es un identificador
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+    },
+    {
+      // Tipo de componente: Reproductor de música
+      type: "music", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Posición del componente
+      position: "sticky", // Mantener en inglés ya que es un identificador
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+    },
+    {
+      // Tipo de componente: Componente de categorías
+      type: "categories", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Posición del componente
+      position: "sticky", // Mantener en inglés ya que es un identificador
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+      // Configuración responsiva
+      responsive: {
+        // Umbral de colapso: se colapsa automáticamente cuando el número de categorías supera los 5
+        collapseThreshold: 5,
+      },
+    },
+    {
+      // Tipo de componente: Componente de etiquetas
+      type: "tags", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Posición del componente
+      position: "sticky", // Mantener en inglés ya que es un identificador
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+      // Configuración responsiva
+      responsive: {
+        // Umbral de colapso: se colapsa automáticamente cuando el número de etiquetas supera los 20
+        collapseThreshold: 20,
+      },
+    },
+    {
+      // Tipo de componente: Componente de barra de publicidad 1
+      type: "advertisement", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: false,
+      // Posición del componente
+      position: "sticky", // Mantener en inglés ya que es un identificador
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+      // ID de configuración: usar la primera configuración de publicidad
+      configId: "ad1",
+    },
+  ],
 
-	// 右侧边栏组件配置列表
-	rightComponents: [
-		{
-			// 组件类型：站点统计组件
-			type: "stats",
-			// 是否启用该组件
-			enable: true,
-			// 组件位置
-			position: "top",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-		},
-		{
-			// 组件类型：日历组件
-			type: "calendar",
-			// 是否启用该组件
-			enable: true,
-			// 组件位置
-			position: "sticky",
-			// 是否在文章详情页显示
-			showOnPostPage: false,
-		},
-		{
-			// 组件类型：侧边栏目录组件（只在文章详情页显示）
-			type: "sidebarToc",
-			// 是否启用该组件
-			enable: true,
-			// 组件位置
-			position: "sticky",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-			// 是否在非文章详情页显示
-			showOnNonPostPage: false,
-		},
-		{
-			// 组件类型：广告栏组件 2
-			type: "advertisement",
-			// 是否启用该组件
-			enable: false,
-			// 组件位置
-			position: "sticky",
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-			// 配置ID：使用第二个广告配置
-			configId: "ad2",
-		},
-	],
+  // Lista de configuración de componentes de la barra lateral derecha
+  rightComponents: [
+    {
+      // Tipo de componente: Componente de estadísticas del sitio
+      type: "stats", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Posición del componente
+      position: "top", // Mantener en inglés ya que es un identificador
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+    },
+    {
+      // Tipo de componente: Componente de calendario
+      type: "calendar", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Posición del componente
+      position: "sticky", // Mantener en inglés ya que es un identificador
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: false,
+    },
+    {
+      // Tipo de componente: Componente de índice de la barra lateral (solo se muestra en la página de detalles del artículo)
+      type: "sidebarToc", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Posición del componente
+      position: "sticky", // Mantener en inglés ya que es un identificador
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+      // Mostrar en páginas que no son de detalles del artículo
+      showOnNonPostPage: false,
+    },
+    {
+      // Tipo de componente: Componente de barra de publicidad 2
+      type: "advertisement", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: false,
+      // Posición del componente
+      position: "sticky", // Mantener en inglés ya que es un identificador
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+      // ID de configuración: usar la segunda configuración de publicidad
+      configId: "ad2",
+    },
+  ],
 
-	// 移动端底部组件配置列表
-	// 这些组件只在移动端(<768px)显示在页面底部，独立于左右侧边栏配置
-	mobileBottomComponents: [
-		{
-			// 组件类型：用户资料组件
-			type: "profile",
-			// 是否启用该组件
-			enable: true,
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-		},
-		{
-			// 组件类型：公告组件
-			type: "announcement",
-			// 是否启用该组件
-			enable: true,
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-		},
-		{
-			// 组件类型：音乐播放器
-			type: "music",
-			// 是否启用该组件
-			enable: true,
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-		},
-		{
-			// 组件类型：分类组件
-			type: "categories",
-			// 是否启用该组件
-			enable: true,
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-			// 响应式配置
-			responsive: {
-				// 折叠阈值：当分类数量超过5个时自动折叠
-				collapseThreshold: 5,
-			},
-		},
-		{
-			// 组件类型：标签组件
-			type: "tags",
-			// 是否启用该组件
-			enable: true,
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-			// 响应式配置
-			responsive: {
-				// 折叠阈值：当标签数量超过20个时自动折叠
-				collapseThreshold: 20,
-			},
-		},
-		{
-			// 组件类型：站点统计组件
-			type: "stats",
-			// 是否启用该组件
-			enable: true,
-			// 是否在文章详情页显示
-			showOnPostPage: true,
-		},
-	],
+  // Lista de configuración de componentes inferiores para móviles
+  // Estos componentes solo se muestran en la parte inferior de la página en dispositivos móviles (<768px), independientemente de la configuración de las barras laterales izquierda y derecha.
+  mobileBottomComponents: [
+    {
+      // Tipo de componente: Componente de perfil de usuario
+      type: "profile", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+    },
+    {
+      // Tipo de componente: Componente de anuncio
+      type: "announcement", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+    },
+    {
+      // Tipo de componente: Reproductor de música
+      type: "music", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+    },
+    {
+      // Tipo de componente: Componente de categorías
+      type: "categories", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+      // Configuración responsiva
+      responsive: {
+        // Umbral de colapso: se colapsa automáticamente cuando el número de categorías supera los 5
+        collapseThreshold: 5,
+      },
+    },
+    {
+      // Tipo de componente: Componente de etiquetas
+      type: "tags", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+      // Configuración responsiva
+      responsive: {
+        // Umbral de colapso: se colapsa automáticamente cuando el número de etiquetas supera los 20
+        collapseThreshold: 20,
+      },
+    },
+    {
+      // Tipo de componente: Componente de estadísticas del sitio
+      type: "stats", // Mantener en inglés ya que es un identificador
+      // Habilitar este componente
+      enable: true,
+      // Mostrar en la página de detalles del artículo
+      showOnPostPage: true,
+    },
+  ],
 };

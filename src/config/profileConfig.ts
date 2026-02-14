@@ -1,49 +1,49 @@
 import type { ProfileConfig } from "../types/config";
 
 export const profileConfig: ProfileConfig = {
-	// 头像
-	// 图片路径支持三种格式：
-	// 1. public 目录（以 "/" 开头，不优化）："/assets/images/avatar.webp"
-	// 2. src 目录（不以 "/" 开头，自动优化但会增加构建时间，推荐）："assets/images/avatar.webp"
-	// 3. 远程 URL："https://example.com/avatar.jpg"
-	avatar: "assets/images/avatar.avif",
+  // Avatar
+  // Las rutas de imagen admiten tres formatos:
+  // 1. Directorio public (comienza con "/", no optimizado): "/assets/images/avatar.webp"
+  // 2. Directorio src (no comienza con "/", optimizado automáticamente pero aumenta el tiempo de construcción, recomendado): "assets/images/avatar.webp"
+  // 3. URL remota: "https://example.com/avatar.jpg"
+  avatar: "assets/images/avatar.avif",
 
-	// 名字
-	name: "Firefly",
+  // Nombre
+  name: "Firefly",
 
-	// 个人签名
-	bio: "Hello, I'm Firefly.",
+  // Firma personal
+  bio: "Hello, I'm Firefly.",
 
-	// 链接配置
-	// 已经预装的图标集：fa7-brands，fa7-regular，fa7-solid，material-symbols，simple-icons
-	// 访问https://icones.js.org/ 获取图标代码，
-	// 如果想使用尚未包含相应的图标集，则需要安装它
-	// `pnpm add @iconify-json/<icon-set-name>`
-	// showName: true 时显示图标和名称，false 时只显示图标
-	links: [
-		{
-			name: "Bilibli",
-			icon: "fa7-brands:bilibili",
-			url: "https://space.bilibili.com/38932988",
-			showName: false,
-		},
-		{
-			name: "GitHub",
-			icon: "fa7-brands:github",
-			url: "https://github.com/CuteLeaf",
-			showName: false,
-		},
-		{
-			name: "Email",
-			icon: "fa7-solid:envelope",
-			url: "mailto:xiaye@msn.com",
-			showName: false,
-		},
-		{
-			name: "RSS",
-			icon: "fa7-solid:rss",
-			url: "/rss/",
-			showName: false,
-		},
-	],
+  // Configuración de enlaces
+  // Conjuntos de iconos preinstalados: fa7-brands, fa7-regular, fa7-solid, material-symbols, simple-icons
+  // Visita https://icones.js.org/ para obtener los códigos de los iconos.
+  // Si quieres usar un conjunto de iconos que aún no está incluido, necesitarás instalarlo:
+  // `pnpm add @iconify-json/<icon-set-name>`
+  // Cuando showName es true, se muestran el icono y el nombre; cuando es false, solo se muestra el icono.
+  links: [
+    {
+      name: "Bilibli",
+      icon: "fa7-brands:bilibili",
+      url: "https://space.bilibili.com/38932988",
+      showName: false,
+    },
+    {
+      name: "GitHub",
+      icon: "fa7-brands:github",
+      url: "https://github.com/CuteLeaf",
+      showName: false,
+    },
+    {
+      name: "Email",
+      icon: "fa7-solid:envelope",
+      url: "mailto:xiaye@msn.com",
+      showName: false,
+    },
+    {
+      name: "RSS",
+      icon: "fa7-solid:rss",
+      url: "/rss/",
+      showName: false,
+    },
+  ],
 };

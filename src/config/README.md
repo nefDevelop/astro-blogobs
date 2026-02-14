@@ -1,66 +1,69 @@
-# 配置文件说明
+# Descripción de los archivos de configuración
 
-本目录包含 Firefly 主题的所有配置文件，采用模块化设计，每个文件负责特定的功能模块。
+Este directorio contiene todos los archivos de configuración del tema Firefly, diseñados de forma modular, donde cada archivo es responsable de un módulo de función específico.
 
-## 📁 配置文件结构
+## 📁 Estructura del archivo de configuración
 
 ```
 src/config/
-├── index.ts              # 配置索引文件 - 统一导出
-├── siteConfig.ts         # 站点基础配置
-├── backgroundWallpaper.ts # 背景壁纸配置
-├── profileConfig.ts      # 用户资料配置
-├── musicConfig.ts        # 音乐播放器配置
-├── sakuraConfig.ts       # 樱花特效配置
-├── commentConfig.ts      # 评论系统配置
-├── announcementConfig.ts # 公告配置
-├── licenseConfig.ts      # 许可证配置
-├── footerConfig.ts       # 页脚配置
-├── expressiveCodeConfig.ts # 代码高亮配置
-├── fontConfig.ts         # 字体配置
-├── sidebarConfig.ts      # 侧边栏配置
-├── navBarConfig.ts       # 导航栏配置
-├── pioConfig.ts          # Pio 模型配置
-├── adConfig.ts           # 广告配置
-├── friendsConfig.ts      # 友链配置
-├── sponsorConfig.ts      # 赞助配置
-├── coverImageConfig.ts   # 封面图配置
-└── README.md             # 本文件
+├── index.ts              # Archivo de índice de configuración - Exportación unificada
+├── siteConfig.ts         # Configuración básica del sitio
+├── backgroundWallpaper.ts # Configuración del fondo de pantalla
+├── profileConfig.ts      # Configuración del perfil de usuario
+├── musicConfig.ts        # Configuración del reproductor de música
+├── sakuraConfig.ts       # Configuración del efecto de cerezo
+├── commentConfig.ts      # Configuración del sistema de comentarios
+├── announcementConfig.ts # Configuración de anuncios
+├── licenseConfig.ts      # Configuración de licencias
+├── footerConfig.ts       # Configuración del pie de página
+├── expressiveCodeConfig.ts # Configuración de resaltado de código
+├── fontConfig.ts         # Configuración de fuentes
+├── sidebarConfig.ts      # Configuración de la barra lateral
+├── navBarConfig.ts       # Configuración de la barra de navegación
+├── pioConfig.ts          # Configuración del modelo Pio
+├── adConfig.ts           # Configuración de anuncios
+├── friendsConfig.ts      # Configuración de enlaces de amigos
+├── sponsorConfig.ts      # Configuración de patrocinio
+├── coverImageConfig.ts   # Configuración de la imagen de portada
+└── README.md             # Este archivo
 ```
 
-## 🚀 使用方式
+## 🚀 Modo de uso
 
-### 推荐：使用配置索引（统一导入）
+### Recomendado: Usar el índice de configuración (importación unificada)
+
 ```typescript
-import { siteConfig, profileConfig } from '../config';
+import { siteConfig, profileConfig } from "../config";
 ```
 
-### 直接导入单个配置
+### Importar configuraciones individuales directamente
+
 ```typescript
-import { siteConfig } from '../config/siteConfig';
-import { profileConfig } from '../config/profileConfig';
+import { siteConfig } from "../config/siteConfig";
+import { profileConfig } from "../config/profileConfig";
 ```
 
-## 📋 配置文件列表
+## 📋 Lista de archivos de configuración
 
-- `siteConfig.ts` - 站点基础配置（标题、描述、主题色等）
-- `backgroundWallpaper.ts` - 背景壁纸配置（壁纸模式、图片、横幅文字等）
-- `profileConfig.ts` - 用户资料配置（头像、姓名、社交链接等）
-- `musicConfig.ts` - 音乐播放器配置（支持本地音乐和 Meting API）
-- `sakuraConfig.ts` - 樱花特效配置（数量、速度、尺寸等）
-- `commentConfig.ts` - 评论系统配置（Twikoo 评论和文章访问量统计）
-- `announcementConfig.ts` - 公告配置（标题、内容、链接等）
-- `licenseConfig.ts` - 许可证配置（CC 协议等）
-- `footerConfig.ts` - 页脚配置（HTML 注入等）
-- `expressiveCodeConfig.ts` - 代码高亮配置（主题等）
-- `fontConfig.ts` - 字体配置（字体族、大小等）
-- `sidebarConfig.ts` - 侧边栏配置（组件布局等）
-- `navBarConfig.ts` - 导航栏配置（链接、样式等）
-- `pioConfig.ts` - Pio 模型配置（Spine、Live2D 等）
-- `adConfig.ts` - 广告配置（广告位设置等）
-- `friendsConfig.ts` - 友链配置（友链列表等）
-- `sponsorConfig.ts` - 赞助配置（赞助方式、二维码等）
-- `coverImageConfig.ts` - 封面图配置（随机封面图列表等）
+- `siteConfig.ts` - Configuración básica del sitio (título, descripción, color del tema, etc.)
+- `backgroundWallpaper.ts` - Configuración del fondo de pantalla (modo de fondo, imágenes, texto del banner, etc.)
+- `profileConfig.ts` - Configuración del perfil de usuario (avatar, nombre, enlaces sociales, etc.)
+- `musicConfig.ts` - Configuración del reproductor de música (compatible con música local y API de Meting)
+- `sakuraConfig.ts` - Configuración del efecto de cerezo (cantidad, velocidad, tamaño, etc.)
+- `commentConfig.ts` - Configuración del sistema de comentarios (comentarios de Twikoo y estadísticas de visitas a artículos)
+- `announcementConfig.ts` - Configuración de anuncios (título, contenido, enlaces, etc.)
+- `licenseConfig.ts` - Configuración de licencias (licencia CC, etc.)
+- `footerConfig.ts` - Configuración del pie de página (inyección de HTML, etc.)
+- `expressiveCodeConfig.ts` - Configuración de resaltado de código (temas, etc.)
+- `fontConfig.ts` - Configuración de fuentes (familia de fuentes, tamaño, etc.)
+- `sidebarConfig.ts` - Configuración de la barra lateral (diseño de componentes, etc.)
+- `navBarConfig.ts` - Configuración de la barra de navegación (enlaces, estilos, etc.)
+- `pioConfig.ts` - Configuración del modelo Pio (Spine, Live2D, etc.)
+- `adConfig.ts` - Configuración de anuncios (configuración de espacios publicitarios, etc.)
+- `friendsConfig.ts` - Configuración de enlaces de amigos (lista de enlaces de amigos, etc.)
+- `sponsorConfig.ts` - Configuración de patrocinio (métodos de patrocinio, códigos QR, etc.)
+- `coverImageConfig.ts` - Configuración de la imagen de portada (lista de imágenes de portada aleatorias, etc.)
 
+```
 
 ```

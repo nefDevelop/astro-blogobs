@@ -1,61 +1,61 @@
 import type { MusicPlayerConfig } from "../types/config";
 
-// 音乐播放器配置
+// Configuración del reproductor de música
 export const musicPlayerConfig: MusicPlayerConfig = {
-	// 禁用音乐播放器方法：
-	// 模板默认侧边栏和导航栏两个都显示，正常情况下建议二选一，关闭其中一个
-	// 1. 侧边栏：在sidebarConfig.ts侧边栏配置把音乐组件enable设为false禁用即可
-	// 2. 导航栏：在本配置文件把showInNavbar设为false禁用即可
+  // Métodos para deshabilitar el reproductor de música:
+  // La plantilla muestra tanto la barra lateral como la barra de navegación por defecto. Normalmente, se recomienda elegir uno y deshabilitar el otro.
+  // 1. Barra lateral: Deshabilita el componente de música estableciendo 'enable' en false en la configuración de la barra lateral en sidebarConfig.ts.
+  // 2. Barra de navegación: Deshabilita el reproductor de música estableciendo 'showInNavbar' en false en este archivo de configuración.
 
-	// 是否在导航栏显示音乐播放器入口
-	showInNavbar: true,
+  // Mostrar la entrada del reproductor de música en la barra de navegación
+  showInNavbar: true,
 
-	// 使用方式："meting" 使用 Meting API，"local" 使用本地音乐列表
-	mode: "meting",
+  // Modo de uso: "meting" para usar la API de Meting, "local" para usar una lista de música local
+  mode: "meting",
 
-	// 默认音量 (0-1)
-	volume: 0.7,
+  // Volumen predeterminado (0-1)
+  volume: 0.7,
 
-	// 播放模式：'list'=列表循环, 'one'=单曲循环, 'random'=随机播放
-	playMode: "list",
+  // Modo de reproducción: 'list'=bucle de lista, 'one'=bucle de una canción, 'random'=reproducción aleatoria
+  playMode: "list",
 
-	// 是否显启用歌词
-	showLyrics: true,
+  // Habilitar la visualización de letras
+  showLyrics: true,
 
-	// Meting API 配置
-	meting: {
-		// Meting API 地址
-		// 默认使用官方 API，也可以使用自定义 API
-		api: "https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&r=:r",
-		// 音乐平台：netease=网易云音乐, tencent=QQ音乐, kugou=酷狗音乐, xiami=虾米音乐, baidu=百度音乐
-		server: "netease",
-		// 类型：song=单曲, playlist=歌单, album=专辑, search=搜索, artist=艺术家
-		type: "playlist",
-		// 歌单/专辑/单曲 ID 或搜索关键词
-		id: "10046455237",
-		// 认证 token（可选）
-		auth: "",
-		// 备用 API 配置（当主 API 失败时使用）
-		fallbackApis: [
-			"https://api.injahow.cn/meting/?server=:server&type=:type&id=:id",
-			"https://api.moeyao.cn/meting/?server=:server&type=:type&id=:id",
-		],
-	},
+  // Configuración de la API de Meting
+  meting: {
+    // Dirección de la API de Meting
+    // Por defecto se usa la API oficial, también se puede usar una API personalizada.
+    api: "https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&r=:r",
+    // Plataforma de música: netease=Netease Cloud Music, tencent=QQ Music, kugou=Kugou Music, xiami=Xiami Music, baidu=Baidu Music
+    server: "netease", // Mantener en inglés ya que es un identificador
+    // Tipo: song=canción, playlist=lista de reproducción, album=álbum, search=búsqueda, artist=artista
+    type: "playlist", // Mantener en inglés ya que es un identificador
+    // ID de la lista de reproducción/álbum/canción o palabra clave de búsqueda
+    id: "10046455237",
+    // Token de autenticación (opcional)
+    auth: "",
+    // Configuración de API de respaldo (se usa cuando la API principal falla)
+    fallbackApis: [
+      "https://api.injahow.cn/meting/?server=:server&type=:type&id=:id",
+      "https://api.moeyao.cn/meting/?server=:server&type=:type&id=:id",
+    ],
+  },
 
-	// 本地音乐配置（当 mode 为 'local' 时使用）
-	// 1. 支持传入歌词文件的路径
-	// lrc: "/assets/music/lrc/使一颗心免于哀伤-哼唱.lrc",
-	// 2. 或者直接填入歌词字符串内容
-	// lrc: "[00:00.00]歌词内容...",
-	local: {
-		playlist: [
-			{
-				name: "使一颗心免于哀伤",
-				artist: "知更鸟 / HOYO-MiX / Chevy",
-				url: "/assets/music/使一颗心免于哀伤-哼唱.mp3",
-				cover: "/assets/music/cover/109951169585655912.webp",
-				lrc: "",
-			},
-		],
-	},
+  // Configuración de música local (se usa cuando el modo es 'local')
+  // 1. Admite la ruta del archivo de letras
+  // lrc: "/assets/music/lrc/hacer-un-corazon-libre-de-tristeza-tararear.lrc",
+  // 2. O directamente el contenido de la cadena de letras
+  // lrc: "[00:00.00]Contenido de la letra...",
+  local: {
+    playlist: [
+      {
+        name: "Hacer un corazón libre de tristeza",
+        artist: "Petirrojo / HOYO-MiX / Chevy",
+        url: "/assets/music/hacer-un-corazon-libre-de-tristeza-tararear.mp3",
+        cover: "/assets/music/cover/109951169585655912.webp",
+        lrc: "",
+      },
+    ],
+  },
 };

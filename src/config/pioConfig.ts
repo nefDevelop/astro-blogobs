@@ -1,138 +1,132 @@
 import type { Live2DModelConfig, SpineModelConfig } from "../types/config";
 
-// Spine 看板娘配置
+// Configuración de la chica de la mascota Spine
 export const spineModelConfig: SpineModelConfig = {
-	// Spine 看板娘开关
-	enable: false,
+  // Interruptor de la chica de la mascota Spine
+  enable: false,
 
-	// Spine模型配置
-	model: {
-		// Spine模型文件路径
-		path: "/pio/models/spine/firefly/1310.json",
-		// 模型缩放比例
-		scale: 1.0,
-		// X轴偏移
-		x: 0,
-		// Y轴偏移
-		y: 0,
-	},
+  // Configuración del modelo Spine
+  model: {
+    // Spine模型文件路径
+    path: "/pio/models/spine/firefly/1310.json",
+    // 模型缩放比例
+    scale: 1.0,
+    // X轴偏移
+    x: 0,
+    // Y轴偏移
+    y: 0,
+  },
 
-	// 位置配置
-	position: {
-		// 显示位置 bottom-left，bottom-right，top-left，top-right，注意：在右下角可能会挡住返回顶部按钮
-		corner: "bottom-left",
-		// 距离边缘0px
-		offsetX: 0,
-		// 距离下边缘0px
-		offsetY: 0,
-	},
+  // Configuración de posición
+  position: {
+    // Posición de visualización: bottom-left, bottom-right, top-left, top-right. Nota: en la esquina inferior derecha puede bloquear el botón de volver arriba.
+    corner: "bottom-left", // Mantener en inglés ya que es un identificador
+    // Desplazamiento X desde el borde
+    offsetX: 0,
+    // Desplazamiento Y desde el borde inferior
+    offsetY: 0,
+  },
 
-	// 尺寸配置
-	size: {
-		// 容器宽度
-		width: 135,
-		// 容器高度
-		height: 165,
-	},
+  // Configuración de tamaño
+  size: {
+    // Ancho del contenedor
+    width: 135,
+    // Altura del contenedor
+    height: 165,
+  },
 
-	// 交互配置
-	interactive: {
-		// 交互功能开关
-		enabled: true,
-		// 点击时随机播放的动画列表
-		clickAnimations: [
-			"emoji_0",
-			"emoji_1",
-			"emoji_2",
-			"emoji_3",
-			"emoji_4",
-			"emoji_5",
-			"emoji_6",
-		],
-		// 点击时随机显示的文字消息
-		clickMessages: [
-			"你好呀！我是流萤~",
-			"今天也要加油哦！✨",
-			"想要一起去看星空吗？🌟",
-			"记得要好好休息呢~",
-			"有什么想对我说的吗？💫",
-			"让我们一起探索未知的世界吧！🚀",
-			"每一颗星星都有自己的故事~⭐",
-			"希望能带给你温暖和快乐！💖",
-		],
-		// 文字显示时间（毫秒）
-		messageDisplayTime: 3000,
-		// 待机动画列表
-		idleAnimations: ["idle", "emoji_0", "emoji_1", "emoji_3", "emoji_4"],
-		// 待机动画切换间隔（毫秒）
-		idleInterval: 8000,
-	},
+  // 交互配置
+  interactive: {
+    // 交互功能开关
+    enabled: true,
+    // 点击时随机播放的动画列表
+    clickAnimations: ["emoji_0", "emoji_1", "emoji_2", "emoji_3", "emoji_4", "emoji_5", "emoji_6"],
+    // 点击时随机显示的文字消息
+    clickMessages: [
+      // Mensajes de texto que se muestran aleatoriamente al hacer clic
+      "¡Hola! Soy Firefly~",
+      "¡Hoy también hay que esforzarse! ✨",
+      "¿Quieres ver las estrellas conmigo? 🌟",
+      "¡Recuerda descansar bien~",
+      "¿Hay algo que quieras decirme? 💫",
+      "¡Exploremos juntos el mundo desconocido! 🚀",
+      "Cada estrella tiene su propia historia~⭐",
+      "¡Espero traerte calidez y alegría! 💖",
+    ],
+    // Tiempo de visualización del mensaje (milisegundos)
+    messageDisplayTime: 3000,
+    // Lista de animaciones en espera
+    idleAnimations: ["idle", "emoji_0", "emoji_1", "emoji_3", "emoji_4"],
+    // Intervalo de cambio de animación en espera (milisegundos)
+    idleInterval: 8000,
+  },
 
-	// 响应式配置
-	responsive: {
-		// 在移动端隐藏
-		hideOnMobile: true,
-		// 移动端断点
-		mobileBreakpoint: 768,
-	},
+  // Configuración responsiva
+  responsive: {
+    // Ocultar en dispositivos móviles
+    hideOnMobile: true, // Ocultar en dispositivos móviles
+    // Punto de interrupción móvil
+    mobileBreakpoint: 768,
+  },
 
-	// 层级
-	zIndex: 1000, // 层级
+  // Z-index
+  zIndex: 1000, // Z-index
 
-	// 透明度
-	opacity: 1.0,
+  // Opacidad
+  opacity: 1.0,
 };
 
-// Live2D 看板娘配置
+// Configuración de la chica de la mascota Live2D
 export const live2dModelConfig: Live2DModelConfig = {
-	// Live2D 看板娘开关
-	enable: false,
-	// Live2D模型配置
-	model: {
-		// Live2D模型文件路径
-		path: "/pio/models/live2d/snow_miku/model.json",
-		// path: "/pio/models/live2d/illyasviel/illyasviel.model.json",
-	},
+  // Interruptor de la chica de la mascota Live2D
+  enable: false,
+  // Configuración del modelo Live2D
+  model: {
+    // Ruta del archivo del modelo Live2D
+    path: "/pio/models/live2d/snow_miku/model.json",
+    // path: "/pio/models/live2d/illyasviel/illyasviel.model.json",
+  },
 
-	// 位置配置
-	position: {
-		// 显示位置 bottom-left，bottom-right，top-left，top-right，注意：在右下角可能会挡住返回顶部按钮
-		corner: "bottom-left",
-		// 距离边缘0px
-		offsetX: 0,
-		// 距离下边缘0px
-		offsetY: 0,
-	},
+  // 位置配置
+  position: {
+    // 显示位置 bottom-left，bottom-right，top-left，top-right，注意：在右下角可能会挡住返回顶部按钮
+    corner: "bottom-left",
+    // 距离边缘0px
+    offsetX: 0,
+    // 距离下边缘0px
+    offsetY: 0,
+  },
 
-	// 尺寸配置
-	size: {
-		// 容器宽度
-		width: 135,
-		// 容器高度
-		height: 165,
-	},
+  // Configuración de tamaño
+  size: {
+    // Ancho del contenedor
+    width: 135,
+    // Altura del contenedor
+    height: 165,
+  },
 
-	// 交互配置
-	interactive: {
-		// 交互功能开关
-		enabled: true,
-		// 点击时随机显示的文字消息，motions 和 expressions 将从模型 JSON 文件中自动读取
-		clickMessages: [
-			"你好！我是Miku~",
-			"有什么需要帮助的吗？",
-			"今天天气真不错呢！",
-			"要不要一起玩游戏？",
-			"记得按时休息哦！",
-		],
-		// 随机显示的文字消息显示时间（毫秒）
-		messageDisplayTime: 3000,
-	},
+  // Configuración interactiva
+  interactive: {
+    // Interruptor de función interactiva
+    enabled: true,
+    // Mensajes de texto que se muestran aleatoriamente al hacer clic. Las mociones y expresiones se leerán automáticamente del archivo JSON del modelo.
+    clickMessages: [
+      // Mensajes de texto que se muestran aleatoriamente al hacer clic
+      "¡Hola! Soy Miku~",
+      "¿Necesitas ayuda?",
+      "¡Qué buen día hace hoy!",
+      "¿Quieres jugar conmigo?",
+      "¡Recuerda descansar a tiempo!",
+    ],
+    // Tiempo de visualización de los mensajes de texto aleatorios (milisegundos)
+    messageDisplayTime: 3000,
+  },
 
-	// 响应式配置
-	responsive: {
-		// 在移动端隐藏
-		hideOnMobile: true,
-		// 移动端断点
-		mobileBreakpoint: 768,
-	},
+  // Configuración responsiva
+  responsive: {
+    // Ocultar en dispositivos móviles
+    hideOnMobile: true, // Ocultar en dispositivos móviles
+    // Punto de interrupción móvil
+    mobileBreakpoint: 768,
+  },
 };
