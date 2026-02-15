@@ -39,7 +39,7 @@ export { licenseConfig } from "./licenseConfig";
 // Configuración de componentes
 
 export { navBarConfig, navBarSearchConfig } from "./navBarConfig";
-export { live2dModelConfig, spineModelConfig } from "./pioConfig";
+
 export { profileConfig } from "./profileConfig";
 export { sakuraConfig } from "./sakuraConfig";
 // Configuración de diseño

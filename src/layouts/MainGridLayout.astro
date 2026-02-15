@@ -1,7 +1,5 @@
 ---
-import Live2DWidget from "@components/features/Live2DWidget.astro";
 
-import SpineModel from "@components/features/SpineModel.astro";
 import Footer from "@components/layout/Footer.astro";
 import Navbar from "@components/layout/Navbar.astro";
 import SideBar from "@components/layout/SideBar.astro";
@@ -12,7 +10,6 @@ import FloatingControls from "@/components/controls/FloatingControls.astro";
 import TypewriterText from "@/components/features/TypewriterText.astro";
 import {
 	backgroundWallpaper,
-	live2dModelConfig,
 	sidebarLayoutConfig,
 	siteConfig,
 } from "@/config";
@@ -528,8 +525,7 @@ const mobileQuality = Math.round(configQuality * 0.9);
 
         </div>
 
-        <SpineModel></SpineModel>
-        {live2dModelConfig.enable && <Live2DWidget config={live2dModelConfig} />}
+
     </div>
     <Footer />
 </div>
