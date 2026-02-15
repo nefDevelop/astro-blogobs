@@ -22,12 +22,6 @@ export const profileConfig: ProfileConfig = {
   // Cuando showName es true, se muestran el icono y el nombre; cuando es false, solo se muestra el icono.
   links: [
     {
-      name: "Bilibli",
-      icon: "fa7-brands:bilibili",
-      url: "https://space.bilibili.com/38932988",
-      showName: false,
-    },
-    {
       name: "GitHub",
       icon: "fa7-brands:github",
       url: "https://github.com/CuteLeaf",

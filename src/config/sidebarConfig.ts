@@ -48,16 +48,6 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
       showOnPostPage: true,
     },
     {
-      // Tipo de componente: Reproductor de música
-      type: "music", // Mantener en inglés ya que es un identificador
-      // Habilitar este componente
-      enable: true,
-      // Posición del componente
-      position: "sticky", // Mantener en inglés ya que es un identificador
-      // Mostrar en la página de detalles del artículo
-      showOnPostPage: true,
-    },
-    {
       // Tipo de componente: Componente de categorías
       type: "categories", // Mantener en inglés ya que es un identificador
       // Habilitar este componente
@@ -165,14 +155,6 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
     {
       // Tipo de componente: Componente de anuncio
       type: "announcement", // Mantener en inglés ya que es un identificador
-      // Habilitar este componente
-      enable: true,
-      // Mostrar en la página de detalles del artículo
-      showOnPostPage: true,
-    },
-    {
-      // Tipo de componente: Reproductor de música
-      type: "music", // Mantener en inglés ya que es un identificador
       // Habilitar este componente
       enable: true,
       // Mostrar en la página de detalles del artículo

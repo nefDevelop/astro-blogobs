@@ -1,5 +1,8 @@
 <script lang="ts">
 import {
+	DARK_MODE,
+	LIGHT_MODE,
+	SYSTEM_MODE,
 	WALLPAPER_BANNER,
 	WALLPAPER_NONE,
 	WALLPAPER_OVERLAY,
@@ -12,22 +15,25 @@ import {
 	getDefaultWavesEnabled,
 	getHue,
 	getStoredBannerTitleEnabled,
+	getStoredTheme,
 	getStoredWallpaperMode,
 	getStoredWavesEnabled,
 	setBannerTitleEnabled,
 	setHue,
+	setTheme,
 	setWallpaperMode,
 	setWavesEnabled,
 } from "@utils/setting-utils";
 import { onMount } from "svelte";
 import Icon from "@/components/common/Icon.svelte";
 import { backgroundWallpaper, siteConfig } from "@/config";
-import type { WALLPAPER_MODE } from "@/types/config";
+import type { LIGHT_DARK_MODE, WALLPAPER_MODE } from "@/types/config";
 
 let hue = $state(getHue());
 const defaultHue = getDefaultHue();
 let wallpaperMode: WALLPAPER_MODE = $state(backgroundWallpaper.mode);
 const defaultWallpaperMode = backgroundWallpaper.mode;
+let lightDarkMode: LIGHT_DARK_MODE = $state(getStoredTheme());
 let currentLayout: "list" | "grid" = $state("list");
 const defaultLayout = siteConfig.postListLayout.defaultMode;
 let mounted = $state(false);
@@ -68,6 +74,11 @@ function resetHue() {
 function resetWallpaperMode() {
 	wallpaperMode = defaultWallpaperMode;
 	setWallpaperMode(defaultWallpaperMode);
+}
+
+function switchLightDarkMode(newMode: LIGHT_DARK_MODE) {
+	lightDarkMode = newMode;
+	setTheme(newMode);
 }
 
 function resetLayout() {
@@ -133,6 +144,7 @@ onMount(() => {
 
 	// 从localStorage读取保存的壁纸模式
 	wallpaperMode = getStoredWallpaperMode();
+	lightDarkMode = getStoredTheme();
 
 	// 从localStorage读取水波纹动画状态
 	wavesEnabled = getStoredWavesEnabled();
@@ -151,8 +163,15 @@ onMount(() => {
 	// 监听窗口大小变化
 	window.addEventListener("resize", checkScreenSize);
 
+	const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+	const handleSystemChange = () => {
+		lightDarkMode = getStoredTheme();
+	};
+	mediaQuery.addEventListener("change", handleSystemChange);
+
 	return () => {
 		window.removeEventListener("resize", checkScreenSize);
+		mediaQuery.removeEventListener("change", handleSystemChange);
 	};
 });
 
@@ -208,6 +227,54 @@ $effect(() => {
         </div>
     </div>
     {/if}
+
+    <!-- Theme Mode Section -->
+    <div class="mt-2 mb-2">
+        <div class="flex gap-2 font-bold text-lg text-neutral-900 dark:text-neutral-100 transition relative ml-3 mb-2
+            before:w-1 before:h-4 before:rounded-md before:bg-(--primary)
+            before:absolute before:-left-3 before:top-1/2 before:-translate-y-1/2"
+        >
+            {i18n(I18nKey.themeMode)}
+        </div>
+        <div class="space-y-1 px-1">
+            <button
+                class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
+                class:opacity-60={lightDarkMode !== LIGHT_MODE}
+                class:bg-(--btn-regular-bg-hover)={lightDarkMode === LIGHT_MODE}
+                onclick={() => switchLightDarkMode(LIGHT_MODE)}
+            >
+                <Icon icon="material-symbols:wb-sunny-outline-rounded" class="text-[1.25rem] shrink-0"></Icon>
+                <span class="text-sm flex-1">{i18n(I18nKey.lightMode)}</span>
+                {#if lightDarkMode === LIGHT_MODE}
+                    <Icon icon="material-symbols:check-circle" class="text-[1rem] shrink-0 text-(--primary)"></Icon>
+                {/if}
+            </button>
+            <button
+                class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
+                class:opacity-60={lightDarkMode !== DARK_MODE}
+                class:bg-(--btn-regular-bg-hover)={lightDarkMode === DARK_MODE}
+                onclick={() => switchLightDarkMode(DARK_MODE)}
+            >
+                <Icon icon="material-symbols:dark-mode-outline-rounded" class="text-[1.25rem] shrink-0"></Icon>
+                <span class="text-sm flex-1">{i18n(I18nKey.darkMode)}</span>
+                {#if lightDarkMode === DARK_MODE}
+                    <Icon icon="material-symbols:check-circle" class="text-[1rem] shrink-0 text-(--primary)"></Icon>
+                {/if}
+            </button>
+            <button
+                class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
+                class:opacity-60={lightDarkMode !== SYSTEM_MODE}
+                class:bg-(--btn-regular-bg-hover)={lightDarkMode === SYSTEM_MODE}
+                onclick={() => switchLightDarkMode(SYSTEM_MODE)}
+            >
+                <Icon icon="material-symbols:brightness-auto-outline-rounded" class="text-[1.25rem] shrink-0"></Icon>
+                <span class="text-sm flex-1">{i18n(I18nKey.systemMode)}</span>
+                {#if lightDarkMode === SYSTEM_MODE}
+                    <Icon icon="material-symbols:check-circle" class="text-[1rem] shrink-0 text-(--primary)"></Icon>
+                {/if}
+            </button>
+        </div>
+    </div>
 
     <!-- Wallpaper Mode Section -->
     {#if isWallpaperSwitchable}

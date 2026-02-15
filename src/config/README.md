@@ -10,7 +10,6 @@ src/config/
 ├── siteConfig.ts         # Configuración básica del sitio
 ├── backgroundWallpaper.ts # Configuración del fondo de pantalla
 ├── profileConfig.ts      # Configuración del perfil de usuario
-├── musicConfig.ts        # Configuración del reproductor de música
 ├── sakuraConfig.ts       # Configuración del efecto de cerezo
 ├── commentConfig.ts      # Configuración del sistema de comentarios
 ├── announcementConfig.ts # Configuración de anuncios
@@ -48,7 +47,6 @@ import { profileConfig } from "../config/profileConfig";
 - `siteConfig.ts` - Configuración básica del sitio (título, descripción, color del tema, etc.)
 - `backgroundWallpaper.ts` - Configuración del fondo de pantalla (modo de fondo, imágenes, texto del banner, etc.)
 - `profileConfig.ts` - Configuración del perfil de usuario (avatar, nombre, enlaces sociales, etc.)
-- `musicConfig.ts` - Configuración del reproductor de música (compatible con música local y API de Meting)
 - `sakuraConfig.ts` - Configuración del efecto de cerezo (cantidad, velocidad, tamaño, etc.)
 - `commentConfig.ts` - Configuración del sistema de comentarios (comentarios de Twikoo y estadísticas de visitas a artículos)
 - `announcementConfig.ts` - Configuración de anuncios (título, contenido, enlaces, etc.)
@@ -63,6 +61,7 @@ import { profileConfig } from "../config/profileConfig";
 - `friendsConfig.ts` - Configuración de enlaces de amigos (lista de enlaces de amigos, etc.)
 - `sponsorConfig.ts` - Configuración de patrocinio (métodos de patrocinio, códigos QR, etc.)
 - `coverImageConfig.ts` - Configuración de la imagen de portada (lista de imágenes de portada aleatorias, etc.)
+
 
 ```
 

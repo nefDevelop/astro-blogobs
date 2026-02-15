@@ -95,11 +95,8 @@ export const siteConfig: SiteConfig = {
   // Fecha de inicio del sitio, utilizada para contar los días de funcionamiento
   siteStartDate: "2025-01-01", // Fecha de inicio del sitio, utilizada para contar los días de funcionamiento
 
-  // 站点时区（IANA 时区字符串），用于格式化bangumi、rss里的构建日期时间等等..
   // 示例："Asia/Shanghai", "UTC", 如果为空，则按照构建服务器的时区进行时区转换
-  // Zona horaria del sitio (cadena de zona horaria IANA), utilizada para formatear la fecha y hora de construcción en bangumi, rss, etc.
   // Ejemplo: "Asia/Shanghai", "UTC". Si está vacío, la conversión de zona horaria se realizará según la zona horaria del servidor de compilación.
-  timezone: "UTC", // Zona horaria del sitio (cadena de zona horaria IANA), utilizada para formatear la fecha y hora de construcción en bangumi, rss, etc.
 
   // 提醒框（Admonitions）配置，修改后需要重启开发服务器才能生效
   // 主题：'github' | 'obsidian' | 'vitepress'，每个主题风格和语法不同，可根据喜好选择
@@ -126,28 +123,16 @@ export const siteConfig: SiteConfig = {
   // Función de imagen OpenGraph, ten en cuenta que la renderización puede tardar mucho tiempo después de habilitarla, no se recomienda habilitarla durante la depuración local
   generateOgImages: false, // Función de imagen OpenGraph, ten en cuenta que la renderización puede tardar mucho tiempo después de habilitarla, no se recomienda habilitarla durante la depuración local
 
-  // bangumi配置
-  // Configuración de Bangumi
-  bangumi: {
-    // Bangumi用户ID
-    // ID de usuario de Bangumi
-    userId: "1143164", // ID de usuario de Bangumi
-  },
+
 
   // 页面开关配置 - 控制特定页面的访问权限，设为false会返回404
-  // bangumi的数据为编译时获取的，所以不是实时数据，请配置bangumi.userId
   // Configuración de interruptores de página - controla los permisos de acceso a páginas específicas, establecer en false devolverá un 404
-  // Los datos de bangumi se obtienen en tiempo de compilación, por lo que no son datos en tiempo real, por favor configura bangumi.userId
   pages: {
     // 赞助页面开关
     // Interruptor de la página de patrocinadores
     sponsor: true, // Interruptor de la página de patrocinadores
-    // 留言板页面开关，需要配置评论系统
     // Interruptor de la página del libro de visitas, requiere configurar un sistema de comentarios
     guestbook: true, // Interruptor de la página del libro de visitas, requiere configurar un sistema de comentarios
-    // 番组计划页面开关，含追番、游戏、书籍和音乐，dev调试时只获取一页数据，build才会获取全部数据
-    // Interruptor de la página de planificación de animes/series (bangumi), incluye seguimiento de animes, juegos, libros y música. Durante la depuración (dev) solo se obtiene una página de datos, en la compilación (build) se obtienen todos los datos.
-    bangumi: true, // Interruptor de la página de planificación de animes/series (bangumi), incluye seguimiento de animes, juegos, libros y música. Durante la depuración (dev) solo se obtiene una página de datos, en la compilación (build) se obtienen todos los datos.
   },
 
   // 文章列表布局配置

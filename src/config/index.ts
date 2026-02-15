@@ -37,7 +37,7 @@ export { footerConfig } from "./footerConfig";
 export { friendsPageConfig, getEnabledFriends } from "./friendsConfig";
 export { licenseConfig } from "./licenseConfig";
 // Configuración de componentes
-export { musicPlayerConfig } from "./musicConfig";
+
 export { navBarConfig, navBarSearchConfig } from "./navBarConfig";
 export { live2dModelConfig, spineModelConfig } from "./pioConfig";
 export { profileConfig } from "./profileConfig";

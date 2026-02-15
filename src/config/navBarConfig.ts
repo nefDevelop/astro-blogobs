@@ -28,12 +28,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
         external: true,
         icon: "fa7-brands:github",
       },
-      {
-        name: "Bilibili",
-        url: "https://space.bilibili.com/38932988",
-        external: true,
-        icon: "fa7-brands:bilibili",
-      },
     ],
   });
 
@@ -57,8 +51,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
       // Página Acerca de
       LinkPreset.About,
 
-      // Decide si añadir el plan Bangumi según la configuración. Si pages.bangumi está desactivado en siteConfig, el plan Bangumi no se mostrará en la barra de navegación.
-      ...(siteConfig.pages.bangumi ? [LinkPreset.Bangumi] : []),
     ],
   });
 
