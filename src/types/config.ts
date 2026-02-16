@@ -32,6 +32,7 @@ export type SiteConfig = {
 
   // 提醒框配置
   rehypeCallouts: {
+    // Configuración de cuadros de advertencia (Admonitions)
     theme: "github" | "obsidian" | "vitepress";
   };
 
@@ -39,7 +40,7 @@ export type SiteConfig = {
   favicon: Array<{
     src: string;
     theme?: "light" | "dark";
-    sizes?: string;
+    sizes?: string; // Opcional, tamaño del icono
   }>;
 
   navbar: {
@@ -54,13 +55,13 @@ export type SiteConfig = {
     followTheme?: boolean; // 导航栏图标和标题是否跟随主题色
   };
 
-  showLastModified: boolean; // 控制"上次编辑"卡片显示的开关
+  showLastModified: boolean; // Controla el interruptor de la tarjeta "Última edición"
   outdatedThreshold?: number; // 文章过期阈值（天数），超过此天数才显示"上次编辑"卡片
   sharePoster?: boolean; // 是否显示分享海报按钮
 
   // 页面开关配置
   pages: {
-    sponsor: boolean; // 赞助页面开关
+    sponsor: boolean; // Interruptor de la página de patrocinadores
   };
 
   // 文章列表布局配置
@@ -143,7 +144,7 @@ export type ProfileConfig = {
   name: string;
   bio?: string;
   links: {
-    name: string;
+    name: string; // Nombre del enlace
     url: string;
     icon: string;
     showName?: boolean;
@@ -152,6 +153,7 @@ export type ProfileConfig = {
 };
 
 export type LicenseConfig = {
+  // Configuración de la licencia
   enable: boolean;
   name: string;
   url: string;
@@ -160,7 +162,7 @@ export type LicenseConfig = {
 
 export type CommentConfig = {
   /**
-   * 当前启用的评论系统类型
+   * Tipo de sistema de comentarios actualmente habilitado
    * "none" | "twikoo" | "waline" | "giscus" | "disqus" | 'artalk'
    */
   type: "none" | "twikoo" | "waline" | "giscus" | "disqus" | "artalk";
@@ -169,7 +171,7 @@ export type CommentConfig = {
     region?: string;
     lang?: string;
     visitorCount?: boolean;
-  };
+  }; // Configuración de Twikoo
   waline?: {
     serverURL: string;
     lang?: string;
@@ -177,7 +179,7 @@ export type CommentConfig = {
     visitorCount?: boolean; // 是否统计访问量，true 启用访问量，false 关闭
   };
   artalk?: {
-    // 后端程序 API 地址
+    // Dirección de la API del programa backend
     server: string;
     /**
      * 语言，支持语言如下：
@@ -190,7 +192,7 @@ export type CommentConfig = {
      * - "ru" (Русский)
      * */
     locale: string | "auto";
-    // 是否统计访问量，true 启用访问量，false 关闭
+    // Si se cuentan las visitas, true para habilitar, false para deshabilitar
     visitorCount?: boolean;
   };
   giscus?: {
@@ -209,7 +211,7 @@ export type CommentConfig = {
   disqus?: {
     shortname: string;
   };
-};
+}; // Configuración de comentarios
 
 export type LIGHT_DARK_MODE = typeof LIGHT_MODE | typeof DARK_MODE | typeof SYSTEM_MODE;
 
@@ -243,6 +245,7 @@ export type ExpressiveCodeConfig = {
 };
 
 export type PluginCollapsibleConfig = {
+  // Configuración del plugin de bloques de código plegables
   enable: boolean; // 是否启用代码块折叠功能
   lineThreshold: number; // 触发折叠的行数阈值
   previewLines: number; // 折叠时显示的预览行数
@@ -251,7 +254,7 @@ export type PluginCollapsibleConfig = {
 
 export type AnnouncementConfig = {
   // enable属性已移除，现在通过sidebarLayoutConfig统一控制
-  title?: string; // 公告栏标题
+  title?: string; // Título del anuncio
   content: string; // 公告栏内容
   icon?: string; // 公告栏图标
   type?: "info" | "warning" | "success" | "error"; // 公告类型
@@ -262,7 +265,7 @@ export type AnnouncementConfig = {
     url: string; // 链接地址
     external?: boolean; // 是否外部链接
   };
-};
+}; // Configuración del anuncio
 
 // 单个字体配置
 export type FontItem = {
@@ -287,6 +290,7 @@ export type FontConfig = {
 };
 
 export type FooterConfig = {
+  // Configuración del pie de página
   enable: boolean; // 是否启用Footer HTML注入功能
   customHtml?: string; // 自定义HTML内容，用于添加备案号等信息
 };
@@ -294,7 +298,7 @@ export type FooterConfig = {
 export type CoverImageConfig = {
   enableInPost: boolean; // 是否在文章详情页显示封面图
   randomCoverImage: {
-    enable: boolean; // 是否启用随机图功能
+    enable: boolean; // Si se habilita la función de imagen aleatoria
     apis: string[]; // 随机图API列表
     fallback?: string; // API失败时的回退图片路径（相对于src目录）
     showLoading?: boolean; // 是否显示加载动画
@@ -302,17 +306,11 @@ export type CoverImageConfig = {
 };
 
 // 组件配置类型定义
-export type WidgetComponentType =
-  | "profile"
-  | "announcement"
-  | "categories"
-  | "tags"
-  | "sidebarToc"
-  | "advertisement"
-  | "stats"
-  | "calendar";
+export type WidgetComponentType = // Tipos de componentes de widget
+  "profile" | "announcement" | "categories" | "tags" | "sidebarToc" | "advertisement" | "stats" | "calendar";
 
 export type WidgetComponentConfig = {
+  // Configuración de componentes de widget
   type: WidgetComponentType; // 组件类型
   enable: boolean; // 是否启用该组件
   position: "top" | "sticky"; // 组件位置：top=固定在顶部，sticky=粘性定位（可滚动）
@@ -327,6 +325,7 @@ export type WidgetComponentConfig = {
 };
 
 export type MobileBottomComponentConfig = {
+  // Configuración de componentes de pie de página móvil
   type: WidgetComponentType; // 组件类型
   enable: boolean; // 是否启用该组件
   configId?: string; // 配置ID，用于广告组件指定使用哪个配置
@@ -340,6 +339,7 @@ export type MobileBottomComponentConfig = {
 };
 
 export type SidebarLayoutConfig = {
+  // Configuración del diseño de la barra lateral
   enable: boolean; // 是否启用侧边栏
   position: "left" | "both"; // 侧边栏位置：左侧或双侧
   showRightSidebarOnPostPage?: boolean; // 当position为left时，是否在文章详情页显示右侧边栏
@@ -349,6 +349,7 @@ export type SidebarLayoutConfig = {
 };
 
 export type SakuraConfig = {
+  // Configuración de Sakura
   enable: boolean; // 是否启用樱花特效
   sakuraNum: number; // 樱花数量，默认21
   limitTimes: number; // 樱花越界限制次数，-1为无限循环
@@ -409,7 +410,7 @@ export type SpineModelConfig = {
   opacity?: number; // 透明度，0-1，默认1.0
 };
 
-// Live2D 看板娘配置
+// Configuración de Spine Live2D
 export type Live2DModelConfig = {
   enable: boolean; // 是否启用 Live2D 看板娘
   model: {
@@ -437,6 +438,7 @@ export type Live2DModelConfig = {
 };
 
 export type BackgroundWallpaperConfig = {
+  // Configuración del fondo de pantalla
   mode: "banner" | "overlay" | "none"; // 壁纸模式：banner横幅模式、overlay全屏透明覆盖模式或none纯色背景
   switchable?: boolean; // 是否允许用户通过导航栏切换壁纸模式，默认true
   src:

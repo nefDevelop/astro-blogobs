@@ -239,8 +239,7 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
     }
 
     .search-panel {
-        max-height: calc(100vh - 100px);
+        max-height: calc(100vh - 100px); /* Ajustar la altura máxima del panel de búsqueda */
         overflow-y: auto;
     }
 </style>
-

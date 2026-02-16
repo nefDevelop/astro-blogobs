@@ -234,7 +234,7 @@ $effect(() => {
             before:w-1 before:h-4 before:rounded-md before:bg-(--primary)
             before:absolute before:-left-3 before:top-1/2 before:-translate-y-1/2"
         >
-            {i18n(I18nKey.themeMode)}
+            <!-- {i18n(I18nKey.themeMode)} {/* Asegúrate de que I18nKey.themeMode esté definido */} -->
         </div>
         <div class="space-y-1 px-1">
             <button

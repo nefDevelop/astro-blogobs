@@ -29,6 +29,7 @@ import {
 	type ResponsiveSidebarConfig,
 } from "@/utils/responsive-utils";
 import Layout from "./Layout.astro";
+import Announcement from "@/components/widget/Announcement.astro";
 
 import "@/styles/markdown.css";
 import "@/styles/expressive-code.css";
@@ -421,6 +422,11 @@ const mobileQuality = Math.round(configQuality * 0.9);
 <div class={`absolute w-full z-30 pointer-events-none ${mobileNonHomeBannerClass ? 'mobile-main-no-banner' : ''} ${!(isBannerMode && isBackgroundEnabled) ? 'no-banner-layout' : ''} ${transparentClass}`} style={`top: ${finalMainPanelTop}`}>
     <!-- The pointer-events-none here prevent blocking the click event of the TOC -->
     <div class="relative max-w-(--page-width) mx-auto pointer-events-auto">
+        <div class="mx-auto" class:list={[navbarWidthFull ? "" : "max-w-(--page-width) px-0 md:px-4"]}>
+            <div class="flex flex-col w-full gap-4 mb-4">
+                <Announcement class:list={["onload-animation", transparentClass]} />
+            </div>
+        </div>
         <div id="main-grid"
           class={`transition duration-700 w-full left-0 right-0 grid ${gridCols} grid-rows-[auto_1fr_auto] lg:grid-rows-[auto] mx-auto gap-4 px-2 md:px-4 ${!sidebarConfig.mobileShowSidebar ? 'mobile-no-sidebar' : ''}`}
           data-sidebar-position={sidebarLayoutConfig.position}

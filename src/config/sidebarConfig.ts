@@ -41,7 +41,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
       // Tipo de componente: Componente de anuncio
       type: "announcement", // Mantener en inglés ya que es un identificador
       // Habilitar este componente
-      enable: true,
+      enable: false,
       // Posición del componente
       position: "top", // Mantener en inglés ya que es un identificador
       // Mostrar en la página de detalles del artículo
@@ -156,7 +156,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
       // Tipo de componente: Componente de anuncio
       type: "announcement", // Mantener en inglés ya que es un identificador
       // Habilitar este componente
-      enable: true,
+      enable: false,
       // Mostrar en la página de detalles del artículo
       showOnPostPage: true,
     },

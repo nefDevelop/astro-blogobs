@@ -34,7 +34,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
   // Enlaces de amigos
   links.push(LinkPreset.Friends);
 
-
   // Acerca de y sus submenús
   links.push({
     name: "Acerca de",
@@ -46,7 +45,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 
       // Página Acerca de
       LinkPreset.About,
-
     ],
   });
 
@@ -54,7 +52,7 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
   return { links } as NavBarConfig;
 };
 
-// Configuración de búsqueda de navegación
+// Configuración de búsqueda de navegación (NavBarSearchConfig)
 export const navBarSearchConfig: NavBarSearchConfig = {
   method: NavBarSearchMethod.PageFind,
 };

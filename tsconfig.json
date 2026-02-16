@@ -1,6 +1,6 @@
 {
   "extends": "astro/tsconfigs/base",
-  "compilerOptions": {
+  "compilerOptions": { // Opciones del compilador
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
