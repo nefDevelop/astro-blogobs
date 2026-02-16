@@ -60,14 +60,12 @@ const isPublic = src.startsWith("/");
 let img: ImageMetadata | null = null;
 if (isLocal) {
 	const files = import.meta.glob<ImageMetadata>(
-		"../../**/*.{png,jpg,jpeg,webp,avif}",
+		"/src/**/*.{png,jpg,jpeg,webp,avif,gif,svg}",
 		{
 			import: "default",
 		},
 	);
-	let normalizedPath = path
-		.normalize(path.join("../../", basePath, src))
-		.replace(/\\/g, "/");
+	const normalizedPath = path.join("/src", src).replace(/\\/g, "/");
 	const file = files[normalizedPath];
 	if (!file) {
 		console.error(
