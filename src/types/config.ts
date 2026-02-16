@@ -35,8 +35,6 @@ export type SiteConfig = {
     theme: "github" | "obsidian" | "vitepress";
   };
 
-
-
   generateOgImages: boolean;
   favicon: Array<{
     src: string;
@@ -63,7 +61,6 @@ export type SiteConfig = {
   // 页面开关配置
   pages: {
     sponsor: boolean; // 赞助页面开关
-    guestbook: boolean; // 留言板页面开关
   };
 
   // 文章列表布局配置
@@ -119,7 +116,6 @@ export enum LinkPreset {
   About = 2,
   Friends = 3,
   Sponsor = 4,
-  Guestbook = 5,
 }
 
 export type NavBarLink = {
@@ -151,6 +147,7 @@ export type ProfileConfig = {
     url: string;
     icon: string;
     showName?: boolean;
+    external?: boolean; // Added for external links in profile
   }[];
 };
 

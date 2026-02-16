@@ -34,10 +34,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
   // Enlaces de amigos
   links.push(LinkPreset.Friends);
 
-  // Decide si añadir el libro de visitas según la configuración. Si pages.guestbook está desactivado en siteConfig, el libro de visitas no se mostrará en la barra de navegación.
-  if (siteConfig.pages.guestbook) {
-    links.push(LinkPreset.Guestbook);
-  }
 
   // Acerca de y sus submenús
   links.push({

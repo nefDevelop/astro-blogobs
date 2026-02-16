@@ -32,7 +32,7 @@ const iconSetCache = new Map();
 /**
  * Obtener recursivamente todos los archivos de un directorio
  */
-function getAllFiles(dir, extensions = [".svelte"]) {
+function getAllFiles(dir, extensions = [".svelte", ".astro", ".ts"]) {
   const files = [];
 
   function walk(currentDir) {
@@ -72,6 +72,8 @@ function extractIconNames(content) {
     /getIconSvg\(["']([a-z0-9-]+:[a-z0-9-]+)["']\)/gi,
     // hasIcon("xxx:yyy")
     /hasIcon\(["']([a-z0-9-]+:[a-z0-9-]+)["']\)/gi,
+    // icon: "xxx:yyy" (para archivos de configuración .ts)
+    /icon:\s*["']([a-z0-9-]+:[a-z0-9-]+)["']/gi,
   ];
 
   for (const pattern of patterns) {

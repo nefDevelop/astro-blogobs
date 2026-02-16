@@ -1,0 +1,142 @@
+---
+import { profileConfig } from "@/config/profileConfig";
+import { getIconSvg } from "@/constants/icons";
+import { i18n } from "@/i18n/translation";
+import I18nKey from "@/i18n/i18nKey";
+import { Picture } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import DropdownPanel from "@/components/common/DropdownPanel.astro"; // Importar DropdownPanel
+import AvatarImage from "@/components/common/AvatarImage.astro";
+
+const profileName = profileConfig.name;
+const profileBio = profileConfig.bio;
+const profileAvatarConfigPath = profileConfig.avatar;
+let profileAvatarOptimized: ImageMetadata | undefined = undefined;
+let profileAvatarDirectPath: string | undefined = undefined;
+
+const isLocalSrcAvatar = profileAvatarConfigPath && !profileAvatarConfigPath.startsWith("/") && !profileAvatarConfigPath.startsWith("http");
+
+if (isLocalSrcAvatar) {
+  const files = import.meta.glob<ImageMetadata>(
+    "/src/assets/images/**/*.{png,jpg,jpeg,webp,avif,gif,svg}",
+    { import: "default" },
+  );
+  const globKey = `/src/${profileAvatarConfigPath}`;
+  const file = files[globKey];
+  if (file) {
+    profileAvatarOptimized = await file();
+  } else {
+    profileAvatarDirectPath = profileAvatarConfigPath;
+  }
+} else {
+  profileAvatarDirectPath = profileAvatarConfigPath;
+}
+
+const profileLabel = i18n(I18nKey.profile);
+
+function getAvatarElement(isSmall: boolean) {
+  const widths = isSmall ? [44, 88] : [64, 128];
+  const className = isSmall
+    ? "w-8 h-8 object-cover rounded-full"
+    : "w-16 h-16 object-cover rounded-full mx-auto mb-2";
+  return { widths, className };
+}
+
+const { widths: buttonWidths, className: buttonClassName } = getAvatarElement(true);
+const { widths: dropdownWidths, className: dropdownClassName } = getAvatarElement(false);
+const profileLinks = profileConfig.links;
+---
+
+<div class="relative profile-dropdown-container">
+  <button
+    id="profile-dropdown-button"
+    class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90 flex items-center justify-center focus:outline-none"
+    aria-label={profileLabel}
+    aria-haspopup="true"
+    aria-expanded="false"
+  >
+    <AvatarImage
+      profileAvatarOptimized={profileAvatarOptimized}
+      profileAvatarDirectPath={profileAvatarDirectPath}
+      profileName={profileName}
+      className={buttonClassName}
+      widths={buttonWidths}
+      loading="eager"
+    />
+  </button>
+
+  <DropdownPanel
+    id="profile-dropdown-menu" // Asegúrate de que DropdownPanel pueda recibir 'id'
+    class="absolute right-0 mt-1 w-64 float-panel-closed transition-all duration-200 z-50 p-3!"
+    aria-orientation="vertical"
+    aria-labelledby="profile-dropdown-button"
+  >
+    <div>
+      <div class="flex flex-col items-center text-center mb-3">
+        <AvatarImage
+          profileAvatarOptimized={profileAvatarOptimized}
+          profileAvatarDirectPath={profileAvatarDirectPath}
+          profileName={profileName}
+          className={dropdownClassName}
+          widths={dropdownWidths}
+          loading="eager"
+        />
+        <h3 class="text-lg font-bold text-[var(--text-color)] mt-2">{profileName}</h3>
+        {profileBio && <p class="text-sm text-[var(--text-color-light)] line-clamp-2">{profileBio}</p>}
+      </div>
+      <div class="flex flex-wrap justify-center gap-1">
+        {
+          profileLinks.map((link) => (
+            <a
+              href={link.url}
+              title={link.name}
+              target={link.external ? "_blank" : "_self"}
+              rel={link.external ? "noopener noreferrer" : ""}
+              class="btn-plain scale-animation rounded-lg h-10 w-10 flex items-center justify-center"
+              role="menuitem"
+            >
+              <span class="text-xl" set:html={getIconSvg(link.icon)} />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </DropdownPanel>
+</div>
+
+<script is:inline>
+  const button = document.getElementById("profile-dropdown-button");
+  const menu = document.getElementById("profile-dropdown-menu");
+
+  let isOpen = false;
+
+  function toggleDropdown() {
+    isOpen = !isOpen;
+    if (isOpen) {
+      menu.classList.remove("float-panel-closed");
+      button.setAttribute("aria-expanded", "true");
+    } else {
+      menu.classList.add("float-panel-closed");
+      button.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  function closeDropdown(event) {
+    if (isOpen && !menu.contains(event.target) && !button.contains(event.target)) {
+      isOpen = false;
+      menu.classList.add("float-panel-closed");
+      button.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  button.addEventListener("click", toggleDropdown);
+  document.addEventListener("click", closeDropdown);
+
+  // Cleanup on navigation (for SPA-like behavior in Astro)
+  document.addEventListener('astro:before-swap', () => {
+    document.removeEventListener('click', closeDropdown);
+  });
+  document.addEventListener('astro:after-swap', () => {
+    document.addEventListener('click', closeDropdown);
+  });
+</script>

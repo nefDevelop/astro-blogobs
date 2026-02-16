@@ -5,11 +5,13 @@
  */
 interface Props {
 	class?: string;
+	// Permitir cualquier atributo HTML estándar
+	[key: string]: any;
 }
 
-const { class: className } = Astro.props;
+const { class: className, ...rest } = Astro.props; // Extraer 'class' y el resto de props
 ---
 
-<div class:list={["float-panel p-2", className]} role="none">
+<div class:list={["float-panel p-2", className]} role="none" {...rest}>
 	<slot />
 </div>

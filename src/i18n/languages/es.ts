@@ -28,13 +28,8 @@ export const es: Translation = {
   [Key.comments]: "Comentarios",
   [Key.commentSection]: "Comentarios",
   [Key.commentSubtitle]: "Comparte tus pensamientos y discute con todos",
-  [Key.commentNotConfigured]: "Sistema de comentarios no configurado",
-  [Key.guestbookCommentHint]:
-    "Aún no has habilitado el sistema de comentarios en el archivo de configuración. Después de habilitarlo, los visitantes podrán dejar mensajes aquí",
   [Key.friends]: "Amigos",
   [Key.friendsDescription]: "Aquí están mis amigos, bienvenidos a visitar y comunicarse entre sí",
-  [Key.guestbook]: "Libro de Visitas",
-  [Key.guestbookDescription]: "Bienvenido a dejar tu huella aquí, comparte tus pensamientos y sugerencias",
   [Key.untitled]: "Sin título",
   [Key.uncategorized]: "Sin categorizar",
   [Key.noTags]: "Sin etiquetas",
@@ -57,6 +52,7 @@ export const es: Translation = {
   [Key.author]: "Autor",
   [Key.publishedAt]: "Publicado el",
   [Key.license]: "Licencia",
+  [Key.profile]: "Perfil",
 
   // Pagination
   [Key.paginationFirst]: "Primera",

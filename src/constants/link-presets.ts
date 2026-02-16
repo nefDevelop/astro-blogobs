@@ -28,9 +28,5 @@ export const LinkPresets: { [key in LinkPreset]: NavBarLink } = {
 		url: "/sponsor/",
 		icon: "material-symbols:favorite",
 	},
-	[LinkPreset.Guestbook]: {
-		name: i18n(I18nKey.guestbook),
-		url: "/guestbook/",
-		icon: "material-symbols:chat",
-	},
+
 };

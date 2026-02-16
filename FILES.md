@@ -123,7 +123,7 @@ Contains all the styling for the blog.
 Contains TypeScript type definitions used throughout the project.
 
 -   `config.ts`: Defines the types for all the configuration objects.
--   `bangumi.ts`: Types related to Bangumi (a Chinese anime/manga tracking site), likely for a widget.
+
 
 ### `src/utils`
 

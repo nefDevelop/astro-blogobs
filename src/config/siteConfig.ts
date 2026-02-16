@@ -131,8 +131,6 @@ export const siteConfig: SiteConfig = {
     // 赞助页面开关
     // Interruptor de la página de patrocinadores
     sponsor: true, // Interruptor de la página de patrocinadores
-    // Interruptor de la página del libro de visitas, requiere configurar un sistema de comentarios
-    guestbook: true, // Interruptor de la página del libro de visitas, requiere configurar un sistema de comentarios
   },
 
   // 文章列表布局配置
