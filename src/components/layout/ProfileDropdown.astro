@@ -5,8 +5,9 @@ import { i18n } from "@/i18n/translation";
 import I18nKey from "@/i18n/i18nKey";
 import { Picture } from "astro:assets";
 import type { ImageMetadata } from "astro";
-import DropdownPanel from "@/components/common/DropdownPanel.astro"; // Importar DropdownPanel
+import DropdownItem from "@/components/common/DropdownItem.astro";
 import AvatarImage from "@/components/common/AvatarImage.astro";
+import DropdownPanel from "@/components/common/DropdownPanel.astro";
 
 const profileName = profileConfig.name;
 const profileBio = profileConfig.bio;
@@ -59,16 +60,16 @@ const profileLinks = profileConfig.links;
       profileAvatarOptimized={profileAvatarOptimized}
       profileAvatarDirectPath={profileAvatarDirectPath}
       profileName={profileName}
-      className={buttonClassName}
+      className="w-8 h-8 object-cover rounded-full" {/* Ajustar el tamaño del avatar dentro del botón */}
       widths={buttonWidths}
       loading="eager"
     />
   </button>
 
   <DropdownPanel
-    id="profile-dropdown-menu" // Asegúrate de que DropdownPanel pueda recibir 'id'
-    class="absolute right-0 mt-1 w-64 float-panel-closed transition-all duration-200 z-50 p-3!"
-    aria-orientation="vertical"
+    id="profile-dropdown-menu"
+    class="absolute right-0 mt-2 w-64 float-panel-closed transition-all duration-200 z-50 !p-3 bg-white/80 dark:bg-black/80 border border-black/10 dark:border-white/10 rounded-2xl shadow-2xl backdrop-blur-3xl"
+    role="menu"
     aria-labelledby="profile-dropdown-button"
   >
     <div>
@@ -81,22 +82,25 @@ const profileLinks = profileConfig.links;
           widths={dropdownWidths}
           loading="eager"
         />
-        <h3 class="text-lg font-bold text-[var(--text-color)] mt-2">{profileName}</h3>
-        {profileBio && <p class="text-sm text-[var(--text-color-light)] line-clamp-2">{profileBio}</p>}
+        <h3 class="text-lg font-bold text-black/90 dark:text-white/90 mt-2">{profileName}</h3>
+        {profileBio && <p class="text-sm text-black/50 dark:text-white/50 line-clamp-2">{profileBio}</p>}
       </div>
       <div class="flex flex-wrap justify-center gap-1">
+      {/* Separador */}
+      <div class="border-t border-[var(--line-divider)] my-2 w-full"></div>
+      <div class="flex flex-col gap-1 w-full"> {/* Asegurar que el contenedor de los DropdownItems ocupe todo el ancho */}
         {
           profileLinks.map((link) => (
-            <a
+            <DropdownItem
               href={link.url}
               title={link.name}
               target={link.external ? "_blank" : "_self"}
               rel={link.external ? "noopener noreferrer" : ""}
-              class="btn-plain scale-animation rounded-lg h-10 w-10 flex items-center justify-center"
-              role="menuitem"
+              role="menuitem" // DropdownItem ya tiene estilos de botón, solo añadir flex items-center
             >
-              <span class="text-xl" set:html={getIconSvg(link.icon)} />
-            </a>
+              <span class="text-xl mr-2" set:html={getIconSvg(link.icon)} />
+              <span class="text-black/75 dark:text-white/75">{link.name}</span> {/* Restaurar estilos de texto */}
+            </DropdownItem>
           ))
         }
       </div>

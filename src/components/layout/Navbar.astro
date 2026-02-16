@@ -16,6 +16,7 @@ import { url } from "@/utils/url-utils";
 import DropdownMenu from "./DropdownMenu.astro";
 import NavMenuPanel from "./NavMenuPanel.astro";
 import ProfileDropdown from "./ProfileDropdown.astro";
+import Announcement from "@/components/widget/Announcement.astro"; // Importar el componente de Anuncio
 
 
 const className = Astro.props.class;
@@ -144,6 +145,10 @@ if (isLocalSrcLogo) {
         <DisplaySettings client:load></DisplaySettings>
     </div>
 </div>
+<div class="relative z-40 mt-4"> {/* Contenedor para el anuncio, debajo de la navbar pero encima del contenido */}
+    <Announcement class="w-full mx-auto max-w-(--page-width)" /> {/* Añadir mx-auto y max-w para centrar y limitar el ancho */}
+</div>
+
 
 <script>
 function loadButtonScript() {
