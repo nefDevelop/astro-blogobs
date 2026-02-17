@@ -125,7 +125,8 @@ onMount(() => {
     </button>
     <div id="theme-mode-panel" class="absolute transition float-panel-closed top-11 -right-2 pt-5 z-50" role="menu" aria-labelledby="scheme-switch">
         <DropdownPanel>
-            <DropdownItem // Asegúrate de que DropdownItem esté importado y sea un componente Astro
+            <!-- Asegúrate de que DropdownItem esté importado y sea un componente Astro -->
+            <DropdownItem
                 role="menuitem"
                 isActive={mode === LIGHT_MODE}
                 isLast={false}

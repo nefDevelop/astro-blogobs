@@ -47,7 +47,8 @@ function switchWallpaperMode(newMode: WALLPAPER_MODE) {
 	</button>
 	<div id="wallpaper-mode-panel" class="absolute transition float-panel-closed top-11 -right-2 pt-5 z-50" role="menu" aria-labelledby="wallpaper-mode-switch">
 		<DropdownPanel>
-			<DropdownItem // Asegúrate de que DropdownItem esté importado y sea un componente Astro
+			<!-- Asegúrate de que DropdownItem esté importado y sea un componente Astro -->
+			<DropdownItem
 				role="menuitem"
 				isActive={mode === WALLPAPER_BANNER}
 				isLast={false}
