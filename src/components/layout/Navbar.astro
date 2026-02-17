@@ -126,15 +126,18 @@ if (isLocalSrcLogo) {
                     return <DropdownMenu link={l} />;
                 })}
         </div>
-        <div class:list={["flex", navbarWidthFull ? "ml-auto" : ""]}>
+        <div class:list={["flex relative", navbarWidthFull ? "ml-auto" : ""]}> {/* 1. Haz que este contenedor sea relativo */}
             <!--<SearchPanel client:load>-->
                 <Search
                 client:load
                 />
                 {hasDisplaySettings && (
-                    <button aria-label="Display Settings" class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90" id="display-settings-switch">
-                        <Icon name="material-symbols:palette-outline" class="text-[1.25rem]"></Icon>
-                    </button>
+                    <div class="relative"> {/* 2. Envuelve el botón y el componente DisplaySettings en un div relativo */}
+                        <button aria-label="Display Settings" class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90" id="display-settings-switch">
+                            <Icon name="material-symbols:palette-outline" class="text-[1.25rem]"></Icon>
+                        </button>
+                        <DisplaySettings client:load></DisplaySettings> {/* 3. Mueve DisplaySettings aquí */}
+                    </div>
             )}
             <button aria-label="Menu" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 lg:hidden!" id="nav-menu-switch">
                 <Icon name="material-symbols:menu-rounded" class="text-[1.25rem]"></Icon>
@@ -142,7 +145,6 @@ if (isLocalSrcLogo) {
             <ProfileDropdown />
         </div>
         <NavMenuPanel links={links}></NavMenuPanel>
-        <DisplaySettings client:load></DisplaySettings>
     </div>
 </div>
 

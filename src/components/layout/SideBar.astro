@@ -1,7 +1,6 @@
 ---
 import type { MarkdownHeading } from "astro";
 import Advertisement from "@/components/widget/Advertisement.astro";
-import Announcement from "@/components/widget/Announcement.astro";
 import Calendar from "@/components/widget/Calendar.astro";
 import Categories from "@/components/widget/Categories.astro";
 import Profile from "@/components/widget/Profile.astro";
@@ -39,9 +38,8 @@ const ANIMATION_DELAY_UNIT = 50; // ms
 
 // 组件映射表
 const componentMap = {
-	profile: Profile,
-	announcement: Announcement,
 	categories: Categories,
+	profile: Profile,
 	tags: Tags,
 	sidebarToc: SidebarTOC,
 	advertisement: Advertisement,
@@ -177,7 +175,8 @@ const bottomComponents = isMobileBottom ? filteredComponents : [];
 							class:list={[
 								"transition-all duration-700 flex flex-col w-full mt-0",
 								"sticky",
-								topComponents.length > 0 ? "top-4 gap-4" : "top-0",
+								"top-4", // Siempre aplica un margen superior de 1rem cuando se vuelve sticky
+								"gap-4", // Siempre aplica gap entre los componentes sticky
 							]}
 						>
 							{stickyComponents.map((comp, index) => {

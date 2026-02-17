@@ -100,3 +100,6 @@ views:
     dateIncludeTime: false
     descriptionProperty: note.description
     hideQuickEditIcon: true
+  - type: bases-cms
+    name: Posts
+    cardSize: 400
