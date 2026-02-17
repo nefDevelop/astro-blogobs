@@ -26,10 +26,9 @@ if (footerConfig.enable) {
 ---
 
 
-<footer class="w-full py-4" style="background: var(--card-bg); border-top: 1px solid var(--line-divider);">
-	<div class="max-w-(--page-width) mx-auto px-4">
-		<div class="border-t border-dashed border-black/10 dark:border-white/15"></div>
-		<div class="mt-4 text-center text-sm text-50">
+<footer class="w-full">
+	<div class="max-w-(--page-width) mx-auto py-4 onload-animation px-2">
+		<div class="text-center text-sm text-50">
 			<div class="mb-2">
 				{customFooterHtml && <div set:html={customFooterHtml} />}
 			</div>
@@ -68,3 +67,18 @@ if (footerConfig.enable) {
 		</div>
 	</div>
 </footer>
+
+<style>
+  footer > div {
+    background: var(--card-bg);
+    border: 1px solid var(--line-divider);
+    border-bottom: none; /* Footer is at the bottom */
+    border-radius: 0.75rem 0.75rem 0 0;
+    transition: all var(--duration-medium) var(--ease-standard);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05); /* Shadow upwards */
+  }
+
+  :root.dark footer > div {
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
+  }
+</style>
