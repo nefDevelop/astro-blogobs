@@ -20,7 +20,6 @@ src/config/
 ├── sidebarConfig.ts      # Configuración de la barra lateral
 ├── navBarConfig.ts       # Configuración de la barra de navegación
 ├── pioConfig.ts          # Configuración del modelo Pio
-├── adConfig.ts           # Configuración de anuncios
 ├── friendsConfig.ts      # Configuración de enlaces de amigos
 ├── sponsorConfig.ts      # Configuración de patrocinio
 ├── coverImageConfig.ts   # Configuración de la imagen de portada

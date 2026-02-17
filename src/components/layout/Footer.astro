@@ -29,7 +29,7 @@ if (footerConfig.enable) {
 
 
 <footer class="w-full mt-4">
-	<div class="max-w-(--page-width) mx-auto py-4 onload-animation px-2 md:px-4 flex items-center justify-between">
+	<div class="max-w-(--page-width) mx-auto py-4 onload-animation px-2 md:px-4 relative">
 		<div class="text-center text-sm text-50">
 			<div class="mb-2">
 				{customFooterHtml && <div set:html={customFooterHtml} />}
@@ -61,25 +61,24 @@ if (footerConfig.enable) {
 					href="https://github.com/CuteLeaf/Firefly">Firefly</a
 				>
 			</div>
-			<!-- 
-			注意：请勿随意修改或删除 "Powered by Astro & Firefly" 部分，这是对开源项目的尊重和支持。
-			如果您需要在底部增加内容，请在src/config/footerConfig.ts中修改enable属性为true，然后编辑src/config/FooterConfig.html文件。
-			您可以随意在src/config/FooterConfig.html中随意添加自定义内容，不需要修改Footer.astro文件。
-			-->
+
 		</div>
-        <div class="relative flex justify-center mt-4">
-            <button
-                id="stats-dropdown-button"
-                class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90 flex items-center justify-center"
-                aria-label="Site Statistics"
-            >
-                <Icon name="material-symbols:query-stats" class="text-[1.25rem]" />
-            </button>
-            <div
-                id="stats-dropdown-panel"
-                class="float-panel float-panel-closed absolute bottom-full mb-2 w-72 z-50"
-            >
-                <SiteStats />
+        <div class="absolute right-4 top-1/2 -translate-y-1/2 z-10">
+            <div class="relative flex">
+                <button
+                    id="stats-dropdown-button"
+                    class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90 flex items-center justify-center cursor-pointer"
+                    aria-label="Site Statistics"
+                    onclick="console.log('¡Clic directo en el botón!');"
+                >
+                    <Icon name="material-symbols:query-stats" class="text-[1.25rem]" />
+                </button>
+                <div
+                    id="stats-dropdown-panel"
+                    class="float-panel float-panel-closed absolute bottom-full right-0 mb-2 w-72 z-50"
+                >
+                    <SiteStats />
+                </div>
             </div>
         </div>
 	</div>
@@ -101,39 +100,4 @@ if (footerConfig.enable) {
   }
 </style>
 
-<script is:inline>
-  const button = document.getElementById("stats-dropdown-button");
-  const menu = document.getElementById("stats-dropdown-panel");
-
-  if (button && menu) {
-    let isOpen = false;
-
-    function toggleDropdown() {
-      isOpen = !isOpen;
-      if (isOpen) {
-        menu.classList.remove("float-panel-closed");
-      } else {
-        menu.classList.add("float-panel-closed");
-      }
-    }
-
-    function closeDropdown(event) {
-      if (isOpen && !menu.contains(event.target) && !button.contains(event.target)) {
-        isOpen = false;
-        menu.classList.add("float-panel-closed");
-      }
-    }
-
-    button.addEventListener("click", toggleDropdown);
-    document.addEventListener("click", closeDropdown);
-    
-    // Cleanup on navigation
-    document.addEventListener('astro:before-swap', () => {
-      document.removeEventListener('click', closeDropdown);
-    });
-    document.addEventListener('astro:after-swap', () => {
-        // Re-add the listener after a page swap
-        document.addEventListener('click', closeDropdown);
-    });
-  }
-</script>
+<script src="./footer-dropdown.js"></script>
