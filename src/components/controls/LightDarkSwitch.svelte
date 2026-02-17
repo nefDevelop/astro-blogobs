@@ -123,8 +123,8 @@ onMount(() => {
             <Icon icon="material-symbols:dark-mode-outline-rounded" class="text-[1.25rem]"></Icon>
         </div>
     </button>
-    <div id="theme-mode-panel" class="absolute transition float-panel-closed top-11 -right-2 pt-5 z-50" role="menu" aria-labelledby="scheme-switch">
-        <DropdownPanel>
+    <div id="theme-mode-panel" class="absolute transition float-panel-closed -right-2 z-50" style="top: var(--dropdown-panel-top-offset, 2.75rem);" role="menu" aria-labelledby="scheme-switch">
+        <DropdownPanel class="p-2">
             <!-- Asegúrate de que DropdownItem esté importado y sea un componente Astro -->
             <DropdownItem
                 role="menuitem"
