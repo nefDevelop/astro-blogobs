@@ -3,6 +3,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { footerConfig, profileConfig } from "@/config";
 import { url } from "@/utils/url-utils";
+import { Icon } from "astro-icon/components";
+import SiteStats from "@/components/widget/SiteStats.astro";
 
 const currentYear = new Date().getFullYear();
 
@@ -27,7 +29,7 @@ if (footerConfig.enable) {
 
 
 <footer class="w-full mt-4">
-	<div class="max-w-(--page-width) mx-auto py-4 onload-animation px-2 md:px-4">
+	<div class="max-w-(--page-width) mx-auto py-4 onload-animation px-2 md:px-4 flex items-center justify-between">
 		<div class="text-center text-sm text-50">
 			<div class="mb-2">
 				{customFooterHtml && <div set:html={customFooterHtml} />}
@@ -65,6 +67,21 @@ if (footerConfig.enable) {
 			您可以随意在src/config/FooterConfig.html中随意添加自定义内容，不需要修改Footer.astro文件。
 			-->
 		</div>
+        <div class="relative flex justify-center mt-4">
+            <button
+                id="stats-dropdown-button"
+                class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90 flex items-center justify-center"
+                aria-label="Site Statistics"
+            >
+                <Icon name="material-symbols:query-stats" class="text-[1.25rem]" />
+            </button>
+            <div
+                id="stats-dropdown-panel"
+                class="float-panel float-panel-closed absolute bottom-full mb-2 w-72 z-50"
+            >
+                <SiteStats />
+            </div>
+        </div>
 	</div>
 </footer>
 
@@ -83,3 +100,40 @@ if (footerConfig.enable) {
     box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
   }
 </style>
+
+<script is:inline>
+  const button = document.getElementById("stats-dropdown-button");
+  const menu = document.getElementById("stats-dropdown-panel");
+
+  if (button && menu) {
+    let isOpen = false;
+
+    function toggleDropdown() {
+      isOpen = !isOpen;
+      if (isOpen) {
+        menu.classList.remove("float-panel-closed");
+      } else {
+        menu.classList.add("float-panel-closed");
+      }
+    }
+
+    function closeDropdown(event) {
+      if (isOpen && !menu.contains(event.target) && !button.contains(event.target)) {
+        isOpen = false;
+        menu.classList.add("float-panel-closed");
+      }
+    }
+
+    button.addEventListener("click", toggleDropdown);
+    document.addEventListener("click", closeDropdown);
+    
+    // Cleanup on navigation
+    document.addEventListener('astro:before-swap', () => {
+      document.removeEventListener('click', closeDropdown);
+    });
+    document.addEventListener('astro:after-swap', () => {
+        // Re-add the listener after a page swap
+        document.addEventListener('click', closeDropdown);
+    });
+  }
+</script>

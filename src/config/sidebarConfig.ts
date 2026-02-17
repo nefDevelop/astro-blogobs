@@ -83,7 +83,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
       // Tipo de componente: Componente de estadísticas del sitio
       type: "stats", // Mantener en inglés ya que es un identificador
       // Habilitar este componente
-      enable: true, // Cambiado a true para que sea visible
+      enable: false, // Cambiado a true para que sea visible
       // Posición del componente
       position: "top", // Mantener en inglés ya que es un identificador
       // Mostrar en la página de detalles del artículo
@@ -178,7 +178,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
       // Tipo de componente: Componente de estadísticas del sitio
       type: "stats", // Mantener en inglés ya que es un identificador
       // Habilitar este componente
-      enable: true,
+      enable: false,
       // Mostrar en la página de detalles del artículo
       showOnPostPage: true,
     },
