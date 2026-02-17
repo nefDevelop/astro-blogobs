@@ -123,8 +123,6 @@ export const siteConfig: SiteConfig = {
   // Función de imagen OpenGraph, ten en cuenta que la renderización puede tardar mucho tiempo después de habilitarla, no se recomienda habilitarla durante la depuración local
   generateOgImages: false, // Función de imagen OpenGraph, ten en cuenta que la renderización puede tardar mucho tiempo después de habilitarla, no se recomienda habilitarla durante la depuración local
 
-
-
   // 页面开关配置 - 控制特定页面的访问权限，设为false会返回404
   // Configuración de interruptores de página - controla los permisos de acceso a páginas específicas, establecer en false devolverá un 404
   pages: {
@@ -138,7 +136,7 @@ export const siteConfig: SiteConfig = {
   postListLayout: {
     // 默认布局模式："list" 列表模式（单列布局），"grid" 网格模式（多列布局）
     // Modo de diseño predeterminado: "list" modo de lista (diseño de una columna), "grid" modo de cuadrícula (diseño de varias columnas)
-    defaultMode: "list", // Modo de diseño predeterminado: "list" modo de lista (diseño de una columna), "grid" modo de cuadrícula (diseño de varias columnas)
+    defaultMode: "grid", // Modo predeterminado: "list" modo de lista (diseño de una columna), "grid" modo de cuadrícula (diseño de varias columnas)
     // 是否允许用户切换布局
     // Si se permite a los usuarios cambiar el diseño
     allowSwitch: true, // Si se permite a los usuarios cambiar el diseño
@@ -154,7 +152,7 @@ export const siteConfig: SiteConfig = {
       // Número de columnas en modo cuadrícula: 2 o 3
       // 2 columnas es el modo predeterminado y funciona con cualquier configuración de barra lateral
       // El modo de 3 columnas solo es efectivo con una sola barra lateral (o sin barra lateral)
-      columns: 3, // Número de columnas en modo cuadrícula: 2 o 3
+      columns: 2, // Número de columnas en modo cuadrícula: 2 o 3
     },
   },
 

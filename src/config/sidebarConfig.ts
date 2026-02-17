@@ -10,12 +10,12 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 
   // Posición de la barra lateral: left=izquierda, both=ambos lados
   // Cuando se habilita la barra lateral doble, los componentes del lado derecho se ocultarán cuando el ancho sea inferior a 1280px.
-  position: "both", // Mantener en inglés ya que es un identificador
+  position: "left", // Mantener en inglés ya que es un identificador
 
   // Cuando se usa una barra lateral izquierda única, ¿mostrar la barra lateral derecha en la página de detalles del artículo?
   // Si se habilita esto cuando la posición es "left", la página de detalles del artículo mostrará barras laterales dobles, mientras que la página de inicio y otras páginas mantendrán una barra lateral izquierda única.
   // Esto es útil para escenarios en los que solo se desea una barra lateral izquierda, pero se desea una barra lateral derecha para componentes como el índice en la página de detalles del artículo.
-  showRightSidebarOnPostPage: true,
+  showRightSidebarOnPostPage: false,
 
   // Lista de configuración de componentes de la barra lateral izquierda
   // El orden de renderizado de los componentes depende completamente de su orden en el array de configuración, pero los componentes "top" se renderizarán antes que los componentes "sticky".
@@ -79,16 +79,11 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
       // ID de configuración: usar la primera configuración de publicidad
       configId: "ad1",
     },
-  ],
-
-  // Lista de configuración de componentes de la barra lateral derecha
-  rightComponents: [
     {
-      // Lista de configuración de componentes de la barra lateral derecha
       // Tipo de componente: Componente de estadísticas del sitio
       type: "stats", // Mantener en inglés ya que es un identificador
       // Habilitar este componente
-      enable: true,
+      enable: true, // Cambiado a true para que sea visible
       // Posición del componente
       position: "top", // Mantener en inglés ya que es un identificador
       // Mostrar en la página de detalles del artículo
@@ -98,7 +93,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
       // Tipo de componente: Componente de calendario
       type: "calendar", // Mantener en inglés ya que es un identificador
       // Habilitar este componente
-      enable: true,
+      enable: true, // Cambiado a true para que sea visible
       // Posición del componente
       position: "sticky", // Mantener en inglés ya que es un identificador
       // Mostrar en la página de detalles del artículo
@@ -108,7 +103,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
       // Tipo de componente: Componente de índice de la barra lateral (solo se muestra en la página de detalles del artículo)
       type: "sidebarToc", // Mantener en inglés ya que es un identificador
       // Habilitar este componente
-      enable: true,
+      enable: true, // Cambiado a true para que sea visible
       // Posición del componente
       position: "sticky", // Mantener en inglés ya que es un identificador
       // Mostrar en la página de detalles del artículo
@@ -120,7 +115,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
       // Tipo de componente: Componente de barra de publicidad 2
       type: "advertisement", // Mantener en inglés ya que es un identificador
       // Habilitar este componente
-      enable: false,
+      enable: true, // Cambiado a true para que sea visible
       // Posición del componente
       position: "sticky", // Mantener en inglés ya que es un identificador
       // Mostrar en la página de detalles del artículo
@@ -129,6 +124,9 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
       configId: "ad2",
     },
   ],
+
+  // Lista de configuración de componentes de la barra lateral derecha
+  rightComponents: [],
 
   // Lista de configuración de componentes inferiores para móviles
   // Estos componentes solo se muestran en la parte inferior de la página en dispositivos móviles (<768px), independientemente de la configuración de las barras laterales izquierda y derecha.

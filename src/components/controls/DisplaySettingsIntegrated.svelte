@@ -197,7 +197,7 @@ $effect(() => {
 </script>
 
 {#if hasAnyContent}
-<div id="display-setting" class="float-panel float-panel-closed absolute transition-all w-80 right-4 p-2" style="top: var(--dropdown-panel-top-offset, 2.75rem);">
+<div id="display-setting" class="float-panel float-panel-closed absolute transition-all w-80 right-4 p-2" style="top: var(--dropdown-panel-top-offset, 3.5rem) !important;">
     <!-- Theme Color Section -->
     {#if showThemeColor}
     <div class="mt-2 mb-2">
