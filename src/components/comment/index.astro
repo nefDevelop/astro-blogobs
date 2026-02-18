@@ -1,14 +1,10 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { commentConfig } from "@/config/commentConfig";
+import { commentConfig } from "@/config";
 import Key from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import { removeFileExtension } from "@/utils/url-utils";
-import Artalk from "./Artalk.astro";
-import Disqus from "./Disqus.astro";
 import Giscus from "./Giscus.astro";
-import Twikoo from "./Twikoo.astro";
-import Waline from "./Waline.astro";
 
 interface Props {
 	post: CollectionEntry<"posts"> | CollectionEntry<"spec">;
@@ -49,12 +45,8 @@ let commentService: string = commentConfig?.type || "none";
       </div>
       <!-- 评论内容区域 -->
       <div class="relative z-10">
-        {commentService === "twikoo" && <Twikoo path={path} />}
-        {commentService === "waline" && <Waline path={path} />}
         {commentService === "giscus" && <Giscus />}
-        {commentService === "disqus" && <Disqus identifier={slug} url={url} title={'title' in post.data ? post.data.title : slug} />}
-          {commentService === "artalk" && <Artalk path={path} />}
-        {commentService === "none" && (
+        {commentService !== "giscus" && (
           <div class="text-center py-8 text-(--content-meta)">
             <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-(--btn-regular-bg) flex items-center justify-center">
               <svg class="w-8 h-8 text-(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">

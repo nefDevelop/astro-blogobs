@@ -3,7 +3,6 @@ import GoogleAnalytics from "@components/analytics/GoogleAnalytics.astro";
 import MicrosoftClarity from "@components/analytics/MicrosoftClarity.astro";
 import FancyboxManager from "@components/features/FancyboxManager.astro";
 import FontManager from "@components/features/FontManager.astro";
-import SakuraEffect from "@components/features/SakuraEffect.astro";
 import ConfigCarrier from "@components/layout/ConfigCarrier.astro";
 
 import {
@@ -382,14 +381,6 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
         });
       })();
 
-      // 初始化水波纹动画状态 - 在 html 元素上设置属性，CSS 会立即生效
-      (function applyWavesEnabled() {
-        const wavesEnabled = localStorage.getItem("wavesEnabled");
-        if (wavesEnabled !== null) {
-          document.documentElement.setAttribute("data-waves-enabled", wavesEnabled);
-        }
-      })();
-
       // 初始化横幅标题显示状态 - 在 html 元素上设置属性，CSS 会立即生效
       (function applyBannerTitleEnabled() {
         const bannerTitleEnabled = localStorage.getItem("bannerTitleEnabled");
@@ -422,7 +413,7 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
     class="min-h-screen"
     class:list={[
       { "lg:is-home": isHomePageCheck, "enable-banner": enableBanner, "enable-card-border": siteConfig.card?.border },
-      ...(siteConfig.font.enable && siteConfig.font.selected
+      ...(siteConfig.font?.enable && siteConfig.font?.selected
         ? (Array.isArray(siteConfig.font.selected)
             ? siteConfig.font.selected
             : [siteConfig.font.selected]
@@ -437,9 +428,6 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
     <slot />
 
 
-
-    <!-- Sakura Effect -->
-    <SakuraEffect />
 
     <!-- Fancybox Manager -->
     <FancyboxManager />

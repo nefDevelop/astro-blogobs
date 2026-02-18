@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "./layout-styles.css";
 @import "./navbar.css";
-@import "./waves.css";
 @import "./transition.css";
 @import "./custom-scrollbar.css";
 
@@ -253,10 +252,19 @@ html {
     @apply transition-all duration-300 border border-(--line-divider) shadow-xs;
   }
 
-  /* 导航栏样式适配 */
-  .enable-card-border #navbar > div:not(.absolute) {
-    @apply transition-all duration-300 border shadow-xs;
-    border-color: var(--line-divider) !important;
+  /* 导航栏样式适配 - 强制应用卡片样式，覆盖 navbar.css 中的 transparent */
+  .enable-card-border #navbar > div {
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--line-divider) !important;
+    border-top: none !important;
+    border-radius: 0 0 0.75rem 0.75rem !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+    backdrop-filter: none !important;
+    transition: all var(--duration-medium) var(--ease-standard) !important;
+  }
+
+  :root.dark.enable-card-border #navbar > div {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
   }
 
   /* 全屏壁纸模式下的半透明效果 */

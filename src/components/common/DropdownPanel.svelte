@@ -8,12 +8,16 @@ import type { Snippet } from "svelte";
 interface Props {
 	class?: string;
 	children?: Snippet;
+	element?: HTMLElement; // Añadido para la prop bindable 'element'
+	id?: string; // Re-añadido 'id' a Props
+	role?: string; // Re-añadido 'role' a Props
 }
 
-let { class: className = "", children, ...restProps }: Props = $props();
+let { class: className = "", children, element = $bindable(), id, role }: Props = $props();
+const actualRole = $derived(role ?? "none"); // Manejar el valor por defecto de role aquí y hacerlo reactivo
 </script>
 
-<div class={`float-panel ${className}`.trim()} role="none" {...restProps}>
+<div bind:this={element} class={`float-panel ${className}`.trim()} id={id} role={actualRole}>
 	{#if children}
 		{@render children()}
 	{/if}

@@ -12,6 +12,7 @@ interface Props {
 	onclick?: (event: MouseEvent) => void;
 	role?: string;
 	children?: Snippet;
+	href?: string; // Añadido para la prop 'href'
 }
 
 let {
@@ -21,6 +22,7 @@ let {
 	onclick,
 	role,
 	children,
+	href, // Desestructurar href
 	...restProps
 }: Props = $props();
 
@@ -35,6 +37,19 @@ const allClasses = $derived.by(() => {
 });
 </script>
 
+{#if href}
+<a
+	{href}
+	class={allClasses}
+	{onclick}
+	{role}
+	{...restProps}
+>
+	{#if children}
+		{@render children()}
+	{/if}
+</a>
+{:else}
 <button
 	class={allClasses}
 	{onclick}
@@ -45,3 +60,4 @@ const allClasses = $derived.by(() => {
 		{@render children()}
 	{/if}
 </button>
+{/if}

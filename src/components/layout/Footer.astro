@@ -4,7 +4,8 @@ import path from "node:path";
 import { footerConfig, profileConfig } from "@/config";
 import { url } from "@/utils/url-utils";
 import { Icon } from "astro-icon/components";
-import SiteStats from "@/components/widget/SiteStats.astro";
+import SiteStats from "@/components/widget/SiteStats.astro"; // Assuming this path is correct
+import MenuButton from '../common/MenuButton.svelte'; // Corrected path
 
 const currentYear = new Date().getFullYear();
 
@@ -28,7 +29,7 @@ if (footerConfig.enable) {
 ---
 
 
-<footer class="w-full mt-4">
+<footer class="w-full mt-4 pointer-events-auto">
 	<div class="max-w-(--page-width) mx-auto py-4 onload-animation px-2 md:px-4 relative">
 		<div class="text-center text-sm text-50">
 			<div class="mb-2">
@@ -64,21 +65,33 @@ if (footerConfig.enable) {
 
 		</div>
         <div class="absolute right-4 top-1/2 -translate-y-1/2 z-10">
-            <div class="relative flex">
-                <button
-                    id="stats-dropdown-button"
-                    class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90 flex items-center justify-center cursor-pointer"
-                    aria-label="Site Statistics"
-                    onclick="console.log('¡Clic directo en el botón!');"
-                >
-                    <Icon name="material-symbols:query-stats" class="text-[1.25rem]" />
-                </button>
-                <div
-                    id="stats-dropdown-panel"
-                    class="float-panel float-panel-closed absolute bottom-full right-0 mb-2 w-72 z-50"
-                >
-                    <SiteStats />
+            <div class="relative flex items-center gap-4"> {/* Added gap for spacing */}
+                {/* Existing Site Statistics Dropdown */}
+                <div class="relative"> {/* Wrap stats button and panel in its own relative container */}
+                    <button
+                        id="stats-dropdown-button"
+                        class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90 flex items-center justify-center cursor-pointer"
+                        aria-label="Site Statistics"
+                    >
+                        <Icon name="material-symbols:query-stats" class="text-[1.25rem]" />
+                    </button>
+                    <div
+                        id="stats-dropdown-panel"
+                        class="float-panel float-panel-closed absolute bottom-full right-0 mb-2 w-72 z-50"
+                    >
+                        <SiteStats />
+                    </div>
                 </div>
+
+                {/* New Menu Button */}
+                <MenuButton client:load menuItems={[
+                    { label: 'Inicio', href: '/' },
+                    { label: 'Blog', href: '/blog' },
+                    { label: 'Servicios', href: '/servicios' },
+                    { label: 'Acerca de', href: '/acerca-de' },
+                    { label: 'Contacto', href: '/contacto' },
+                    { label: 'Política de Privacidad', href: '/politica-privacidad' },
+                ]} />
             </div>
         </div>
 	</div>
@@ -100,4 +113,38 @@ if (footerConfig.enable) {
   }
 </style>
 
-<script src="./footer-dropdown.js"></script>
+<script is:inline>
+function setupFooterDropdown() {
+  const button = document.getElementById("stats-dropdown-button");
+  const menu = document.getElementById("stats-dropdown-panel");
+
+  if (!button || !menu) return;
+
+  const toggleDropdown = (e) => {
+    e.stopPropagation();
+    const isCurrentlyClosed = menu.classList.contains("float-panel-closed");
+
+    if (isCurrentlyClosed) {
+      menu.classList.remove("float-panel-closed");
+      button.setAttribute("aria-expanded", "true");
+    } else {
+      menu.classList.add("float-panel-closed");
+      button.setAttribute("aria-expanded", "false");
+    }
+  };
+
+  const closeDropdown = (e) => {
+    if (!menu.classList.contains("float-panel-closed") && !menu.contains(e.target) && !button.contains(e.target)) {
+      menu.classList.add("float-panel-closed");
+      button.setAttribute("aria-expanded", "false");
+    }
+  };
+
+  button.onclick = toggleDropdown;
+  document.addEventListener("click", closeDropdown);
+}
+
+setupFooterDropdown();
+document.addEventListener("astro:after-swap", setupFooterDropdown);
+</script>
+
