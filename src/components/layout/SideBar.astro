@@ -1,5 +1,6 @@
 ---
 import type { MarkdownHeading } from "astro";
+import Announcement from "@/components/widget/Announcement.astro";
 import Calendar from "@/components/widget/Calendar.astro";
 import Categories from "@/components/widget/Categories.astro";
 import Profile from "@/components/widget/Profile.astro";
@@ -43,6 +44,7 @@ const componentMap: Record<string, any> = {
 	sidebarToc: SidebarTOC,
 	calendar: Calendar,
 	stats: SiteStats,
+	announcement: Announcement,
 };
 
 // 获取侧边栏位置

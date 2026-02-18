@@ -1,7 +1,6 @@
 ---
 import { render } from "astro:content";
 import * as path from "node:path";
-import Comment from "@components/comment/index.astro";
 import Markdown from "@components/common/Markdown.astro";
 import KatexManager from "@components/features/KatexManager.astro";
 import License from "@components/misc/License.astro";
@@ -21,7 +20,6 @@ import CoverImage from "@/components/common/CoverImage.astro";
 import PostMetadata from "@/components/layout/PostMeta.astro";
 import SharePoster from "@/components/misc/SharePoster.svelte";
 import {
-	commentConfig,
 	coverImageConfig,
 	licenseConfig,
 	profileConfig,
@@ -390,7 +388,4 @@ const jsonLd = {
       }
     </a>
   </div>
-
-  <!-- 评论 -->
-  {entry.data.comment && <Comment post={entry} />}
 </MainGridLayout>

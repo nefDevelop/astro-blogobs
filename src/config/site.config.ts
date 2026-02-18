@@ -1,7 +1,6 @@
 import type {
 	SiteConfig,
 	ProfileConfig,
-	CommentConfig,
 	NavBarConfig,
 	SidebarLayoutConfig,
 	BackgroundWallpaperConfig,
@@ -9,6 +8,7 @@ import type {
 	FontConfig,
 	LicenseConfig,
 	CoverImageConfig,
+	FooterConfig,
 	NavBarSearchConfig,
 } from "../types/config";
 import { LinkPreset, NavBarSearchMethod } from "../types/config";
@@ -16,8 +16,8 @@ import { LinkPreset, NavBarSearchMethod } from "../types/config";
 // --- Site Configuration ---
 export const siteConfig: SiteConfig = {
 	title: "Lluvia y Té",
-	subtitle: "Blog Personal",
-	site_url: "https://firefly.cuteleaf.cn", // Update this to your URL
+	subtitle: "Mi Blog",
+	site_url: "https://rainandtea.vercel.app/", // Update this to your URL
 	description: "Relájate y disfruta leyendo.",
 	keywords: ["Astro", "Blog", "Markdown"],
 	lang: "es",
@@ -40,7 +40,7 @@ export const siteConfig: SiteConfig = {
 			value: "material-symbols:eco-outline",
 			alt: "🍀",
 		},
-		title: "Firefly",
+		title: "Rain and Tea",
 		widthFull: false,
 		followTheme: false,
 	},
@@ -119,24 +119,6 @@ export const profileConfig: ProfileConfig = {
 	],
 };
 
-// --- Comment Configuration (Giscus) ---
-export const commentConfig: CommentConfig = {
-	type: "giscus",
-	giscus: {
-		repo: "CuteLeaf/Firefly",
-		repoId: "R_kgD2gfdFGd",
-		category: "General",
-		categoryId: "DIC_kwDOKy9HOc4CegmW",
-		mapping: "title",
-		strict: "0",
-		reactionsEnabled: "1",
-		emitMetadata: "1",
-		inputPosition: "top",
-		lang: "es",
-		loading: "lazy",
-	},
-};
-
 // --- Navigation Bar Configuration ---
 export const navBarConfig: NavBarConfig = {
 	links: [LinkPreset.Home, LinkPreset.Archive, LinkPreset.About],
@@ -152,6 +134,12 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 	position: "left",
 	showRightSidebarOnPostPage: false,
 	leftComponents: [
+		{
+			type: "calendar",
+			enable: true,
+			position: "top",
+			showOnPostPage: true,
+		},
 		{
 			type: "categories",
 			enable: true,
@@ -180,6 +168,11 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 	],
 	rightComponents: [],
 	mobileBottomComponents: [
+		{
+			type: "calendar",
+			enable: true,
+			showOnPostPage: true,
+		},
 		{
 			type: "categories",
 			enable: true,

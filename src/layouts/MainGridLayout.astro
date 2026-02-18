@@ -3,6 +3,7 @@
 import Footer from "@components/layout/Footer.astro";
 import Navbar from "@components/layout/Navbar.astro";
 import SideBar from "@components/layout/SideBar.astro";
+import Announcement from "@components/widget/Announcement.astro";
 import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
 import ImageWrapper from "@/components/common/ImageWrapper.astro";
@@ -192,6 +193,7 @@ const mobileQuality = Math.round(configQuality * 0.9);
     </div>
 </div>
 
+
 <!-- Wallpaper - 如果允许切换则始终渲染，否则只渲染当前模式 -->
 {(isWallpaperSwitchable || isBannerMode || isOverlayMode) && (
 <div id="wallpaper-wrapper" class:list={[
@@ -357,6 +359,7 @@ const mobileQuality = Math.round(configQuality * 0.9);
 <div class={`absolute w-full z-30 pointer-events-none ${mobileNonHomeBannerClass ? 'mobile-main-no-banner' : ''} ${!(isBannerMode && isBackgroundEnabled) ? 'no-banner-layout' : ''} ${transparentClass}`} style={`top: ${finalMainPanelTop}`}>
     <!-- The pointer-events-none here prevent blocking the click event of the TOC -->
     <div class="relative max-w-(--page-width) mx-auto pointer-events-auto">
+        
         <div id="main-grid"
           class={`transition duration-700 w-full left-0 right-0 grid ${gridCols} grid-rows-[auto_1fr_auto] lg:grid-rows-[auto] mx-auto gap-4 px-2 md:px-4 ${!sidebarConfig.mobileShowSidebar ? 'mobile-no-sidebar' : ''}`}
           data-sidebar-position={sidebarLayoutConfig.position}
@@ -422,6 +425,9 @@ const mobileQuality = Math.round(configQuality * 0.9);
                 {isHomePageCheck && !showHomeText && (
                         <h1 class="sr-only">{siteConfig.title}</h1>
                 )}
+                <!-- Announcement - Placed at the top of the main content column -->
+                <Announcement class:list={["onload-animation mb-4", transparentClass]} />
+
                 <div id="content-wrapper" class="onload-animation transition-leaving">
                     <slot></slot>
 
@@ -452,7 +458,7 @@ const mobileQuality = Math.round(configQuality * 0.9);
                 </div>
             )}
 
-            {/* 移动端底部组件 - 768px及以下显示 */}
+            {/* 移动端底部组件 - 768px及以上显示 */}
             {sidebarLayoutConfig.mobileBottomComponents && sidebarLayoutConfig.mobileBottomComponents.length > 0 && (
                 <div id="mobile-bottom-sidebar" class="col-span-1 block md:hidden mt-4">
                     <SideBar side="bottom" class={`${transparentClass}`} headings={headings}></SideBar>

@@ -5,7 +5,6 @@ export * from "./site.config";
 export type {
 	AnnouncementConfig,
 	BackgroundWallpaperConfig,
-	CommentConfig,
 	CoverImageConfig,
 	ExpressiveCodeConfig,
 	FooterConfig,

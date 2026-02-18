@@ -158,60 +158,6 @@ export type LicenseConfig = {
   name: string;
   url: string;
 };
-// 评论配置
-
-export type CommentConfig = {
-  /**
-   * Tipo de sistema de comentarios actualmente habilitado
-   * "none" | "twikoo" | "waline" | "giscus" | "disqus" | 'artalk'
-   */
-  type: "none" | "twikoo" | "waline" | "giscus" | "disqus" | "artalk";
-  twikoo?: {
-    envId: string;
-    region?: string;
-    lang?: string;
-    visitorCount?: boolean;
-  }; // Configuración de Twikoo
-  waline?: {
-    serverURL: string;
-    lang?: string;
-    login?: "enable" | "force" | "disable";
-    visitorCount?: boolean; // 是否统计访问量，true 启用访问量，false 关闭
-  };
-  artalk?: {
-    // Dirección de la API del programa backend
-    server: string;
-    /**
-     * 语言，支持语言如下：
-     * - "en" (English)
-     * - "zh-CN" (简体中文)
-     * - "zh-TW" (繁体中文)
-     * - "ja" (日本語)
-     * - "ko" (한국어)
-     * - "fr" (Français)
-     * - "ru" (Русский)
-     * */
-    locale: string | "auto";
-    // Si se cuentan las visitas, true para habilitar, false para deshabilitar
-    visitorCount?: boolean;
-  };
-  giscus?: {
-    repo: string;
-    repoId: string;
-    category: string;
-    categoryId: string;
-    mapping: string;
-    strict: string;
-    reactionsEnabled: string;
-    emitMetadata: string;
-    inputPosition: string;
-    lang: string;
-    loading: string;
-  };
-  disqus?: {
-    shortname: string;
-  };
-}; // Configuración de comentarios
 
 export type LIGHT_DARK_MODE = typeof LIGHT_MODE | typeof DARK_MODE | typeof SYSTEM_MODE;
 
@@ -554,6 +500,21 @@ export type AdConfig = {
   displayCount?: number; // 显示次数限制，-1为无限制
   expireDate?: string; // 过期时间 (ISO 8601 格式)
 };
+
+export type AnnouncementConfig = {
+  // enable属性已移除，现在通过sidebarLayoutConfig统一控制
+  title?: string; // Título del anuncio
+  content: string; // 公告栏内容
+  icon?: string; // 公告栏图标
+  type?: "info" | "warning" | "success" | "error"; // 公告类型
+  closable?: boolean; // 是否可关闭
+  link?: {
+    enable: boolean; // 是否启用链接
+    text: string; // 链接文字
+    url: string; // 链接地址
+    external?: boolean; // 是否外部链接
+  };
+}; // Configuración del anuncio
 
 // 友链配置
 export type FriendLink = {
