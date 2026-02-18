@@ -113,7 +113,7 @@ export const profileConfig: ProfileConfig = {
 
 // --- Navigation Bar Configuration ---
 export const navBarConfig: NavBarConfig = {
-  links: [LinkPreset.Home, LinkPreset.Archive, LinkPreset.About],
+  links: [LinkPreset.Archive, LinkPreset.About],
 };
 
 export const navBarSearchConfig: NavBarSearchConfig = {

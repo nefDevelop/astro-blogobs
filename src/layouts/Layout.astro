@@ -690,9 +690,8 @@ function disableAnimation() {
         if (transparentMode === "semifull") {
           // 重新调用初始化函数来重新绑定滚动事件
           if (
-            typeof (window as any).initSemifullScrollDetection === "function"
-          ) {
-            (window as any).initSemifullScrollDetection();
+            typeof window.initSemifullScrollDetection === "function"          ) {
+            window.initSemifullScrollDetection();
           }
         }
       }
@@ -727,11 +726,8 @@ function disableAnimation() {
         // 重新初始化semifull模式的滚动检测
         const transparentMode = navbar.getAttribute("data-transparent-mode");
         if (transparentMode === "semifull") {
-          // 重新调用初始化函数来重新绑定滚动事件
-          if (
-            typeof (window as any).initSemifullScrollDetection === "function"
-          ) {
-            (window as any).initSemifullScrollDetection();
+          if (typeof window.initSemifullScrollDetection === "function") {
+            window.initSemifullScrollDetection();
           }
         }
       }

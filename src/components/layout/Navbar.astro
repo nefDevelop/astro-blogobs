@@ -15,6 +15,7 @@ import { url } from "@/utils/url-utils";
 import DropdownMenu from "./DropdownMenu.astro";
 import NavMenuPanel from "./NavMenuPanel.astro";
 import ProfileDropdown from "./ProfileDropdown.astro";
+import LightDarkSwitch from "../controls/LightDarkSwitch.svelte"; // Importar LightDarkSwitch
 
 
 
@@ -118,10 +119,13 @@ if (isLocalSrcLogo) {
                     return <DropdownMenu link={l} />;
                 })}
         </div>
+        
         <div class:list={["flex relative", navbarWidthFull ? "ml-auto" : ""]}>
                 <Search
                 client:load
                 />
+            <LightDarkSwitch client:load /> {/* Añadir el botón de temas aquí */}
+
             <button aria-label="Menu" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 lg:hidden!" id="nav-menu-switch">
                 <Icon name="material-symbols:menu-rounded" class="text-[1.25rem]"></Icon>
             </button>
@@ -176,7 +180,7 @@ function initSemifullScrollDetection() {
     // 如果不是首页，移除滚动事件监听器并设置为半透明状态
     if (!isHomePage) {
         // 移除之前的滚动事件监听器（如果存在）
-        if (window.semifullScrollHandler) {
+        if (window.semifullScrollHandler) { // This line
             window.removeEventListener('scroll', window.semifullScrollHandler as () => void);
             window.semifullScrollHandler = undefined;
         }
@@ -216,7 +220,7 @@ function initSemifullScrollDetection() {
     }
 
     // 保存新的事件处理器引用
-    window.semifullScrollHandler = requestTick as unknown as (() => void);
+    window.semifullScrollHandler = requestTick as unknown as (() => void); // This line
 
     // 监听滚动事件
     window.addEventListener('scroll', requestTick, { passive: true });
@@ -226,7 +230,7 @@ function initSemifullScrollDetection() {
 }
 
 // 将函数暴露到全局对象，供页面切换时调用
-window.initSemifullScrollDetection = initSemifullScrollDetection;
+declare global { interface Window { initSemifullScrollDetection: () => void; } } window.initSemifullScrollDetection = initSemifullScrollDetection;
 
 // 页面加载完成后初始化滚动检测
 if (document.readyState === 'loading') {
