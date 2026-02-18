@@ -5,7 +5,6 @@ import { footerConfig, profileConfig } from "@/config";
 import { url } from "@/utils/url-utils";
 import { Icon } from "astro-icon/components";
 import SiteStats from "@/components/widget/SiteStats.astro"; // Assuming this path is correct
-import MenuButton from '../common/MenuButton.svelte'; // Corrected path
 
 const currentYear = new Date().getFullYear();
 
@@ -82,16 +81,6 @@ if (footerConfig.enable) {
                         <SiteStats />
                     </div>
                 </div>
-
-                {/* New Menu Button */}
-                <MenuButton client:load menuItems={[
-                    { label: 'Inicio', href: '/' },
-                    { label: 'Blog', href: '/blog' },
-                    { label: 'Servicios', href: '/servicios' },
-                    { label: 'Acerca de', href: '/acerca-de' },
-                    { label: 'Contacto', href: '/contacto' },
-                    { label: 'Política de Privacidad', href: '/politica-privacidad' },
-                ]} />
             </div>
         </div>
 	</div>

@@ -8,7 +8,7 @@ export function initThemeListener(): void {
     if (event.key === "theme") {
       const theme = event.newValue;
       if (theme) {
-        applyTheme(theme);
+        applyThemeToDocument(theme);
       }
     }
     if (event.key === "hue") {
@@ -21,7 +21,7 @@ export function initThemeListener(): void {
 }
 
 // Theme functions
-export function applyTheme(theme: string): void {
+export function applyThemeToDocument(theme: string): void {
   const LIGHT_MODE = "light";
   const DARK_MODE = "dark";
   const SYSTEM_MODE = "system";
@@ -38,8 +38,40 @@ export function applyTheme(theme: string): void {
   }
 }
 
+export function getStoredTheme(): string {
+  if (typeof localStorage === "undefined" || typeof localStorage.getItem !== "function") {
+    return siteConfig.themeColor.defaultMode ?? "light";
+  }
+  return localStorage.getItem("theme") || (siteConfig.themeColor.defaultMode ?? "light");
+}
+
+export function setTheme(theme: string): void {
+  if (typeof localStorage === "undefined" || typeof localStorage.setItem !== "function") {
+    return;
+  }
+  localStorage.setItem("theme", theme);
+  applyThemeToDocument(theme);
+}
+
+export function getDefaultHue(): number {
+  return siteConfig.themeColor.hue;
+}
+
+export function getHue(): number {
+  if (typeof localStorage === "undefined" || typeof localStorage.getItem !== "function") {
+    return getDefaultHue();
+  }
+  const storedHue = localStorage.getItem("hue");
+  return storedHue ? Number(storedHue) : getDefaultHue();
+}
+
 export function applyHue(hue: string | number): void {
   document.documentElement.style.setProperty("--hue", String(hue));
+}
+
+export function setHue(hue: string | number): void {
+  localStorage.setItem("hue", String(hue));
+  applyHue(hue);
 }
 
 // Wallpaper mode functions
@@ -96,20 +128,14 @@ export function initWallpaperMode(): void {
 }
 
 export function getStoredWallpaperMode(): WALLPAPER_MODE {
-  if (
-    typeof localStorage === "undefined" ||
-    typeof localStorage.getItem !== "function"
-  ) {
+  if (typeof localStorage === "undefined" || typeof localStorage.getItem !== "function") {
     return backgroundWallpaper.mode;
   }
   return (localStorage.getItem("wallpaperMode") as WALLPAPER_MODE) || backgroundWallpaper.mode;
 }
 
 export function setWallpaperMode(mode: WALLPAPER_MODE): void {
-  if (
-    typeof localStorage === "undefined" ||
-    typeof localStorage.setItem !== "function"
-  ) {
+  if (typeof localStorage === "undefined" || typeof localStorage.setItem !== "function") {
     return;
   }
   localStorage.setItem("wallpaperMode", mode);
@@ -122,10 +148,7 @@ export function getDefaultBannerTitleEnabled(): boolean {
 }
 
 export function getStoredBannerTitleEnabled(): boolean {
-  if (
-    typeof localStorage === "undefined" ||
-    typeof localStorage.getItem !== "function"
-  ) {
+  if (typeof localStorage === "undefined" || typeof localStorage.getItem !== "function") {
     return getDefaultBannerTitleEnabled();
   }
   const stored = localStorage.getItem("bannerTitleEnabled");
@@ -136,10 +159,7 @@ export function getStoredBannerTitleEnabled(): boolean {
 }
 
 export function setBannerTitleEnabled(enabled: boolean): void {
-  if (
-    typeof localStorage === "undefined" ||
-    typeof localStorage.setItem !== "function"
-  ) {
+  if (typeof localStorage === "undefined" || typeof localStorage.setItem !== "function") {
     return;
   }
   localStorage.setItem("bannerTitleEnabled", String(enabled));
