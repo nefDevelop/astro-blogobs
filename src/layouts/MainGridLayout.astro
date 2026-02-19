@@ -9,6 +9,7 @@ import { Icon } from "astro-icon/components";
 import ImageWrapper from "@/components/common/ImageWrapper.astro";
 import FloatingControls from "@/components/controls/FloatingControls.astro";
 import TypewriterText from "@/components/features/TypewriterText.astro";
+import DisplaySettingsIntegrated from "@/components/controls/DisplaySettingsIntegrated.svelte"; // Importar el componente Svelte
 import {
 	backgroundWallpaper,
 	sidebarLayoutConfig,
@@ -357,7 +358,7 @@ const mobileQuality = Math.round(configQuality * 0.9);
 
 <!-- Main content -->
 <div class={`absolute w-full z-30 pointer-events-none ${mobileNonHomeBannerClass ? 'mobile-main-no-banner' : ''} ${!(isBannerMode && isBackgroundEnabled) ? 'no-banner-layout' : ''} ${transparentClass}`} style={`top: ${finalMainPanelTop}`}>
-    <!-- The pointer-events-none here prevent blocking the click event of the TOC -->
+    <!-- The pointer-events-none here prevents blocking the click event of the TOC -->
     <div class="relative max-w-(--page-width) mx-auto pointer-events-auto">
         
         <div id="main-grid"
@@ -473,7 +474,6 @@ const mobileQuality = Math.round(configQuality * 0.9);
 </div>
 
 <FloatingControls headings={headings} />
-
 
 </Layout>
 

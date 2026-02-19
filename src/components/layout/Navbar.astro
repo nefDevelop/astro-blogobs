@@ -13,7 +13,7 @@ import { url } from "@/utils/url-utils";
 import DropdownMenu from "./DropdownMenu.astro";
 import NavMenuPanel from "./NavMenuPanel.astro";
 import ProfileDropdown from "./ProfileDropdown.astro";
-import LightDarkSwitch from "../controls/LightDarkSwitch.svelte"; // Importar LightDarkSwitch
+import DisplaySettingsIntegrated from "../controls/DisplaySettingsIntegrated.svelte"; // Importar DisplaySettingsIntegrated
 
 
 
@@ -122,7 +122,24 @@ if (isLocalSrcLogo) {
                 <Search
                 client:load
                 />
-            <LightDarkSwitch client:load /> {/* Añadir el botón de temas aquí */}
+            <div class="relative z-50">
+                <button
+                    aria-label="Display Settings"
+                    aria-haspopup="menu"
+                    class="relative btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90"
+                    id="display-settings-button"
+                >
+                    <Icon name="material-symbols:palette" class="text-[1.25rem]"></Icon>
+                </button>
+                <div
+                    id="display-settings-panel-wrapper"
+                    class="absolute transition float-panel-closed -right-2 z-50"
+                    style="top: var(--dropdown-panel-top-offset, 2.75rem);"
+                    role="menu" aria-labelledby="display-settings-button"
+                >
+                    <DisplaySettingsIntegrated client:load />
+                </div>
+            </div>
 
             <button aria-label="Menu" name="Nav Menu" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90 lg:hidden!" id="nav-menu-switch">
                 <Icon name="material-symbols:menu-rounded" class="text-[1.25rem]"></Icon>
@@ -147,9 +164,20 @@ function loadButtonScript() {
         };
     }
 
+    let displaySettingsBtn = document.getElementById("display-settings-button");
+    if (displaySettingsBtn) {
+        displaySettingsBtn.onclick = function (e) {
+            e.stopPropagation();
+            let panel = document.getElementById("display-settings-panel-wrapper");
+            if (panel) {
+                panel.classList.toggle("float-panel-closed");
+            }
+        };
+    }
+
     document.addEventListener("click", function(event) {
-        const panels = ["nav-menu-panel", "profile-dropdown-menu"];
-        const buttons = ["nav-menu-switch", "profile-dropdown-button"];
+        const panels = ["nav-menu-panel", "profile-dropdown-menu", "display-settings-panel-wrapper"];
+        const buttons = ["nav-menu-switch", "profile-dropdown-button", "display-settings-button"];
 
         panels.forEach((id, index) => {
             const panel = document.getElementById(id);

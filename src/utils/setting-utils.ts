@@ -1,6 +1,19 @@
 import { backgroundWallpaper, siteConfig } from "../config";
 import type { WALLPAPER_MODE } from "../types/config";
 
+// Helper type for enable configurations that can be boolean or an object
+type EnableConfigValue = boolean | { desktop: boolean; mobile: boolean };
+
+// Helper function to resolve enable configurations
+function resolveEnableConfig(configValue: EnableConfigValue | undefined, defaultValue: boolean): boolean {
+  if (typeof configValue === "boolean") {
+    return configValue;
+  }
+  if (typeof configValue === "object" && configValue !== null) {
+    return configValue.desktop; // Prioritize desktop setting for a single boolean return
+  }
+  return defaultValue;
+}
 // Initialization functions
 export function initThemeListener(): void {
   // Listen for storage changes to sync theme across tabs
@@ -144,7 +157,8 @@ export function setWallpaperMode(mode: WALLPAPER_MODE): void {
 
 // Banner title functions
 export function getDefaultBannerTitleEnabled(): boolean {
-  return backgroundWallpaper.banner?.homeText?.enable ?? true;
+  const enableConfig = backgroundWallpaper.banner?.homeText?.enable;
+  return resolveEnableConfig(enableConfig, true); // Default to true if not specified
 }
 
 export function getStoredBannerTitleEnabled(): boolean {
@@ -180,3 +194,4 @@ export function applyBannerTitleEnabledToDocument(enabled: boolean): void {
     }
   }
 }
+

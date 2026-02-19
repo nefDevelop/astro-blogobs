@@ -221,39 +221,37 @@ const buttonWidths = [36, 72];
   </div>
 </div> -->
 
-<script is:inline>
-  const button = document.getElementById("profile-dropdown-button");
-  const menu = document.getElementById("profile-dropdown-menu");
+<script>
+  function initProfileDropdown() {
+    const button = document.getElementById("profile-dropdown-button");
+    const menu = document.getElementById("profile-dropdown-menu");
 
-  let isOpen = false;
+    if (!button || !menu) return;
 
-  function toggleDropdown() {
-    isOpen = !isOpen;
-    if (isOpen) {
-      menu.classList.remove("float-panel-closed");
-      button.setAttribute("aria-expanded", "true");
-    } else {
-      menu.classList.add("float-panel-closed");
-      button.setAttribute("aria-expanded", "false");
+    let isOpen = false;
+
+    function toggleDropdown(event: MouseEvent) {
+      event.stopPropagation();
+      isOpen = !isOpen;
+      menu?.classList.toggle("float-panel-closed", !isOpen);
+      button?.setAttribute("aria-expanded", isOpen.toString());
     }
+
+    function closeDropdown(event: MouseEvent) {
+      if (isOpen && menu && !menu.contains(event.target as Node) && button && !button.contains(event.target as Node)) {
+        isOpen = false;
+        menu.classList.add("float-panel-closed");
+        button.setAttribute("aria-expanded", "false");
+      }
+    }
+
+    button.addEventListener("click", toggleDropdown as EventListener);
+    document.addEventListener("click", closeDropdown as EventListener);
   }
 
-  function closeDropdown(event) {
-    if (isOpen && !menu.contains(event.target) && !button.contains(event.target)) {
-      isOpen = false;
-      menu.classList.add("float-panel-closed");
-      button.setAttribute("aria-expanded", "false");
-    }
-  }
+  // Initialize on first load
+  initProfileDropdown();
 
-  button.addEventListener("click", toggleDropdown);
-  document.addEventListener("click", closeDropdown);
-
-  // Cleanup on navigation (for SPA-like behavior in Astro)
-  document.addEventListener('astro:before-swap', () => {
-    document.removeEventListener('click', closeDropdown);
-  });
-  document.addEventListener('astro:after-swap', () => {
-    document.addEventListener('click', closeDropdown);
-  });
+  // Re-initialize after Astro view transitions or Swup content replacement
+  document.addEventListener('astro:page-load', initProfileDropdown);
 </script>

@@ -418,7 +418,12 @@ export type BackgroundWallpaperConfig = {
       | "right bottom"
       | string; // 壁纸位置，支持CSS object-position的所有值，包括百分比和像素值
     homeText?: {
-      enable: boolean; // 是否在首页显示自定义文字（全局开关）
+      enable:
+        | boolean
+        | {
+            desktop: boolean; // 桌面端是否显示横幅文字
+            mobile: boolean; // 移动端是否显示横幅文字
+          }; // 是否在首页显示自定义文字（全局开关），支持布尔值或分别设置桌面端和移动端
       switchable?: boolean; // 是否允许用户通过控制面板切换横幅标题显示
       title?: string; // 主标题
       subtitle?: string | string[]; // 副标题，支持单个字符串或字符串数组
@@ -500,21 +505,6 @@ export type AdConfig = {
   displayCount?: number; // 显示次数限制，-1为无限制
   expireDate?: string; // 过期时间 (ISO 8601 格式)
 };
-
-export type AnnouncementConfig = {
-  // enable属性已移除，现在通过sidebarLayoutConfig统一控制
-  title?: string; // Título del anuncio
-  content: string; // 公告栏内容
-  icon?: string; // 公告栏图标
-  type?: "info" | "warning" | "success" | "error"; // 公告类型
-  closable?: boolean; // 是否可关闭
-  link?: {
-    enable: boolean; // 是否启用链接
-    text: string; // 链接文字
-    url: string; // 链接地址
-    external?: boolean; // 是否外部链接
-  };
-}; // Configuración del anuncio
 
 // 友链配置
 export type FriendLink = {

@@ -9,15 +9,12 @@ import { i18n } from "@i18n/translation";
 import {
 	getDefaultBannerTitleEnabled,
 	getDefaultHue,
-	getDefaultWavesEnabled,
 	getHue,
 	getStoredBannerTitleEnabled,
 	getStoredWallpaperMode,
-	getStoredWavesEnabled,
 	setBannerTitleEnabled,
 	setHue,
 	setWallpaperMode,
-	setWavesEnabled,
 } from "@utils/setting-utils";
 import { onMount } from "svelte";
 import Icon from "@/components/common/Icon.svelte";
@@ -31,14 +28,13 @@ const defaultWallpaperMode = backgroundWallpaper.mode;
 let currentLayout: "list" | "grid" = $state("list");
 const defaultLayout = siteConfig.postListLayout.defaultMode;
 let mounted = $state(false);
-let isSmallScreen = $state(
-	typeof window !== "undefined" ? window.innerWidth < 1200 : false,
-);
+let isSmallScreen = $state(typeof window !== "undefined" ? window.innerWidth < 1200 : false);
+
 let isSwitching = $state(false);
-let wavesEnabled = $state(true);
-const defaultWavesEnabled = getDefaultWavesEnabled();
-let bannerTitleEnabled = $state(true);
-const defaultBannerTitleEnabled = getDefaultBannerTitleEnabled();
+let wavesEnabled = $state(false); // Initialize with a safe default for SSR
+let defaultWavesEnabled = $state(false); // Initialize with a safe default for SSR
+let bannerTitleEnabled = $state(false); // Initialize with a safe default for SSR
+let defaultBannerTitleEnabled = $state(false); // Initialize with a safe default for SSR
 
 const isWallpaperSwitchable = backgroundWallpaper.switchable ?? true;
 const allowLayoutSwitch = siteConfig.postListLayout.allowSwitch;
@@ -81,16 +77,6 @@ function resetLayout() {
 	window.dispatchEvent(event);
 }
 
-function resetWavesEnabled() {
-	wavesEnabled = defaultWavesEnabled;
-	setWavesEnabled(defaultWavesEnabled);
-}
-
-function toggleWavesEnabled() {
-	wavesEnabled = !wavesEnabled;
-	setWavesEnabled(wavesEnabled);
-}
-
 function toggleBannerTitleEnabled() {
 	bannerTitleEnabled = !bannerTitleEnabled;
 	setBannerTitleEnabled(bannerTitleEnabled);
@@ -131,11 +117,11 @@ onMount(() => {
 	mounted = true;
 	checkScreenSize();
 
+	// Initialize default values for SSR safety
+	defaultBannerTitleEnabled = getDefaultBannerTitleEnabled();
+
 	// 从localStorage读取保存的壁纸模式
 	wallpaperMode = getStoredWallpaperMode();
-
-	// 从localStorage读取水波纹动画状态
-	wavesEnabled = getStoredWavesEnabled();
 
 	// 从localStorage读取横幅标题状态
 	bannerTitleEnabled = getStoredBannerTitleEnabled();
@@ -170,6 +156,25 @@ onMount(() => {
 	};
 });
 
+// Listen for Swup content replacement to re-initialize states
+onMount(() => {
+	const handleSwupContentReplaced = () => {
+		// Re-read all states from localStorage
+		hue = getHue();
+		wallpaperMode = getStoredWallpaperMode();
+		bannerTitleEnabled = getStoredBannerTitleEnabled();
+		// No need to re-dispatch events, as the values are just being updated internally.
+	};
+
+	const win = window as Window & { swup?: any }; // Type assertion for swup
+	if (win.swup) {
+		win.swup.hooks.on("content:replace", handleSwupContentReplaced);
+	}
+	return () => {
+		if (win.swup) win.swup.hooks.off("content:replace", handleSwupContentReplaced);
+	};
+});
+
 $effect(() => {
 	if (hue || hue === 0) {
 		setHue(hue);
@@ -178,7 +183,7 @@ $effect(() => {
 </script>
 
 {#if hasAnyContent}
-<div id="display-setting" class="float-panel float-panel-closed absolute transition-all w-80 right-4 px-4 py-2">
+<div id="display-setting" class="float-panel transition-all w-80 px-4 py-2">
     <!-- Theme Color Section -->
     {#if showThemeColor}
     <div class="mt-2 mb-2">
@@ -208,6 +213,8 @@ $effect(() => {
         </div>
     </div>
     {/if}
+
+
 
     <!-- Wallpaper Mode Section -->
     {#if isWallpaperSwitchable}
@@ -293,24 +300,6 @@ $effect(() => {
                     </div>
                 </button>
                 {/if}
-                <!-- Waves Animation Switch -->
-                {#if isWavesSwitchable}
-                <button
-                    class="w-full btn-regular rounded-md py-2 px-3 flex items-center gap-3 text-left active:scale-95 transition-all relative overflow-hidden"
-                    class:bg-(--btn-regular-bg-hover)={wavesEnabled}
-                    onclick={toggleWavesEnabled}
-                >
-                    <Icon icon="material-symbols:airwave-rounded" class="text-[1.25rem] shrink-0"></Icon>
-                    <span class="text-sm flex-1">{i18n(I18nKey.wavesAnimation)}</span>
-                    <div class="w-10 h-5 rounded-full transition-all duration-200 relative"
-                         class:bg-(--primary)={wavesEnabled}
-                         class:bg-(--btn-regular-bg-active)={!wavesEnabled}>
-                        <div class="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200"
-                             class:left-0.5={!wavesEnabled}
-                             class:left-5={wavesEnabled}></div>
-                    </div>
-                </button>
-                {/if}
             </div>
         </div>
     {/if}
@@ -372,50 +361,64 @@ $effect(() => {
 {/if}
 
 
-<style lang="stylus">
-    #display-setting
-      input[type="range"]
-        -webkit-appearance none
-        height 1.5rem
-        background-image var(--color-selection-bar)
-        transition background-image 0.15s ease-in-out
+<style>
+    #display-setting input[type="range"] {
+        -webkit-appearance: none;
+        height: 1.5rem;
+        background-image: var(--color-selection-bar);
+        transition: background-image 0.15s ease-in-out;
+    }
 
-        /* Input Thumb */
-        &::-webkit-slider-thumb
-          -webkit-appearance none
-          height 1rem
-          width 0.5rem
-          border-radius 0.125rem
-          background rgba(255, 255, 255, 0.7)
-          box-shadow none
-          &:hover
-            background rgba(255, 255, 255, 0.8)
-          &:active
-            background rgba(255, 255, 255, 0.6)
+    /* Input Thumb */
+    #display-setting input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 1rem;
+        width: 0.5rem;
+        border-radius: 0.125rem;
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: none;
+    }
 
-        &::-moz-range-thumb
-          -webkit-appearance none
-          height 1rem
-          width 0.5rem
-          border-radius 0.125rem
-          border-width 0
-          background rgba(255, 255, 255, 0.7)
-          box-shadow none
-          &:hover
-            background rgba(255, 255, 255, 0.8)
-          &:active
-            background rgba(255, 255, 255, 0.6)
+    #display-setting input[type="range"]::-webkit-slider-thumb:hover {
+        background: rgba(255, 255, 255, 0.8);
+    }
 
-        &::-ms-thumb
-          -webkit-appearance none
-          height 1rem
-          width 0.5rem
-          border-radius 0.125rem
-          background rgba(255, 255, 255, 0.7)
-          box-shadow none
-          &:hover
-            background rgba(255, 255, 255, 0.8)
-          &:active
-            background rgba(255, 255, 255, 0.6)
+    #display-setting input[type="range"]::-webkit-slider-thumb:active {
+        background: rgba(255, 255, 255, 0.6);
+    }
 
+    #display-setting input[type="range"]::-moz-range-thumb {
+        -webkit-appearance: none;
+        height: 1rem;
+        width: 0.5rem;
+        border-radius: 0.125rem;
+        border-width: 0;
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: none;
+    }
+
+    #display-setting input[type="range"]::-moz-range-thumb:hover {
+        background: rgba(255, 255, 255, 0.8);
+    }
+
+    #display-setting input[type="range"]::-moz-range-thumb:active {
+        background: rgba(255, 255, 255, 0.6);
+    }
+
+    #display-setting input[type="range"]::-ms-thumb {
+        -webkit-appearance: none;
+        height: 1rem;
+        width: 0.5rem;
+        border-radius: 0.125rem;
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: none;
+    }
+
+    #display-setting input[type="range"]::-ms-thumb:hover {
+        background: rgba(255, 255, 255, 0.8);
+    }
+
+    #display-setting input[type="range"]::-ms-thumb:active {
+        background: rgba(255, 255, 255, 0.6);
+    }
 </style>

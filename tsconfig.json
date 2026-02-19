@@ -1,6 +1,7 @@
 {
   "extends": "astro/tsconfigs/base",
-  "compilerOptions": { // Opciones del compilador
+  "compilerOptions": {
+    // Opciones del compilador
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
@@ -25,6 +26,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": [".astro/types.d.ts", "src/**/*"],
-  "exclude": ["dist", "src/pages/guestbook.astro"]
+  "include": [".astro/types.d.ts", "src/**/*"], // Mantener esto como está, es estándar para Astro
+  "exclude": ["dist", "src/pages/guestbook.astro", "src/components/controls/DisplaySettings.svelte"] // Añadir el archivo eliminado aquí
 }
