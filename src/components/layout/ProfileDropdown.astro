@@ -220,38 +220,3 @@ const buttonWidths = [36, 72];
     </ul>
   </div>
 </div> -->
-
-<script>
-  function initProfileDropdown() {
-    const button = document.getElementById("profile-dropdown-button");
-    const menu = document.getElementById("profile-dropdown-menu");
-
-    if (!button || !menu) return;
-
-    let isOpen = false;
-
-    function toggleDropdown(event: MouseEvent) {
-      event.stopPropagation();
-      isOpen = !isOpen;
-      menu?.classList.toggle("float-panel-closed", !isOpen);
-      button?.setAttribute("aria-expanded", isOpen.toString());
-    }
-
-    function closeDropdown(event: MouseEvent) {
-      if (isOpen && menu && !menu.contains(event.target as Node) && button && !button.contains(event.target as Node)) {
-        isOpen = false;
-        menu.classList.add("float-panel-closed");
-        button.setAttribute("aria-expanded", "false");
-      }
-    }
-
-    button.addEventListener("click", toggleDropdown as EventListener);
-    document.addEventListener("click", closeDropdown as EventListener);
-  }
-
-  // Initialize on first load
-  initProfileDropdown();
-
-  // Re-initialize after Astro view transitions or Swup content replacement
-  document.addEventListener('astro:page-load', initProfileDropdown);
-</script>

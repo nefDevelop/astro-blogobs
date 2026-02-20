@@ -1,106 +1,103 @@
 ---
-title: Markdown Mermaid 图表
+title: Gráficos Mermaid en Markdown
 published: 1970-01-01
 pinned: false
-description: 一个包含 Mermaid 的 Markdown 博客文章简单示例。
-tags: [Markdown, 博客, Mermaid, Firefly]
-category: 文章示例
+description: Un ejemplo sencillo de un artículo de blog con Mermaid en Markdown.
+tags: [Markdown, Blog, Mermaid, Firefly]
+category: Ejemplo de artículo
 draft: false
 ---
-# Markdown 中 Mermaid 图表完整指南
+# Guía completa de gráficos Mermaid en Markdown
 
-本文演示如何在 Markdown 文档中使用 Mermaid 创建各种复杂图表，包括流程图、时序图、甘特图、类图和状态图。
+Este artículo demuestra cómo usar Mermaid en documentos Markdown para crear diversos gráficos complejos, incluyendo diagramas de flujo, diagramas de secuencia, diagramas de Gantt, diagramas de clases y diagramas de estado.
 
-## 流程图示例
+## Ejemplo de diagrama de flujo
 
-流程图非常适合表示流程或算法步骤。
-
-
-
+Los diagramas de flujo son excelentes para representar procesos o pasos de un algoritmo.
 
 ```mermaid
 graph TD
-    A[开始] --> B{条件检查}
-    B -->|是| C[处理步骤 1]
-    B -->|否| D[处理步骤 2]
-    C --> E[子过程]
+    A[Inicio] --> B{Comprobación de condición}
+    B -->|Sí| C[Paso de procesamiento 1]
+    B -->|No| D[Paso de procesamiento 2]
+    C --> E[Subproceso]
     D --> E
-    subgraph E [子过程详情]
-        E1[子步骤 1] --> E2[子步骤 2]
-        E2 --> E3[子步骤 3]
+    subgraph E [Detalles del subproceso]
+        E1[Subpaso 1] --> E2[Subpaso 2]
+        E2 --> E3[Subpaso 3]
     end
-    E --> F{另一个决策}
-    F -->|选项 1| G[结果 1]
-    F -->|选项 2| H[结果 2]
-    F -->|选项 3| I[结果 3]
-    G --> J[结束]
+    E --> F{Otra decisión}
+    F -->|Opción 1| G[Resultado 1]
+    F -->|Opción 2| H[Resultado 2]
+    F -->|Opción 3| I[Resultado 3]
+    G --> J[Fin]
     H --> J
     I --> J
 ```
 
-## 时序图示例
+## Ejemplo de diagrama de secuencia
 
-时序图显示对象之间随时间的交互。
+Los diagramas de secuencia muestran la interacción entre objetos a lo largo del tiempo.
 
 ```mermaid
 sequenceDiagram
-    participant User as 用户
-    participant WebApp as 网页应用
-    participant Server as 服务器
-    participant Database as 数据库
+    participant User as Usuario
+    participant WebApp as Aplicación Web
+    participant Server as Servidor
+    participant Database as Base de Datos
 
-    User->>WebApp: 提交登录请求
-    WebApp->>Server: 发送认证请求
-    Server->>Database: 查询用户凭据
-    Database-->>Server: 返回用户数据
-    Server-->>WebApp: 返回认证结果
+    User->>WebApp: Enviar solicitud de inicio de sesión
+    WebApp->>Server: Enviar solicitud de autenticación
+    Server->>Database: Consultar credenciales de usuario
+    Database-->>Server: Devolver datos de usuario
+    Server-->>WebApp: Devolver resultado de autenticación
     
-    alt 认证成功
-        WebApp->>User: 显示欢迎页面
-        WebApp->>Server: 请求用户数据
-        Server->>Database: 获取用户偏好
-        Database-->>Server: 返回偏好设置
-        Server-->>WebApp: 返回用户数据
-        WebApp->>User: 加载个性化界面
-    else 认证失败
-        WebApp->>User: 显示错误消息
-        WebApp->>User: 提示重新输入
+    alt Autenticación exitosa
+        WebApp->>User: Mostrar página de bienvenida
+        WebApp->>Server: Solicitar datos de usuario
+        Server->>Database: Obtener preferencias de usuario
+        Database-->>Server: Devolver configuración de preferencias
+        Server-->>WebApp: Devolver datos de usuario
+        WebApp->>User: Cargar interfaz personalizada
+    else Autenticación fallida
+        WebApp->>User: Mostrar mensaje de error
+        WebApp->>User: Sugerir reintentar
     end
 ```
 
-## 甘特图示例
+## Ejemplo de diagrama de Gantt
 
-甘特图非常适合显示项目进度和时间线。
+Los diagramas de Gantt son ideales para mostrar el progreso y el cronograma de un proyecto.
 
 ```mermaid
 gantt
-    title 网站开发项目时间线
+    title Cronograma del proyecto de desarrollo web
     dateFormat  YYYY-MM-DD
     axisFormat  %m/%d
     
-    section 设计阶段
-    需求分析      :a1, 2023-10-01, 7d
-    UI设计                 :a2, after a1, 10d
-    原型创建        :a3, after a2, 5d
+    section Fase de diseño
+    Análisis de requisitos      :a1, 2023-10-01, 7d
+    Diseño de UI                 :a2, after a1, 10d
+    Creación de prototipos        :a3, after a2, 5d
     
-    section 开发阶段
-    前端开发      :b1, 2023-10-20, 15d
-    后端开发       :b2, after a2, 18d
-    数据库设计           :b3, after a1, 12d
+    section Fase de desarrollo
+    Desarrollo frontend      :b1, 2023-10-20, 15d
+    Desarrollo backend       :b2, after a2, 18d
+    Diseño de base de datos           :b3, after a1, 12d
     
-    section 测试阶段
-    单元测试              :c1, after b1, 8d
-    集成测试       :c2, after b2, 10d
-    用户验收测试   :c3, after c2, 7d
+    section Fase de pruebas
+    Pruebas unitarias              :c1, after b1, 8d
+    Pruebas de integración       :c2, after b2, 10d
+    Pruebas de aceptación de usuario   :c3, after c2, 7d
     
-    section 部署
-    生产环境部署     :d1, after c3, 3d
-    发布                    :milestone, after d1, 0d
+    section Despliegue
+    Despliegue en producción     :d1, after c3, 3d
+    Lanzamiento                    :milestone, after d1, 0d
 ```
 
-## 类图示例
+## Ejemplo de diagrama de clases
 
-类图显示系统的静态结构，包括类、属性、方法及其关系。
+Los diagramas de clases muestran la estructura estática del sistema, incluyendo clases, atributos, métodos y sus relaciones.
 
 ```mermaid
 classDiagram
@@ -138,55 +135,55 @@ classDiagram
         +removeArticle()
     }
     
-    User "1" -- "*" Article : 写作
-    User "1" -- "*" Comment : 发表
-    Article "1" -- "*" Comment : 拥有
-    Article "1" -- "*" Category : 属于
+    User "1" -- "*" Article : Escribe
+    User "1" -- "*" Comment : Publica
+    Article "1" -- "*" Comment : Tiene
+    Article "1" -- "*" Category : Pertenece a
 ```
 
-## 状态图示例
+## Ejemplo de diagrama de estado
 
-状态图显示对象在其生命周期中经历的状态序列。
+Los diagramas de estado muestran la secuencia de estados por los que pasa un objeto durante su ciclo de vida.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> 草稿
+    [*] --> Borrador
     
-    草稿 --> 审核中 : 提交
-    审核中 --> 草稿 : 拒绝
-    审核中 --> 已批准 : 批准
-    已批准 --> 已发布 : 发布
-    已发布 --> 已归档 : 归档
-    已发布 --> 草稿 : 撤回
+    Borrador --> EnRevisión : Enviar
+    EnRevisión --> Borrador : Rechazar
+    EnRevisión --> Aprobado : Aprobar
+    Aprobado --> Publicado : Publicar
+    Publicado --> Archivado : Archivar
+    Publicado --> Borrador : Retirar
     
-    state 已发布 {
-        [*] --> 活跃
-        活跃 --> 隐藏 : 临时隐藏
-        隐藏 --> 活跃 : 恢复
-        活跃 --> [*]
-        隐藏 --> [*]
+    state Publicado {
+        [*] --> Activo
+        Activo --> Oculto : Ocultar temporalmente
+        Oculto --> Activo : Restaurar
+        Activo --> [*]
+        Oculto --> [*]
     }
     
-    已归档 --> [*]
+    Archivado --> [*]
 ```
 
-## 饼图示例
+## Ejemplo de gráfico de tarta
 
-饼图非常适合显示比例和百分比数据。
+Los gráficos de tarta son ideales para mostrar proporciones y datos porcentuales.
 
 ```mermaid
-pie title 网站流量来源分析
-    "搜索引擎" : 45.6
-    "直接访问" : 30.1
-    "社交媒体" : 15.3
-    "推荐链接" : 6.4
-    "其他来源" : 2.6
+pie title Análisis de fuentes de tráfico web
+    "Motores de búsqueda" : 45.6
+    "Acceso directo" : 30.1
+    "Redes sociales" : 15.3
+    "Enlaces de referencia" : 6.4
+    "Otras fuentes" : 2.6
 ```
 
-## 总结
+## Resumen
 
-Mermaid 是在 Markdown 文档中创建各种类型图表的强大工具。本文演示了如何使用流程图、时序图、甘特图、类图、状态图和饼图。这些图表可以帮助您更清晰地表达复杂的概念、流程和数据结构。
+Mermaid es una herramienta poderosa para crear diversos tipos de gráficos en documentos Markdown. Este artículo ha demostrado cómo usar diagramas de flujo, diagramas de secuencia, diagramas de Gantt, diagramas de clases, diagramas de estado y gráficos de tarta. Estos gráficos pueden ayudarte a expresar conceptos, procesos y estructuras de datos complejos de manera más clara.
 
-要使用 Mermaid，只需在代码块中指定 mermaid 语言，并使用简洁的文本语法描述图表。Mermaid 会自动将这些描述转换为美观的可视化图表。
+Para usar Mermaid, simplemente especifica el lenguaje mermaid en un bloque de código y usa una sintaxis de texto concisa para describir el gráfico. Mermaid convertirá automáticamente estas descripciones en hermosos gráficos visuales.
 
-尝试在您的下一篇技术博客文章或项目文档中使用 Mermaid 图表 - 它们将使您的内容更加专业且更易理解！
+¡Intenta usar gráficos Mermaid en tu próximo artículo técnico de blog o documento de proyecto: harán que tu contenido sea más profesional y fácil de entender!

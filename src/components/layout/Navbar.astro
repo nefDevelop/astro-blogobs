@@ -154,38 +154,40 @@ if (isLocalSrcLogo) {
 
 <script>
 function loadButtonScript() {
-    let menuBtn = document.getElementById("nav-menu-switch");
-    if (menuBtn) {
-        menuBtn.onclick = function () {
-            let menuPanel = document.getElementById("nav-menu-panel");
-            if (menuPanel) {
-                menuPanel.classList.toggle("float-panel-closed");
-            }
-        };
-    }
+    const panels = ["nav-menu-panel", "profile-dropdown-menu", "display-settings-panel-wrapper", "search-panel"];
+    const buttons = ["nav-menu-switch", "profile-dropdown-button", "display-settings-button", "search-switch"];
 
-    let displaySettingsBtn = document.getElementById("display-settings-button");
-    if (displaySettingsBtn) {
-        displaySettingsBtn.onclick = function (e) {
-            e.stopPropagation();
-            let panel = document.getElementById("display-settings-panel-wrapper");
-            if (panel) {
-                panel.classList.toggle("float-panel-closed");
-            }
-        };
-    }
+    panels.forEach((id) => {
+        const panel = document.getElementById(id);
+        if (panel) {
+            panel.addEventListener("click", (e) => e.stopPropagation());
+        }
+    });
+
+    buttons.forEach((id, index) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const panel = document.getElementById(panels[index]);
+                if (panel) {
+                    // Close other panels
+                    panels.forEach((otherId, otherIndex) => {
+                        if (otherIndex !== index) {
+                            document.getElementById(otherId)?.classList.add("float-panel-closed");
+                        }
+                    });
+                    panel.classList.toggle("float-panel-closed");
+                }
+            });
+        }
+    });
 
     document.addEventListener("click", function(event) {
-        const panels = ["nav-menu-panel", "profile-dropdown-menu", "display-settings-panel-wrapper"];
-        const buttons = ["nav-menu-switch", "profile-dropdown-button", "display-settings-button"];
-
-        panels.forEach((id, index) => {
+        panels.forEach((id) => {
             const panel = document.getElementById(id);
-            const button = document.getElementById(buttons[index]);
-            if (panel && button && !panel.classList.contains("float-panel-closed")) {
-                if (event.target instanceof Node && !panel.contains(event.target) && !button.contains(event.target)) {
-                    panel.classList.add("float-panel-closed");
-                }
+            if (panel && !panel.classList.contains("float-panel-closed")) {
+                panel.classList.add("float-panel-closed");
             }
         });
     });

@@ -1,23 +1,23 @@
 ---
-title: 草稿示例
+title: Ejemplo de borrador
 published: 2026-02-15
-tags: [Markdown, 博客, 演示]
-category: 文章示例
+tags: [Markdown, Blog, demostración]
+category: Ejemplo de artículo
 draft: true
 ---
 
-# 这篇文章是草稿
+# Este artículo es un borrador
 
-这篇文章目前处于草稿状态，尚未发布。因此，它不会对普通读者可见。内容仍在进行中，可能需要进一步编辑和审查。
+Este artículo se encuentra actualmente en estado de borrador y no ha sido publicado. Por lo tanto, no será visible para los lectores habituales. El contenido aún está en progreso y puede requerir más edición y revisión.
 
-当文章准备发布时，您可以在 Frontmatter 中将 "draft" 字段更新为 "false"：
+Cuando el artículo esté listo para ser publicado, puedes actualizar el campo "draft" a "false" en el Frontmatter:
 
 ```markdown
 ---
-title: 草稿示例
+title: Ejemplo de borrador
 published: 2024-01-11T04:40:26.381Z
-tags: [Markdown, 博客, 演示]
-category: 示例
+tags: [Markdown, Blog, demostración]
+category: Ejemplo
 draft: false
 ---
 ```

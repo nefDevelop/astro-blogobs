@@ -1,9 +1,9 @@
 ---
-title: MDX 格式文章示例
+title: Ejemplo de artículo en formato MDX
 published: 1970-01-02
-description: 这是一个 MDX 格式的示例文章，展示了如何在 Markdown 中使用 JSX。
-tags: [MDX, 文章示例]
-category: 文章示例
+description: Este es un ejemplo de artículo en formato MDX, que muestra cómo usar JSX en Markdown.
+tags: [MDX, Ejemplo de artículo]
+category: Ejemplo de artículo
 draft: false
 image: api
 ---
@@ -11,59 +11,59 @@ image: api
 import { Icon } from 'astro-icon/components'
 
 :::tip
-[Firefly](https://github.com/CuteLeaf/Firefly) 支持 `MDX` 和 `Markdown` 两种类型的文章，你可以在文章中混合使用两种格式，如果没有特别复杂内容和需求，推荐使用 Markdown 格式就够了。
+[Firefly](https://github.com/CuteLeaf/Firefly) admite tanto artículos `MDX` como `Markdown`. Puedes mezclar ambos formatos en tus artículos. Si no tienes necesidades o contenidos especialmente complejos, se recomienda usar simplemente el formato Markdown.
 :::
 
-## Markdown 和 MDX 的区别
-- Markdown (MD) 是一种轻量级标记语言，允许用户使用纯文本格式编写文档，然后将其转换为格式化的HTML。它因其简洁易用的语法而广受欢迎，特别适合编写文档和博客文章。
-- MDX 是一种扩展了 Markdown 语法的格式，允许在 Markdown 文档中无缝地插入 JSX 代码。通过 MDX，用户可以在文档中嵌入 React 组件，从而实现更丰富的交互性和动态性。
+## Diferencia entre Markdown y MDX
+- Markdown (MD) es un lenguaje de marcado ligero que permite a los usuarios escribir documentos en un formato de texto plano y luego convertirlos a HTML formateado. Es muy popular por su sintaxis simple y fácil de usar, siendo especialmente adecuado para escribir documentación y artículos de blog.
+- MDX es un formato que extiende la sintaxis de Markdown, permitiendo insertar código JSX de manera fluida dentro de documentos Markdown. Con MDX, los usuarios pueden incrustar componentes React en sus documentos, logrando así una mayor interactividad y dinamismo.
 
-| 特性 | Markdown | MDX |
+| Característica | Markdown | MDX |
 | :--- | :--- | :--- |
-| 基础语法 | 支持 (CommonMark) | 支持 (CommonMark) |
-| HTML 标签 | 支持 | 支持 (作为 JSX) |
-| 组件导入 | 不支持 | 支持 (import) |
-| 动态数据 | 不支持 | 支持 (JS 表达式) |
-| 样式定制 | 有限 (class/style) | 灵活 (className/CSS-in-JS) |
+| Sintaxis básica | Soportada (CommonMark) | Soportada (CommonMark) |
+| Etiquetas HTML | Soportadas | Soportadas (como JSX) |
+| Importación de componentes | No soportada | Soportada (import) |
+| Datos dinámicos | No soportada | Soportada (expresiones JS) |
+| Personalización de estilos | Limitada (class/style) | Flexible (className/CSS-in-JS) |
 
-## 使用组件
+## Uso de componentes
 
-这是一个图标组件：
+Este es un componente de icono:
 ```
 import { Icon } from 'astro-icon/components'
 
 <div class="flex items-center gap-2 my-4">
   <Icon name="fa7-solid:rocket" class="text-4xl text-red-500" />
-  <span>火箭发射！</span>
+  <span>¡Lanzamiento de cohete!</span>
 </div>
 ```
 <div class="flex items-center gap-2 my-4">
   <Icon name="fa7-solid:rocket" class="text-4xl text-red-500" />
-  <span>火箭发射！</span>
+  <span>¡Lanzamiento de cohete!</span>
 </div>
 
 
-## 使用 JSX
+## Uso de JSX
 
-你也可以直接写 HTML/JSX：
+También puedes escribir HTML/JSX directamente:
 ```
 <div className="p-4 bg-blue-100 dark:bg-blue-900 rounded-lg my-4">
-  这是一个自定义样式的 div 块，使用了 Tailwind CSS 类。
+  Este es un bloque div con estilo personalizado, utilizando clases de Tailwind CSS.
 </div>
 ```
 <div className="p-4 bg-blue-100 dark:bg-blue-900 rounded-lg my-4">
-  这是一个自定义样式的 div 块，使用了 Tailwind CSS 类。
+  Este es un bloque div con estilo personalizado, utilizando clases de Tailwind CSS.
 </div>
 
-## 简单的变量导出
+## Exportación simple de variables
 ```
 export const year = new Date().getFullYear()
 
-今年是 {year} 年。
+Este año es {year}.
 ```
 export const year = new Date().getFullYear()
 
-今年是 {year} 年。
+Este año es {year}.
 
 
-更多信息，请查看 [MDX 文档](https://mdxjs.com/)
+Para más información, consulta la [documentación de MDX](https://mdxjs.com/)

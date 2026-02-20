@@ -1,0 +1,50 @@
+:root {
+    --hue: 165;
+    --primary: oklch(0.70 0.14 var(--hue));
+    --page-bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text-primary: #1e293b;
+    --line-divider: rgba(0, 0, 0, 0.05);
+    --btn-regular-bg: #f1f5f9;
+    --btn-regular-bg-hover: #e2e8f0;
+    --radius-large: 0.75rem;
+}
+
+:root.dark {
+    --page-bg: #0f172a;
+    --card-bg: #1e293b;
+    --text-primary: #f1f5f9;
+    --line-divider: rgba(255, 255, 255, 0.1);
+    --btn-regular-bg: #334155;
+    --btn-regular-bg-hover: #475569;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+/* Card aesthetics matching the blog */
+.cms-card {
+    background: var(--card-bg);
+    border: 1px solid var(--line-divider);
+    border-radius: var(--radius-large);
+    padding: 1.5rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.cms-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+}
+
+.dark .cms-card:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* Tailwind 4 helper mapping */
+@theme {
+    --color-primary: var(--primary);
+}

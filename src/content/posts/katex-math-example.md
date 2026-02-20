@@ -1,26 +1,26 @@
 ---
-title: KaTeX 数学公式示例
+title: Ejemplo de fórmulas matemáticas KaTeX
 published: 1970-01-02
-description: 展示 Firefly 主题对 KaTeX 数学公式的支持，包括行内公式、块级公式和复杂数学符号。
-tags: [KaTeX, Math, 示例]
-category: 文章示例
+description: Demostración del soporte para fórmulas matemáticas KaTeX en el tema Firefly, incluyendo fórmulas en línea, de bloque y símbolos matemáticos complejos.
+tags: [KaTeX, Math, Ejemplo]
+category: Ejemplo de artículo
 draft: false
 image: api
 ---
 
-本文展示了 [Firefly](https://github.com/CuteLeaf/Firefly) 主题对 KaTeX 数学公式的渲染支持。
+Este artículo muestra el soporte de renderizado para fórmulas matemáticas KaTeX en el tema [Firefly](https://github.com/CuteLeaf/Firefly).
 
-## 行内公式 (Inline)
+## Fórmulas en línea (Inline)
 
-行内公式使用单个 `$` 符号包裹。
+Las fórmulas en línea se envuelven con un solo símbolo `$`.
 
-例如：欧拉公式 $e^{i\pi} + 1 = 0$ 是数学中最优美的公式之一。
+Por ejemplo: La identidad de Euler $e^{i\pi} + 1 = 0$ es una de las fórmulas más bellas de las matemáticas.
 
-质能方程 $E = mc^2$ 也是家喻户晓。
+La ecuación de equivalencia entre masa y energía $E = mc^2$ también es muy conocida.
 
-## 块级公式 (Block)
+## Fórmulas de bloque (Block)
 
-块级公式使用两个 `$$` 符号包裹，会居中显示。
+Las fórmulas de bloque se envuelven con dos símbolos `$$` y se muestran centradas.
 
 $$
 \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
@@ -30,9 +30,9 @@ $$
 x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
 
-## 复杂示例
+## Ejemplos complejos
 
-### 矩阵 (Matrices)
+### Matrices (Matrices)
 
 $$
 \begin{pmatrix}
@@ -49,7 +49,7 @@ c\alpha + d\gamma & c\beta + d\delta
 \end{pmatrix}
 $$
 
-### 极限与求和 (Limits and Sums)
+### Límites y sumatorios (Limits and Sums)
 
 $$
 \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}
@@ -59,7 +59,7 @@ $$
 \lim_{x \to 0} \frac{\sin x}{x} = 1
 $$
 
-### 麦克斯韦方程组 (Maxwell's Equations)
+### Ecuaciones de Maxwell (Maxwell's Equations)
 
 $$
 \begin{aligned}
@@ -70,22 +70,23 @@ $$
 \end{aligned}
 $$
 
-### 化学方程式 (Chemical Equations)
+### Ecuaciones químicas (Chemical Equations)
 
 $$
 \ce{CH4 + 2O2 -> CO2 + 2H2O}
 $$
 
-## 更多符号
+## Más símbolos
 
-| 符号 | 代码 | 渲染结果 |
+| Símbolo | Código | Resultado |
 | :--- | :--- | :--- |
-| Alpha | `\alpha` | $\alpha$ |
+| Alfa | `\alpha` | $\alpha$ |
 | Beta | `\beta` | $\beta$ |
 | Gamma | `\Gamma` | $\Gamma$ |
 | Pi | `\pi` | $\pi$ |
-| Infinity | `\infty` | $\infty$ |
-| Right Arrow | `\rightarrow` | $\rightarrow$ |
-| Partial | `\partial` | $\partial$ |
+| Infinito | `\infty` | $\infty$ |
+| Flecha derecha | `\rightarrow` | $\rightarrow$ |
+| Parcial | `\partial` | $\partial$ |
 
-更多 KaTeX 语法请参考 [KaTeX Supported Functions](https://katex.org/docs/supported.html)。
+Para más sintaxis de KaTeX, consulta [KaTeX Supported Functions](https://katex.org/docs/supported.html).
+

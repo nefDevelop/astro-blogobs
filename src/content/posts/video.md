@@ -1,17 +1,17 @@
 ---
-title: 在文章中嵌入视频
+title: Incrustar videos en artículos
 published: 1970-01-01
-description: 这篇文章演示如何在博客文章中嵌入视频。
-tags: [示例, 视频, Firefly]
-category: 文章示例
+description: Este artículo muestra cómo incrustar videos en los artículos del blog.
+tags: [ejemplo, video, Firefly]
+category: Ejemplo de artículo
 draft: false
 ---
 
-只需从 YouTube 或其他平台复制嵌入代码，然后将其粘贴到 markdown 文件中。
+Simplemente copia el código de inserción de YouTube u otra plataforma y pégalo en el archivo markdown.
 
 ```yaml
 ---
-title: 在文章中嵌入视频
+title: Incrustar videos en artículos
 published: 2023-10-19
 // ...
 ---

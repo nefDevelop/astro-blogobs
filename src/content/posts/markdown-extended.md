@@ -1,168 +1,168 @@
 ---
-title: Markdown 扩展功能
+title: Funciones Extendidas de Markdown
 published: 1970-01-01
 updated: 1970-01-01
-description: "了解 Firefly 中的 Markdown 功能"
+description: "Conoce las funciones de Markdown en Firefly"
 image: ""
-tags: [演示, 示例, Markdown, Firefly]
-category: "文章示例"
+tags: [demostración, ejemplo, Markdown, Firefly]
+category: "Ejemplo de artículo"
 draft: false
 ---
 
-## GitHub 仓库卡片
+## Tarjeta de repositorio de GitHub
 
-您可以添加链接到 GitHub 仓库的动态卡片，在页面加载时，仓库信息会从 GitHub API 获取。
+Puedes añadir tarjetas dinámicas vinculadas a repositorios de GitHub. Al cargar la página, la información del repositorio se obtendrá de la API de GitHub.
 
 ::github{repo="CuteLeaf/Firefly"}
 
-使用代码 `::github{repo="CuteLeaf/Firefly"}` 创建 GitHub 仓库卡片。
+Usa el código `::github{repo="CuteLeaf/Firefly"}` para crear una tarjeta de repositorio de GitHub.
 
 ```markdown
 ::github{repo="CuteLeaf/Firefly"}
 ```
 
-## 提醒框(Admonitions)配置
+## Configuración de cuadros de advertencia (Admonitions)
 
-Firefly 采用了 [rehype-callouts](https://github.com/lin-stephanie/rehype-callouts) 插件，支持了三种风格的提醒框主题：`GitHub`、`Obsidian` 和 `VitePress`。您可以在 `src/config/siteConfig.ts` 中进行配置：
+Firefly utiliza el plugin [rehype-callouts](https://github.com/lin-stephanie/rehype-callouts), que admite tres estilos de temas para cuadros de advertencia: `GitHub`, `Obsidian` y `VitePress`. Puedes configurarlos en `src/config/siteConfig.ts`:
 
 ```typescript
 // src/config/siteConfig.ts
 export const siteConfig: SiteConfig = {
   // ...
   rehypeCallouts: {
-    // 选项: "github" | "obsidian" | "vitepress"
+    // opciones: "github" | "obsidian" | "vitepress"
     theme: "github",
   },
   // ...
 };
 ```
 
-注意：**更改配置后需要重启开发服务器才能生效。**
+Nota: **Es necesario reiniciar el servidor de desarrollo después de cambiar la configuración para que los cambios surtan efecto.**
 
-以下是各个主题支持的类型列表，每个主题风格和语法不同，可根据喜好选择。
+A continuación se muestra una lista de los tipos admitidos por cada tema. Cada tema tiene un estilo y una sintaxis diferente, por lo que puedes elegir el que más te guste.
 
-### 1. GitHub 主题风格
+### 1. Estilo de tema GitHub
 
-这是 GitHub 官方支持的 5 种基本类型。
+Estos son los 5 tipos básicos admitidos oficialmente por GitHub.
 
 ![GitHub](./images/github.png)
 
-**基本语法**
+**Sintaxis básica**
 
 ```markdown
-> [!NOTE] NOTE
-> 突出显示用户应该考虑的信息。
+> [!NOTE] NOTA
+> Resalta información que el usuario debe tener en cuenta.
 
-> [!TIP] TIP
-> 可选信息，帮助用户更成功。
+> [!TIP] CONSEJO
+> Información opcional para ayudar al usuario a tener más éxito.
 
-> [!IMPORTANT] IMPORTANT
-> 用户成功所必需的关键信息。
+> [!IMPORTANT] IMPORTANTE
+> Información crucial necesaria para el éxito del usuario.
 
-> [!WARNING] WARNING
-> 关键内容，需要立即注意。
+> [!WARNING] ADVERTENCIA
+> Contenido crítico que requiere atención inmediata.
 
-> [!CAUTION] CAUTION
-> 行动的负面潜在后果。
+> [!CAUTION] PRECAUCIÓN
+> Consecuencias potenciales negativas de una acción.
 
-> [!NOTE] 自定义标题
-> 这是一个带有自定义标题的示例。
+> [!NOTE] Título personalizado
+> Este es un ejemplo con un título personalizado.
 ```
 
 ---
 
-### 2. Obsidian 主题风格
+### 2. Estilo de tema Obsidian
 
-[Obsidian](https://obsidian.md/) 风格支持非常丰富的类型和别名。
+El estilo [Obsidian](https://obsidian.md/) admite una gran variedad de tipos y alias.
 
 <details>
-<summary>点击展开 Obsidian 语法列表</summary>
+<summary>Haz clic para desplegar la lista de sintaxis de Obsidian</summary>
 
 ```markdown
 
-> [!NOTE] NOTE
-> 通用的笔记块。
+> [!NOTE] NOTA
+> Bloque de notas general.
 
-> [!ABSTRACT] ABSTRACT
-> 文章的摘要。
+> [!ABSTRACT] RESUMEN
+> Resumen del artículo.
 
-> [!SUMMARY] SUMMARY
-> 文章的总结（同 Abstract）。
+> [!SUMMARY] SUMARIO
+> Sumario del artículo (igual que Abstract).
 
 > [!TLDR] TLDR
-> 太长不看（同 Abstract）。
+> Demasiado largo para leer (igual que Abstract).
 
-> [!INFO] INFO
-> 提供额外信息。
+> [!INFO] INFORMACIÓN
+> Proporciona información adicional.
 
-> [!TODO] TODO
-> 需要完成的事项。
+> [!TODO] TAREA
+> Tareas que deben completarse.
 
-> [!TIP] TIP
-> 实用技巧或提示。
+> [!TIP] CONSEJO
+> Consejos o trucos útiles.
 
-> [!HINT] HINT
-> 暗示（同 Tip）。
+> [!HINT] SUGERENCIA
+> Sugerencia (igual que Tip).
 
-> [!IMPORTANT] IMPORTANT
-> 重要信息（Obsidian 风格通常使用类似的图标）。
+> [!IMPORTANT] IMPORTANTE
+> Información importante (el estilo Obsidian suele usar iconos similares).
 
-> [!SUCCESS] SUCCESS
-> 操作成功。
+> [!SUCCESS] ÉXITO
+> Operación exitosa.
 
-> [!CHECK] CHECK
-> 检查通过（同 Success）。
+> [!CHECK] VERIFICACIÓN
+> Verificación superada (igual que Success).
 
-> [!DONE] DONE
-> 已完成（同 Success）。
+> [!DONE] HECHO
+> Completado (igual que Success).
 
-> [!QUESTION] QUESTION
-> 提出问题。
+> [!QUESTION] PREGUNTA
+> Plantear una pregunta.
 
-> [!HELP] HELP
-> 寻求帮助（同 Question）。
+> [!HELP] AYUDA
+> Buscar ayuda (igual que Question).
 
 > [!FAQ] FAQ
-> 常见问题（同 Question）。
+> Preguntas frecuentes (igual que Question).
 
-> [!WARNING] WARNING
-> 警告信息。
+> [!WARNING] ADVERTENCIA
+> Mensaje de advertencia.
 
-> [!CAUTION] CAUTION
-> 注意事项（同 Warning）。
+> [!CAUTION] PRECAUCIÓN
+> Notas de precaución (igual que Warning).
 
-> [!ATTENTION] ATTENTION
-> 引起注意（同 Warning）。
+> [!ATTENTION] ATENCIÓN
+> Llamar la atención (igual que Warning).
 
-> [!FAILURE] FAILURE
-> 操作失败。
+> [!FAILURE] FALLO
+> Operación fallida.
 
-> [!FAIL] FAIL
-> 失败（同 Failure）。
+> [!FAIL] ERROR
+> Fallo (igual que Failure).
 
-> [!MISSING] MISSING
-> 缺失内容（同 Failure）。
+> [!MISSING] FALTANTE
+> Contenido faltante (igual que Failure).
 
-> [!DANGER] DANGER
-> 危险操作警告。
+> [!DANGER] PELIGRO
+> Advertencia de operación peligrosa.
 
 > [!ERROR] ERROR
-> 错误信息（同 Danger）。
+> Mensaje de error (igual que Danger).
 
 > [!BUG] BUG
-> 报告软件缺陷。
+> Reportar defectos de software.
 
-> [!EXAMPLE] EXAMPLE
-> 展示一个例子。
+> [!EXAMPLE] EJEMPLO
+> Mostrar un ejemplo.
 
-> [!QUOTE] QUOTE
-> 引用一段话。
+> [!QUOTE] CITA
+> Citar una frase.
 
-> [!CITE] CITE
-> 引证（同 Quote）。
+> [!CITE] CITACIÓN
+> Referencia (igual que Quote).
 
-> [!NOTE] 自定义标题
-> 这是一个带有自定义标题的示例。
+> [!NOTE] Título personalizado
+> Este es un ejemplo con un título personalizado.
 ```
 </details>
 
@@ -170,31 +170,31 @@ export const siteConfig: SiteConfig = {
 
 ---
 
-### 3. VitePress 主题风格
+### 3. Estilo de tema VitePress
 
-[VitePress](https://vitepress.dev/) 风格提供了一套现代化的、扁平的默认样式。目前仅包含与 GitHub 一致的 **5 种** 基础类型。
+El estilo [VitePress](https://vitepress.dev/) ofrece un conjunto de estilos predeterminados modernos y planos. Actualmente solo incluye los **5 tipos** básicos consistentes con GitHub.
 
 <details>
-<summary>点击展开 VitePress 语法列表</summary>
+<summary>Haz clic para desplegar la lista de sintaxis de VitePress</summary>
 
 ```markdown
-> [!NOTE] NOTE
-> 对应 GitHub 的 Note。
+> [!NOTE] NOTA
+> Corresponde al Note de GitHub.
 
-> [!TIP] TIP
-> 对应 GitHub 的 Tip。
+> [!TIP] CONSEJO
+> Corresponde al Tip de GitHub.
 
-> [!IMPORTANT] IMPORTANT
-> 对应 GitHub 的 Important。
+> [!IMPORTANT] IMPORTANTE
+> Corresponde al Important de GitHub.
 
-> [!WARNING] WARNING
-> 对应 GitHub 的 Warning。
+> [!WARNING] ADVERTENCIA
+> Corresponde al Warning de GitHub.
 
-> [!CAUTION] CAUTION
-> 对应 GitHub 的 Caution。
+> [!CAUTION] PRECAUCIÓN
+> Corresponde al Caution de GitHub.
 
-> [!TIP] 自定义标题
-> VitePress 风格同样支持自定义标题。
+> [!TIP] Título personalizado
+> El estilo VitePress también admite títulos personalizados.
 ```
 </details>
 
@@ -202,52 +202,50 @@ export const siteConfig: SiteConfig = {
 
 ---
 
-### 4. Docusaurus 风格语法
+### 4. Sintaxis de estilo Docusaurus
 
-仅支持语法，风格保持跟上面三个主题相同。
+Solo soporta la sintaxis, el estilo se mantiene igual que los tres temas anteriores.
 
 <details>
-<summary>点击展开 Docusaurus 语法列表 </summary>
+<summary>Haz clic para desplegar la lista de sintaxis de Docusaurus</summary>
 
-支持以下类型的提醒框：`note` `tip` `important` `warning` `caution`
+Soporta los siguientes tipos de cuadros de advertencia: `note` `tip` `important` `warning` `caution`
 
 ```markdown
 :::note
-突出显示用户应该考虑的信息，即使在快速浏览时也是如此。
+Resalta información que el usuario debe tener en cuenta, incluso durante un escaneo rápido.
 :::
 
 :::tip
-可选信息，帮助用户更成功。
+Información opcional para ayudar al usuario a tener más éxito.
 :::
 
 :::important
-用户成功所必需的关键信息。
+Información crucial necesaria para el éxito del usuario.
 :::
 
 :::warning
-由于潜在风险需要用户立即注意的关键内容。
+Contenido crítico que requiere atención inmediata del usuario debido a riesgos potenciales.
 :::
 
 :::caution
-行动的负面潜在后果。
+Consecuencias potenciales negativas de una acción.
 :::
 
-:::tip[自定义标题]
-可选信息，帮助用户更成功。
+:::tip[Título personalizado]
+Información opcional para ayudar al usuario a tener más éxito.
 :::
 ```
  </details>
 
-
-
 ---
 
-## 剧透
+## Spoiler
 
-您可以为文本添加剧透。文本也支持 **Markdown** 语法。
+Puedes añadir spoilers al texto. El texto también soporta la sintaxis **Markdown**.
 
-内容 :spoiler[被隐藏了 **哈哈**]！
+El contenido :spoiler[ha sido ocultado **jaja**]!
 
 ```markdown
-内容 :spoiler[被隐藏了 **哈哈**]！
+El contenido :spoiler[ha sido ocultado **jaja**]!
 ````
