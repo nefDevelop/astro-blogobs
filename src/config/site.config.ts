@@ -186,8 +186,8 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 
 // --- Background/Wallpaper Configuration ---
 export const backgroundWallpaper: BackgroundWallpaperConfig = {
-  mode: "banner",
-  switchable: true,
+  mode: "none",
+  switchable: false,
   src: {
     desktop: ["assets/images/DesktopWallpaper/d1.avif"],
     mobile: ["assets/images/MobileWallpaper/m1.avif"],

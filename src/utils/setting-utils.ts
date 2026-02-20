@@ -141,18 +141,13 @@ export function initWallpaperMode(): void {
 }
 
 export function getStoredWallpaperMode(): WALLPAPER_MODE {
-  if (typeof localStorage === "undefined" || typeof localStorage.getItem !== "function") {
-    return backgroundWallpaper.mode;
-  }
-  return (localStorage.getItem("wallpaperMode") as WALLPAPER_MODE) || backgroundWallpaper.mode;
+  // Wallpaper mode selection has been removed. Always return config default.
+  return backgroundWallpaper.mode;
 }
 
 export function setWallpaperMode(mode: WALLPAPER_MODE): void {
-  if (typeof localStorage === "undefined" || typeof localStorage.setItem !== "function") {
-    return;
-  }
-  localStorage.setItem("wallpaperMode", mode);
-  applyWallpaperModeToDocument(mode);
+  // This function is now a no-op as wallpaper mode selection is removed.
+  console.warn("setWallpaperMode called but feature is disabled.");
 }
 
 // Banner title functions
@@ -193,5 +188,29 @@ export function applyBannerTitleEnabledToDocument(enabled: boolean): void {
       bannerTextOverlay.classList.add("user-hidden");
     }
   }
+}
+
+// Flush post image functions
+export function getStoredFlushPostImage(): boolean {
+  if (typeof localStorage === "undefined" || typeof localStorage.getItem !== "function") {
+    return true; // Default to true as per user request
+  }
+  const stored = localStorage.getItem("flushPostImage");
+  return stored === null ? true : stored === "true";
+}
+
+export function setFlushPostImage(enabled: boolean): void {
+  if (typeof localStorage === "undefined" || typeof localStorage.setItem !== "function") {
+    return;
+  }
+  localStorage.setItem("flushPostImage", String(enabled));
+  applyFlushPostImageToDocument(enabled);
+}
+
+export function applyFlushPostImageToDocument(enabled: boolean): void {
+  if (typeof document === "undefined") {
+    return;
+  }
+  document.documentElement.setAttribute("data-flush-image", String(enabled));
 }
 

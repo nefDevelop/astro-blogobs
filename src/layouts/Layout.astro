@@ -160,8 +160,7 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
         configHue,
         defaultMode: siteConfig.themeColor.defaultMode ?? "light",
         defaultWallpaperMode: backgroundWallpaper.mode,
-        isWallpaperSwitchable:
-          backgroundWallpaper.switchable ?? true,
+        isWallpaperSwitchable: false,
         darkTheme: expressiveCodeConfig.darkTheme,
         lightTheme: expressiveCodeConfig.lightTheme,
         baseUrl: import.meta.env.BASE_URL,
@@ -250,9 +249,7 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
       const WALLPAPER_BANNER = "banner";
       const WALLPAPER_OVERLAY = "overlay";
       const WALLPAPER_NONE = "none";
-      const wallpaperMode = isWallpaperSwitchable
-        ? localStorage.getItem("wallpaperMode") || defaultWallpaperMode
-        : defaultWallpaperMode;
+      const wallpaperMode = defaultWallpaperMode;
 
       // 设置data-wallpaper-mode属性
       document.documentElement.setAttribute(
@@ -387,6 +384,12 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
         if (bannerTitleEnabled !== null) {
           document.documentElement.setAttribute("data-banner-title-enabled", bannerTitleEnabled);
         }
+      })();
+
+      // 初始化图片贴边显示状态
+      (function applyFlushPostImage() {
+        const flushPostImage = localStorage.getItem("flushPostImage") || "true";
+        document.documentElement.setAttribute("data-flush-image", flushPostImage);
       })();
     </script>
     <style
@@ -570,10 +573,7 @@ function disableAnimation() {
     "search-bar",
     "search-switch",
   ]);
-  setClickOutsideToClose("wallpaper-mode-panel", [
-    "wallpaper-mode-panel",
-    "wallpaper-mode-switch",
-  ]);
+
   setClickOutsideToClose("theme-mode-panel", [
     "theme-mode-panel",
     "scheme-switch",

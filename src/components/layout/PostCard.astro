@@ -238,4 +238,19 @@ const { remarkPluginFrontmatter } = await render(entry);
     top: 1.3rem !important;
   }
 
+  :global(html[data-flush-image="true"]) .has-cover .post-card-content {
+    width: calc(100% - var(--coverWidth)) !important;
+  }
+
+  :global(html[data-flush-image="true"]) .post-card-image {
+    top: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  :global(html[data-flush-image="true"]) :global(.grid-mode) .post-card-image {
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
 </style>
