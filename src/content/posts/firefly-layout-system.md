@@ -1,170 +1,169 @@
 ---
-title: Firefly 布局系统详解
+title: Sistema de Diseño de Firefly Explicado
 published: 2026-02-21
-description: 深入了解 Firefly 的布局系统，包括侧边栏布局（左侧/双侧）和文章列表布局（列表/网格），以及全新的三列网格模式。
+description: Conoce en detalle el sistema de diseño de Firefly, incluyendo los diseños de barra lateral (izquierdo/dual) y de lista de artículos (lista/cuadrícula), así como el nuevo modo de cuadrícula de tres columnas.
 image: ./images/firefly1.webp
 tags:
   - Firefly
-  - 布局
-  - 博客
-  - 使用指南
-category: 博客指南
+  - Diseño
+  - Blog
+  - Guía de uso
+category: Guía del Blog
 draft: false
 ---
 
-## 📖 概述
+## 📖 Resumen
 
-Firefly 提供了灵活的布局系统，允许您根据内容需求和个人喜好自定义博客的视觉呈现方式。布局系统主要包括**侧边栏布局**和**文章列表布局**两个维度，它们相互配合，共同决定了页面的整体结构。
+Firefly ofrece un sistema de diseño flexible que te permite personalizar la presentación visual de tu blog según tus necesidades de contenido y preferencias personales. El sistema de diseño se compone principalmente de dos dimensiones: el **diseño de la barra lateral** y el **diseño de la lista de artículos**, que trabajan en conjunto para determinar la estructura general de la página.
 
-本文将详细介绍 Firefly 的各种布局模式、它们的特点、使用场景，以及不同布局组合的效果。
+Este artículo detallará los diversos modos de diseño de Firefly, sus características, escenarios de uso y el efecto de las diferentes combinaciones de diseño.
 
 ---
 
-## 一、侧边栏布局系统
+## I. Sistema de Diseño de la Barra Lateral
 
-侧边栏是博客页面的重要组成部分，用于展示导航、分类、标签、统计信息等辅助内容。Firefly 支持两种侧边栏布局模式。
+La barra lateral es una parte importante de la página del blog, utilizada para mostrar navegación, categorías, etiquetas, estadísticas y otro contenido auxiliar. Firefly admite dos modos de diseño de barra lateral.
 
-### 1.1 左侧边栏模式 (position: "left")
+### 1.1 Modo de Barra Lateral Izquierda (position: "left")
 
-#### 特点
+#### Características
 
-- 侧边栏固定在页面左侧
-- 主内容区域位于右侧
-- 符合从左到右的阅读习惯
-- 适合展示导航和分类等重要信息
+- La barra lateral está fija en el lado izquierdo de la página
+- El área de contenido principal está en el lado derecho
+- Se ajusta a los hábitos de lectura de izquierda a derecha
+- Adecuado para mostrar información importante como navegación y categorías
 
-#### 布局结构
+#### Estructura del Diseño
 
-![左侧边栏布局](./images/left-list.webp)
+![Diseño de barra lateral izquierda](./images/left-list.webp)
 
-#### 适用场景
+#### Escenarios de Aplicación
 
-- 传统博客风格
-- 强调导航和分类的博客
-- 需要突出用户资料的个人博客
-- 内容为主，辅助信息次之的场景
+- Estilo de blog tradicional
+- Blogs que enfatizan la navegación y las categorías
+- Blogs personales que necesitan destacar el perfil del usuario
+- Escenarios donde el contenido es lo principal y la información auxiliar es secundaria
 
 :::tip
-开启左侧单侧边栏后，位于文章详情页右侧边栏的文章目录导航将失效
+Al habilitar la barra lateral única izquierda, la navegación del índice de artículos ubicada en la barra lateral derecha de la página de detalles del artículo quedará inhabilitada.
 
-会改用浮动目录导航替代，需要手动点击弹出目录导航
+Se usará en su lugar una navegación de índice flotante, que requiere hacer clic manualmente para mostrarse.
 
-但可以通过showRightSidebarOnPostPage配置是否在文章详情页显示右侧边栏
+Sin embargo, puedes configurar si deseas mostrar la barra lateral derecha en la página de detalles del artículo mediante `showRightSidebarOnPostPage`.
 
-当position为left时开启此项后，文章详情页将显示双侧边栏，主页等其他页面保持左侧单侧边栏
+Cuando `position` es `left` y se habilita esta opción, la página de detalles del artículo mostrará barras laterales duales, mientras que la página de inicio y otras páginas mantendrán la barra lateral única izquierda.
 
-适用在只想用左侧单侧栏，但在文章详情页想用右侧栏的目录等组件的场景
+Es adecuado para escenarios donde solo quieres usar la barra lateral única izquierda, pero deseas usar componentes como el índice de la barra lateral derecha en la página de detalles del artículo.
 :::
 
-
-#### 配置示例
+#### Ejemplo de Configuración
 
 ```typescript
 // src/config/sidebarConfig.ts
 export const sidebarLayoutConfig: SidebarLayoutConfig = {
   enable: true,
-  position: "left", // 左侧边栏
-  showRightSidebarOnPostPage: true, // 是否在文章详情页显示右侧边栏
+  position: "left", // Barra lateral izquierda
+  showRightSidebarOnPostPage: true, // Mostrar barra lateral derecha en la página de artículos
 };
 ```
 
 ---
 
-### 1.2 双侧边栏模式 (position: "both")
+### 1.2 Modo de Barras Laterales Duales (position: "both")
 
-#### 特点
+#### Características
 
-- 左右两侧同时存在侧边栏
-- 主内容区域位于中间
-- 最大化利用屏幕空间
-- 可以展示更多辅助信息
-- 适合宽屏显示器
+- Existen barras laterales en ambos lados simultáneamente
+- El área de contenido principal se encuentra en el medio
+- Maximiza el uso del espacio de la pantalla
+- Permite mostrar más información auxiliar
+- Adecuado para monitores de pantalla ancha
 
-#### 布局结构
+#### Estructura del Diseño
 
-![双侧边栏布局](./images/both-list.webp)
+![Diseño de barras laterales duales](./images/both-list.webp)
 
-#### 适用场景
+#### Escenarios de Aplicación
 
-- 宽屏桌面端浏览
-- 信息密集型博客
-- 需要展示大量辅助内容
-- 专业性强的技术博客
+- Navegación en escritorio de pantalla ancha
+- Blogs con alta densidad de información
+- Necesidad de mostrar una gran cantidad de contenido auxiliar
+- Blogs técnicos con un fuerte enfoque profesional
 
-
-#### 配置示例
+#### Ejemplo de Configuración
 
 ```typescript
 // src/config/sidebarConfig.ts
 export const sidebarLayoutConfig: SidebarLayoutConfig = {
   enable: true,
-  position: "both", // 双侧边栏
+  position: "both", // Barras laterales duales
+};
 ```
 
 ---
 
-## 二、文章列表布局系统
+## II. Sistema de Diseño de Lista de Artículos
 
-文章列表是博客首页和归档页的核心内容，Firefly 提供两种展示方式，并支持多种网格配置。
+La lista de artículos es el contenido central de la página de inicio y la página de archivos del blog. Firefly ofrece dos formas de visualización y admite múltiples configuraciones de cuadrícula.
 
-### 2.1 列表模式 (defaultMode: "list")
+### 2.1 Modo de Lista (defaultMode: "list")
 
-#### 特点
+#### Características
 
-- 单列纵向排列
-- 显示文章封面图
-- 展示更多文章摘要
-- 适合深度阅读
+- Disposición vertical en una sola columna
+- Muestra la imagen de portada del artículo
+- Muestra más fragmentos del artículo
+- Adecuado para una lectura profunda
 
-#### 列表布局结构
+#### Estructura de Diseño de Lista
 
-![列表模式布局](./images/left-list.webp)
+![Diseño en modo lista](./images/left-list.webp)
 
-#### 优点
+#### Ventajas
 
-- ✅ 视觉冲击力强，封面图吸引眼球
-- ✅ 可以展示更多文章信息（摘要、标签等）
-- ✅ 适合图片内容丰富的博客
-- ✅ 移动端友好，单列更易阅读
-- ✅ 兼容所有侧边栏配置（单侧、双侧）
+- ✅ Fuerte impacto visual, la imagen de portada atrae la atención
+- ✅ Permite mostrar más información del artículo (resumen, etiquetas, etc.)
+- ✅ Adecuado para blogs con abundante contenido visual
+- ✅ Amigable para dispositivos móviles, la columna única es más fácil de leer
+- ✅ Compatible con todas las configuraciones de barra lateral (única o dual)
 
-#### 配置示例
+#### Ejemplo de Configuración
 
 ```typescript
 // src/config/siteConfig.ts
 export const siteConfig: SiteConfig = {
   postListLayout: {
-    defaultMode: "list", // 列表模式
-    allowSwitch: true,   // 允许用户切换
+    defaultMode: "list", // Modo lista
+    allowSwitch: true,   // Permitir al usuario cambiar
   },
 };
 ```
 
 ---
 
-### 2.2 网格模式 (defaultMode: "grid")
+### 2.2 Modo de Cuadrícula (defaultMode: "grid")
 
-#### 特点
+#### Características
 
-- 多列横向排列（支持 2 列或 3 列）
-- 紧凑布局，信息密度高
-- 适合快速浏览
+- Disposición horizontal en múltiples columnas (admite 2 o 3 columnas)
+- Diseño compacto, alta densidad de información
+- Adecuado para una navegación rápida
 
-#### 2.2.1 双列网格 (Columns: 2)
+#### 2.2.1 Cuadrícula de Dos Columnas (Columns: 2)
 
-这是网格模式的默认配置，适合大多数场景。
+Esta es la configuración predeterminada para el modo de cuadrícula, adecuada para la mayoría de los escenarios.
 
-![双列网格布局](./images/left-grid2.webp)
+![Diseño de cuadrícula de dos columnas](./images/left-grid2.webp)
 
-#### 2.2.2 三列网格 (Columns: 3) ✨ New
+#### 2.2.2 Cuadrícula de Tres Columnas (Columns: 3) ✨ Nuevo
 
-在宽屏设备上，您可以开启三列网格模式，进一步提高信息密度。
+En dispositivos de pantalla ancha, puedes habilitar el modo de cuadrícula de tres columnas para aumentar aún más la densidad de información.
 
-![三列网格布局](./images/left-grid3.webp)
+![Diseño de cuadrícula de tres columnas](./images/left-grid3.webp)
 
-**⚠️ 注意**：三列网格模式仅在**左侧边栏模式**（或无侧边栏）下生效。如果您启用了双侧边栏，系统将自动回退到双列网格，以保证文章卡片有足够的展示宽度。
+**⚠️ Nota**: El modo de cuadrícula de tres columnas solo es efectivo en el **modo de barra lateral izquierda** (o sin barra lateral). Si habilitas las barras laterales duales, el sistema volverá automáticamente a la cuadrícula de dos columnas para asegurar que las tarjetas de los artículos tengan suficiente ancho de visualización.
 
-#### 配置示例
+#### Ejemplo de Configuración
 
 ```typescript
 // src/config/siteConfig.ts
@@ -173,8 +172,8 @@ export const siteConfig: SiteConfig = {
     defaultMode: "grid",
     allowSwitch: true,
     grid: {
-      masonry: true,  // 开启瀑布流
-      columns: 3,     // 设置为 3 列模式（仅单侧边栏生效）
+      masonry: true,  // Habilitar diseño de cascada (masonry)
+      columns: 3,     // Configurar modo de 3 columnas (solo barra lateral única)
     },
   },
 };
@@ -182,95 +181,83 @@ export const siteConfig: SiteConfig = {
 
 ---
 
-### 2.3 瀑布流布局 (Masonry)
+## III. Guía de Combinaciones de Diseño
 
-Firefly 的网格模式内置了智能瀑布流布局支持，解决了网格布局中因图文混合文章导致的卡片高度不一致导致的空白问题。
+Firefly te permite combinar libremente la barra lateral y el diseño de la lista de artículos. A continuación, se explican los efectos de las diversas combinaciones.
 
-![瀑布流布局](./images/masonry.webp)
+### 3.1 Barra Lateral Izquierda + Modo de Cuadrícula
 
-- **智能排版**：采用 Z 字形分布（左右交替），严格保持文章的时间顺序。
-- **消除空白**：通过绝对定位精确计算每个卡片的位置，让卡片紧贴上一行的卡片，消除垂直方向的空白间隙。
-- **配置灵活**：您可以在 `siteConfig.ts` 中通过 `postListLayout.grid.masonry` 选项自由开启或关闭此功能。
+Esta es la combinación más flexible. Puedes elegir una cuadrícula de 2 o 3 columnas.
 
----
+- **Modo de 2 columnas**: Diseño de cuadrícula clásico, ancho de tarjeta moderado, lectura cómoda.
+- **Modo de 3 columnas**: Adecuado para pantallas anchas (≥1024px), muestra más contenido en una sola pantalla, efecto visual impactante.
 
-## 三、布局组合指南
+### 3.2 Barras Laterales Duales + Modo de Cuadrícula
 
-Firefly 允许您自由组合侧边栏和文章列表布局。以下是各种组合的效果说明。
+En versiones anteriores, esta combinación estaba deshabilitada. Sin embargo, en la última versión de Firefly, hemos eliminado las restricciones, permitiendo que las barras laterales duales coexistan con el modo de cuadrícula.
 
-### 3.1 左侧边栏 + 网格模式
+![Diseño de barras laterales duales + cuadrícula](./images/both-grid.webp)
 
-这是最灵活的组合。您可以选择 2 列或 3 列网格。
+**Características y Limitaciones**:
+- **Forzado a Dos Columnas**: Incluso si configuras `columns: 3`, en este modo se forzará la visualización a 2 columnas.
+- **Espacio Compacto**: Debido a las barras laterales en ambos lados, el área de contenido principal en el medio es relativamente estrecha.
+- **Densidad de Información Extrema**: Esta es la forma de diseño con mayor densidad de información, adecuada para sitios que necesitan mostrar una gran cantidad de información de navegación y listas de artículos simultáneamente.
 
-- **2 列模式**：经典的网格布局，卡片宽度适中，阅读舒适。
-- **3 列模式**：适合宽屏（≥1024px），单屏展示更多内容，视觉效果震撼。
+### 3.3 Sugerencias de Elección de Diseño
 
-### 3.2 双侧边栏 + 网格模式
-
-在旧版本中，此组合被禁用。但在最新版 Firefly 中，我们解除了限制，允许双侧边栏与网格模式共存。
-
-![双侧边栏+网格布局](./images/both-grid.webp)
-
-**特点与限制**：
-- **强制双列**：即使您配置了 `columns: 3`，在此模式下也会强制显示为 2 列。
-- **空间紧凑**：由于左右都有侧边栏，中间的主内容区域相对较窄。
-- **信息密度极高**：这是信息密度最高的布局方式，适合需要同时展示大量导航信息和文章列表的站点。
-
-### 3.3 布局选择建议
-
-| 侧边栏模式 | 文章列表模式 | 推荐度 | 适用场景 |
-|-----------|------------|--------|---------|
-| 左侧边栏   | 列表模式    | ⭐⭐⭐⭐⭐ | 摄影、设计、生活类博客，强调图片和沉浸感 |
-| 左侧边栏   | 2列网格     | ⭐⭐⭐⭐⭐ | 技术、笔记类博客，平衡阅读与检索效率 |
-| 左侧边栏   | 3列网格     | ⭐⭐⭐⭐⭐ | 内容量大的站点，宽屏体验极佳 |
-| 双侧边栏   | 列表模式    | ⭐⭐⭐⭐⭐ | 需要展示大量侧边栏信息的站点 |
-| 双侧边栏   | 2列网格     | ⭐⭐⭐⭐⭐ | 极客风格，追求最高信息密度 |
+| Modo de Barra Lateral | Modo de Lista de Artículos | Recomendación | Escenario de Aplicación |
+|-----------------------|----------------------------|---------------|-------------------------|
+| Barra Lateral Izquierda | Modo de Lista              | ⭐⭐⭐⭐⭐ | Fotografía, diseño, blogs de estilo de vida, énfasis en imagen e inmersión |
+| Barra Lateral Izquierda | Cuadrícula de 2 columnas   | ⭐⭐⭐⭐⭐ | Blogs técnicos, de notas, equilibrio entre lectura y eficiencia de búsqueda |
+| Barra Lateral Izquierda | Cuadrícula de 3 columnas   | ⭐⭐⭐⭐⭐ | Sitios con gran volumen de contenido, excelente experiencia en pantalla ancha |
+| Barras Laterales Duales | Modo de Lista              | ⭐⭐⭐⭐⭐ | Sitios que necesitan mostrar mucha información en las barras laterales |
+| Barras Laterales Duales | Cuadrícula de 2 columnas   | ⭐⭐⭐⭐⭐ | Estilo geek, buscando la máxima densidad de información |
 
 ---
 
-## 四、响应式布局行为
+## IV. Comportamiento del Diseño Responsivo
 
-Firefly 的布局系统具有智能的响应式设计，会根据屏幕尺寸自动调整。
+El sistema de diseño de Firefly cuenta con un diseño responsivo inteligente que se ajusta automáticamente según el tamaño de la pantalla.
 
-### 4.1 智能降级规则
+### 4.1 Reglas de Degradación Inteligente
 
-为了保证最佳阅读体验，系统会在屏幕变窄时自动调整布局：
+Para garantizar la mejor experiencia de lectura, el sistema ajustará automáticamente el diseño cuando la pantalla se estreche:
 
-1. **3 列网格 -> 2 列网格**：当屏幕宽度不足以容纳 3 列时（或开启双侧边栏时），自动降级为单列表模式。
-2. **网格模式 -> 列表模式**：当屏幕宽度小于 1200px（平板和手机）时，网格模式会自动切换为单列列表模式，以保证卡片内容的可读性。
-3. **双侧边栏 -> 左侧边栏**：当屏幕宽度小于 1280px 时，右侧边栏会自动隐藏，文章目录导航会切换成浮动目录导航。
-
----
-
-## 五、常见问题
-
-### Q1: 为什么我配置了 3 列网格，但只显示 2 列？
-
-**A**: 请检查以下情况：
-1. 是否开启了双侧边栏（`position: "both"`）？双侧边栏模式下强制 2 列。
-2. 屏幕宽度是否足够？3 列模式通常需要 ≥1024px 的宽度。
-
-### Q2: 为什么在手机上看不到网格效果？
-
-**A**: 为了保证阅读体验，Firefly 在屏幕宽度小于 1200px 时会自动强制切换为列表模式。手机屏幕太窄，不适合展示多列网格。
-
-### Q3: 布局切换按钮在哪里？
-
-**A**: 布局切换按钮位于导航栏右侧。它仅在屏幕宽度 ≥ 1200px 时显示，因为在小屏幕上系统强制使用列表模式，无需切换。
+1. **Cuadrícula de 3 columnas -> Cuadrícula de 2 columnas**: Cuando el ancho de la pantalla no es suficiente para acomodar 3 columnas (o cuando se habilitan barras laterales duales), se degrada automáticamente.
+2. **Modo de Cuadrícula -> Modo de Lista**: Cuando el ancho de la pantalla es inferior a 1200px (tabletas y móviles), el modo de cuadrícula cambiará automáticamente al modo de lista de una sola columna para garantizar la legibilidad del contenido de la tarjeta.
+3. **Barras Laterales Duales -> Barra Lateral Izquierda**: Cuando el ancho de la pantalla es inferior a 1280px, la barra lateral derecha se ocultará automáticamente y la navegación del índice del artículo cambiará a una navegación de índice flotante.
 
 ---
 
-## 六、总结
+## V. Preguntas Frecuentes
 
-Firefly 的新版布局系统给予了您更大的自由度。无论是追求视觉冲击力的**三列网格**，还是追求信息密度的**双侧边栏网格**，您都可以通过简单的配置实现。
+### P1: ¿Por qué he configurado una cuadrícula de 3 columnas pero solo se muestran 2?
 
-我们建议您根据自己的内容类型和目标读者的设备偏好，尝试不同的组合，找到最适合您的博客形态。
+**R**: Comprueba los siguientes puntos:
+1. ¿Has habilitado las barras laterales duales (`position: "both"`)? El modo de barras laterales duales fuerza a 2 columnas.
+2. ¿Es el ancho de la pantalla suficiente? El modo de 3 columnas suele requerir un ancho ≥1024px.
+
+### P2: ¿Por qué no veo el efecto de cuadrícula en el móvil?
+
+**R**: Para garantizar la experiencia de lectura, Firefly cambia automáticamente de forma forzada al modo de lista cuando el ancho de la pantalla es inferior a 1200px. Las pantallas de los móviles son demasiado estrechas para mostrar cuadrículas de múltiples columnas de forma adecuada.
+
+### P3: ¿Dónde está el botón de cambio de diseño?
+
+**R**: El botón de cambio de diseño se encuentra en el lado derecho de la barra de navegación. Solo se muestra cuando el ancho de la pantalla es ≥ 1200px, ya que en pantallas pequeñas el sistema fuerza el uso del modo de lista, por lo que no es necesario cambiar.
 
 ---
 
-## 相关链接
+## VI. Resumen
 
-- 📚 [侧边栏配置文档](https://docs-firefly.cuteleaf.cn/config/sidebarConfig-usage/)
-- 📚 [站点配置文档](https://docs-firefly.cuteleaf.cn/config/siteConfig-usage/)
-- 🏠 [Firefly 官方文档](https://docs-firefly.cuteleaf.cn/)
-- ⭐ [Firefly GitHub](https://github.com/CuteLeaf/Firefly)
+El nuevo sistema de diseño de Firefly te brinda mayor libertad. Ya sea que busques el impacto visual de una **cuadrícula de tres columnas** o la densidad de información de una **cuadrícula de barras laterales duales**, puedes lograrlo con una configuración sencilla.
+
+Te recomendamos que pruebes diferentes combinaciones según tu tipo de contenido y las preferencias de dispositivo de tus lectores para encontrar la forma de blog que mejor se adapte a ti.
+
+---
+
+## Enlaces Relacionados
+
+- 📚 [Documentación de configuración de barra lateral](https://docs-firefly.cuteleaf.cn/config/sidebarConfig-usage/)
+- 📚 [Documentación de configuración del sitio](https://docs-firefly.cuteleaf.cn/config/siteConfig-usage/)
+- 🏠 [Documentación oficial de Firefly](https://docs-firefly.cuteleaf.cn/)
+- ⭐ [GitHub de Firefly](https://github.com/CuteLeaf/Firefly)
