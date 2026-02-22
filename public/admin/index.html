@@ -14,29 +14,34 @@
 </head>
 
 <body>
-    <!-- Navbar (Exact Parity) -->
+    <!-- Background Highlight (Blog Parity) -->
+    <div class="top-gradient-highlight"></div>
+
+    <!-- Navbar (Exact Blog Parity) -->
     <header>
-        <div class="nav-container onload-animation">
-            <a href="#" id="btn-dashboard-logo" class="btn-plain flex items-center gap-3 active:scale-95"
-                style="padding: 0 1.25rem; height: 3.25rem;">
-                <iconify-icon icon="material-symbols:eco-outline"
-                    style="color: var(--primary); font-size: 1.75rem;"></iconify-icon>
-                <span class="font-bold text-lg tracking-tight">Rain and Tea</span>
+        <div class="nav-inner onload-animation">
+            <a href="#" id="btn-dashboard-logo"
+                class="btn-plain scale-animation rounded-lg h-13 px-5 font-bold active:scale-95">
+                <div class="flex items-center gap-3 text-md">
+                    <iconify-icon icon="material-symbols:eco-outline"
+                        style="color: var(--primary); font-size: 1.75rem;"></iconify-icon>
+                    <span class="font-bold text-lg tracking-tight">Rain and Tea</span>
+                </div>
             </a>
 
-            <nav id="nav-actions" class="hidden flex items-center gap-4">
-                <div class="flex items-center gap-1">
-                    <button id="btn-dashboard" class="btn-plain p-2.5 active:scale-90" title="Dashboard">
-                        <iconify-icon icon="material-symbols:dashboard-outline" class="text-xl"></iconify-icon>
-                    </button>
-                    <button id="btn-new-post" class="btn-plain p-2.5 active:scale-90" title="Nuevo Post">
-                        <iconify-icon icon="material-symbols:add-circle-outline" class="text-xl"></iconify-icon>
-                    </button>
-                </div>
-                <div style="width: 1px; height: 1.5rem; background: var(--line-divider);"></div>
-                <button id="btn-logout" class="btn-plain p-2.5 active:scale-90" style="color: #ef4444;"
-                    title="Cerrar Sesión">
-                    <iconify-icon icon="material-symbols:logout" class="text-xl"></iconify-icon>
+            <nav id="nav-actions" class="hidden flex items-center gap-2">
+                <button id="btn-dashboard" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90"
+                    title="Dashboard">
+                    <iconify-icon icon="material-symbols:dashboard-outline" class="text-[1.25rem]"></iconify-icon>
+                </button>
+                <button id="btn-new-post" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90"
+                    title="Nuevo Post">
+                    <iconify-icon icon="material-symbols:add-circle-outline" class="text-[1.25rem]"></iconify-icon>
+                </button>
+                <div style="width: 1px; height: 1.5rem; background: var(--line-divider); margin: 0 0.5rem;"></div>
+                <button id="btn-logout" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90"
+                    style="color: #ef4444;" title="Cerrar Sesión">
+                    <iconify-icon icon="material-symbols:logout" class="text-[1.25rem]"></iconify-icon>
                 </button>
             </nav>
         </div>
@@ -77,29 +82,98 @@
 
     <!-- Templates -->
     <template id="tpl-list">
-        <div class="onload-animation space-y-6">
-            <!-- Dashboard Controls -->
-            <div class="flex items-center justify-between mb-8">
-                <h2 class="section-header text-xl">Mis Artículos</h2>
-                <div class="flex items-center gap-4">
-                    <div class="relative">
-                        <iconify-icon icon="material-symbols:search"
-                            class="absolute left-3 top-2.5 opacity-40"></iconify-icon>
-                        <input type="text" id="cms-search" placeholder="Buscar..." class="cms-input"
-                            style="padding-left: 2.25rem; width: 220px;">
+        <main class="cms-container pt-24 pb-12">
+            <!-- Sidebar Overlay (Mobile) -->
+            <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+            <!-- Dashboard -->
+            <div id="dashboard">
+                <div class="flex items-center justify-between mb-8 onload-animation">
+                    <div class="flex items-center gap-3">
+                        <button id="sidebar-toggle" class="btn-plain scale-animation rounded-lg">
+                            <iconify-icon icon="material-symbols:menu-rounded"
+                                style="font-size: 1.5rem;"></iconify-icon>
+                        </button>
+                        <h2 class="section-header text-3xl">Dashboard</h2>
                     </div>
-                    <select id="cms-sort" class="cms-input" style="width: auto;">
-                        <option value="newest">Más recientes</option>
-                        <option value="oldest">Más antiguos</option>
-                        <option value="title">Por título</option>
-                    </select>
+                    <div class="flex items-center gap-3">
+                        <div class="cms-search-wrapper">
+                            <div class="cms-search-icon">
+                                <iconify-icon icon="material-symbols:search-rounded"></iconify-icon>
+                            </div>
+                            <input type="text" id="dashboard-search" class="cms-input cms-search-input"
+                                placeholder="Buscar...">
+                        </div>
+                        <select id="dashboard-sort" class="cms-input w-40 hidden md-block">
+                            <option value="newest">Más recientes</option>
+                            <option value="oldest">Más antiguos</option>
+                            <option value="title">Título (A-Z)</option>
+                        </select>
+                        <div class="hidden md-flex items-center gap-1 bg-white/50 dark:bg-black/20 p-1 rounded-lg">
+                            <button id="view-grid" class="btn-plain layout-toggle-btn active-tab rounded-md"
+                                title="Cuadrícula">
+                                <iconify-icon icon="material-symbols:grid-view-outline-rounded"></iconify-icon>
+                            </button>
+                            <button id="view-list" class="btn-plain layout-toggle-btn rounded-md" title="Lista">
+                                <iconify-icon icon="material-symbols:view-list-rounded"></iconify-icon>
+                            </button>
+                        </div>
+                        <button id="btn-new-post" class="btn-regular scale-animation rounded-lg">
+                            <iconify-icon icon="material-symbols:add-rounded" class="mr-2"></iconify-icon>
+                            <span class="hidden sm-inline">Nuevo</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dashboard-layout">
+                    <!-- Sidebar Filters -->
+                    <aside id="cms-sidebar" class="cms-sidebar onload-animation" style="animation-delay: 0.1s;">
+                        <div class="sidebar-section">
+                            <div class="sidebar-title">Contenido</div>
+                            <div id="main-nav" class="sidebar-list">
+                                <div class="sidebar-item active" data-type="posts">
+                                    <iconify-icon icon="material-symbols:article-outline-rounded"></iconify-icon>
+                                    <span>Posts</span>
+                                </div>
+                                <div class="sidebar-item" data-type="pages">
+                                    <iconify-icon icon="material-symbols:description-outline-rounded"></iconify-icon>
+                                    <span>Páginas</span>
+                                </div>
+                                <div class="sidebar-item" data-type="projects">
+                                    <iconify-icon icon="material-symbols:rocket-launch-outline-rounded"></iconify-icon>
+                                    <span>Proyectos</span>
+                                </div>
+                                <div class="sidebar-item" data-type="events">
+                                    <iconify-icon
+                                        icon="material-symbols:event-available-outline-rounded"></iconify-icon>
+                                    <span>Eventos</span>
+                                </div>
+                                <div class="sidebar-item" data-type="tags">
+                                    <iconify-icon icon="material-symbols:label-outline-rounded"></iconify-icon>
+                                    <span>Etiquetas</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="filters-section" class="sidebar-section">
+                            <div class="sidebar-title">Categorías</div>
+                            <div id="sidebar-categories" class="sidebar-list">
+                            </div>
+                            <div class="sidebar-title mt-6">Etiquetas</div>
+                            <div id="sidebar-tags" class="sidebar-list flex-row flex-wrap">
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Post List Area -->
+                    <div id="posts-container" class="posts-container grid-mode">
+                        <div id="posts-grid" class="cms-grid-post-list">
+                            <!-- Post cards go here -->
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="cms-grid-post-list" id="post-list-grid">
-                <!-- High-fidelity cards will be injected here -->
-            </div>
-        </div>
+        </main>
     </template>
 
     <template id="tpl-editor">
@@ -110,14 +184,17 @@
                 <div class="flex items-center gap-6">
                     <h2 class="section-header text-xl">Editor Post</h2>
                     <div class="flex p-1 bg-(--btn-regular-bg) rounded-lg scale-90">
-                        <button id="mode-visual"
-                            class="btn-plain px-4 py-1.5 text-xs font-bold active-tab">Config</button>
-                        <button id="mode-raw" class="btn-plain px-4 py-1.5 text-xs font-bold">Markdown</button>
-                        <button id="mode-preview" class="btn-plain px-4 py-1.5 text-xs font-bold">Preview</button>
+                        <button id="mode-visual" class="btn-plain px-4 py-1.5 text-xs font-bold active-tab"
+                            style="border-radius: 6px;">Config</button>
+                        <button id="mode-raw" class="btn-plain px-4 py-1.5 text-xs font-bold"
+                            style="border-radius: 6px;">Markdown</button>
+                        <button id="mode-preview" class="btn-plain px-4 py-1.5 text-xs font-bold"
+                            style="border-radius: 6px;">Preview</button>
                     </div>
                 </div>
                 <div class="flex gap-2">
-                    <button id="btn-cancel" class="btn-plain px-5 py-2 text-sm font-bold border">Cancelar</button>
+                    <button id="btn-cancel"
+                        class="btn-plain px-5 py-2 text-sm font-bold border rounded-lg">Cancelar</button>
                     <button id="btn-save" class="btn-regular"
                         style="background: var(--primary); color: white; border: none;">Guardar Cambios</button>
                 </div>

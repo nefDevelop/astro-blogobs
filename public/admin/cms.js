@@ -17,6 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let githubToken = localStorage.getItem('github_pat');
     let allPostsData = []; // Local cache for filtering/sorting
+    let currentContentType = 'posts';
+
+    const pathMap = {
+        posts: 'src/content/posts',
+        pages: 'src/content/spec',
+        projects: 'src/content/projects',
+        events: 'src/content/events'
+    };
 
     // --- Authentication ---
     function checkAuth() {
@@ -91,21 +99,67 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Dashboard Logic ---
-    async function showDashboard() {
+    async function showDashboard(contentType = 'posts') {
+        currentContentType = contentType;
         contentArea.innerHTML = '<div class="flex justify-center py-20"><iconify-icon icon="svg-spinners:ring-resize" style="color: var(--primary); font-size: 3rem;"></iconify-icon></div>';
 
-        try {
-            const files = await ghFetch(POSTS_PATH);
-            const mdFiles = files.filter(f => f.name.endsWith('.md') || f.name.endsWith('.mdx'));
+        const currentPath = pathMap[contentType] || pathMap.posts;
+        let mdFiles = [];
 
-            // Fetch contents for all files to extract metadata (Optimized: only if list changed)
+        try {
+            const files = await ghFetch(currentPath);
+            mdFiles = files.filter(f => f.name.endsWith('.md') || f.name.endsWith('.mdx'));
+        } catch (err) {
+            // Treat 404 (missing folder) as an empty list instead of a fatal error
+            console.warn(`Could not fetch ${contentType} from ${currentPath}:`, err.message);
+            mdFiles = [];
+        }
+
+        try {
+
             contentArea.innerHTML = '';
             const listNode = tplList.content.cloneNode(true);
-            const grid = listNode.querySelector('#post-list-grid');
-            const searchInput = listNode.querySelector('#cms-search');
-            const sortSelect = listNode.querySelector('#cms-sort');
+            const grid = listNode.querySelector('#posts-grid');
+            const searchInput = listNode.querySelector('#dashboard-search');
+            const sortSelect = listNode.querySelector('#dashboard-sort');
+            const postsContainer = listNode.querySelector('#posts-container');
+            const viewGridBtn = listNode.querySelector('#view-grid');
+            const viewListBtn = listNode.querySelector('#view-list');
+            const sidebarCategories = listNode.querySelector('#sidebar-categories');
+            const sidebarTags = listNode.querySelector('#sidebar-tags');
+            const mainNavItems = listNode.querySelectorAll('#main-nav .sidebar-item');
 
-            // Load Metadata for all posts to enable rich cards and sorting
+            // Mobile Sidebar
+            const sidebarToggle = listNode.querySelector('#sidebar-toggle');
+            const sidebar = listNode.querySelector('#cms-sidebar');
+            const sidebarOverlay = listNode.querySelector('#sidebar-overlay');
+
+            sidebarToggle.onclick = () => {
+                sidebar.classList.toggle('open');
+                sidebarOverlay.classList.toggle('open');
+            };
+            sidebarOverlay.onclick = () => {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+            };
+
+            let activeCategory = 'all';
+            let activeTag = 'all';
+
+            // Set active main nav
+            mainNavItems.forEach(item => {
+                const type = item.dataset.type;
+                item.classList.toggle('active', type === contentType);
+                item.onclick = () => {
+                    if (sidebar.classList.contains('open')) {
+                        sidebar.classList.remove('open');
+                        sidebarOverlay.classList.remove('open');
+                    }
+                    showDashboard(type);
+                };
+            });
+
+            // Load Metadata for all posts
             allPostsData = await Promise.all(mdFiles.map(async (file) => {
                 try {
                     const data = await ghFetch(file.path);
@@ -117,59 +171,132 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }));
 
+            function formatDate(dateStr) {
+                if (!dateStr) return 'Sin fecha';
+                const date = new Date(dateStr);
+                const y = date.getFullYear();
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const d = String(date.getDate()).padStart(2, '0');
+                return `${y}-${m}-${d}`;
+            }
+
+            function updateSidebar() {
+                const categories = {};
+                const tags = {};
+                allPostsData.forEach(p => {
+                    const cat = p.fm.category || 'Sin categoría';
+                    categories[cat] = (categories[cat] || 0) + 1;
+                    (p.fm.tags || []).forEach(t => {
+                        tags[t] = (tags[t] || 0) + 1;
+                    });
+                });
+
+                // Categories
+                sidebarCategories.innerHTML = `<div class="sidebar-item ${activeCategory === 'all' ? 'active' : ''}" data-cat="all"><iconify-icon icon="material-symbols:list-alt-outline"></iconify-icon><span>Todos</span> <span class="sidebar-count">${allPostsData.length}</span></div>`;
+                Object.entries(categories).sort().forEach(([cat, count]) => {
+                    sidebarCategories.innerHTML += `<div class="sidebar-item ${activeCategory === cat ? 'active' : ''}" data-cat="${cat}"><iconify-icon icon="material-symbols:folder-outline"></iconify-icon><span>${cat}</span> <span class="sidebar-count">${count}</span></div>`;
+                });
+
+                // Tags
+                sidebarTags.innerHTML = `<div class="sidebar-item ${activeTag === 'all' ? 'active' : ''}" data-tag="all" style="font-size: 0.7rem;"><iconify-icon icon="material-symbols:label-outline"></iconify-icon><span>#Todos</span></div>`;
+                Object.entries(tags).sort().forEach(([tag, count]) => {
+                    sidebarTags.innerHTML += `<div class="sidebar-item ${activeTag === tag ? 'active' : ''}" data-tag="${tag}" style="font-size: 0.7rem;"><iconify-icon icon="material-symbols:label-outline"></iconify-icon><span>#${tag}</span></div>`;
+                });
+
+                sidebarCategories.querySelectorAll('.sidebar-item').forEach(btn => {
+                    btn.onclick = () => {
+                        activeCategory = btn.dataset.cat;
+                        activeTag = 'all';
+                        updateSidebar();
+                        renderFilteredList();
+                    };
+                });
+                sidebarTags.querySelectorAll('.sidebar-item').forEach(btn => {
+                    btn.onclick = () => {
+                        activeTag = btn.dataset.tag;
+                        activeCategory = 'all';
+                        updateSidebar();
+                        renderFilteredList();
+                    };
+                });
+            }
+
             function renderFilteredList() {
                 const query = searchInput.value.toLowerCase();
                 const sortMode = sortSelect.value;
 
-                let filtered = allPostsData.filter(p =>
-                    (p.fm.title || p.name).toLowerCase().includes(query) ||
-                    (p.fm.category || '').toLowerCase().includes(query)
-                );
+                let filtered = allPostsData.filter(p => {
+                    const matchesSearch = (p.fm.title || p.name).toLowerCase().includes(query) || (p.fm.category || '').toLowerCase().includes(query);
+                    const matchesCat = activeCategory === 'all' || (p.fm.category || 'Sin categoría') === activeCategory;
+                    const matchesTag = activeTag === 'all' || (p.fm.tags || []).includes(activeTag);
+                    return matchesSearch && matchesCat && matchesTag;
+                });
 
-                // Sorting
-                if (sortMode === 'newest') {
-                    filtered.sort((a, b) => new Date(b.fm.published || 0) - new Date(a.fm.published || 0));
-                } else if (sortMode === 'oldest') {
-                    filtered.sort((a, b) => new Date(a.fm.published || 0) - new Date(b.fm.published || 0));
-                } else if (sortMode === 'title') {
-                    filtered.sort((a, b) => (a.fm.title || a.name).localeCompare(b.fm.title || b.name));
-                }
+                if (sortMode === 'newest') filtered.sort((a, b) => new Date(b.fm.published || 0) - new Date(a.fm.published || 0));
+                else if (sortMode === 'oldest') filtered.sort((a, b) => new Date(a.fm.published || 0) - new Date(b.fm.published || 0));
+                else if (sortMode === 'title') filtered.sort((a, b) => (a.fm.title || a.name).localeCompare(b.fm.title || b.name));
 
                 grid.innerHTML = '';
                 if (filtered.length === 0) {
-                    grid.innerHTML = '<div class="col-span-full py-20 text-center opacity-50 italic">No se encontraron artículos.</div>';
+                    grid.innerHTML = '<div class="col-span-full py-20 text-center opacity-50 italic">No se encontraron artículos en esta sección.</div>';
                     return;
                 }
 
                 filtered.forEach((post, index) => {
                     const card = document.createElement('div');
                     card.className = `post-card-wrapper onload-animation`;
-                    card.style.animationDelay = `${(index % 4) * 0.1}s`;
+                    card.style.animationDelay = `${(index % 4) * 0.05}s`;
 
-                    const dateStr = post.fm.published ? new Date(post.fm.published).toLocaleDateString() : 'Sin fecha';
-                    const category = post.fm.category || 'Sin categoría';
                     const tags = Array.isArray(post.fm.tags) ? post.fm.tags : [];
+                    const category = post.fm.category || 'Sin categoría';
 
                     card.innerHTML = `
                         <h3 class="post-card-title">${post.fm.title || post.name}</h3>
                         <div class="post-card-meta">
-                            <span class="flex items-center gap-1.5"><iconify-icon icon="material-symbols:calendar-today-outline"></iconify-icon> ${dateStr}</span>
-                            <span style="width: 4px; height: 4px; border-radius: 50%; background: var(--line-divider);"></span>
-                            <span class="flex items-center gap-1.5"><iconify-icon icon="material-symbols:folder-open-outline"></iconify-icon> ${category}</span>
+                            <div class="post-card-meta-item">
+                                <iconify-icon icon="material-symbols:calendar-today-outline-rounded" class="post-card-meta-icon"></iconify-icon>
+                                <span>${formatDate(post.fm.published)}</span>
+                            </div>
+                            <div class="post-card-meta-divider"></div>
+                            <div class="post-card-meta-item">
+                                <iconify-icon icon="material-symbols:book-2-outline-rounded" class="post-card-meta-icon"></iconify-icon>
+                                <span>${category}</span>
+                            </div>
                         </div>
-                        <p class="post-card-description">${post.fm.description || 'Sin descripción disponible para este artículo.'}</p>
+                        <p class="post-card-description">${post.fm.description || 'Sin descripción disponible.'}</p>
                         <div class="post-card-tags">
-                            ${tags.map(t => `<span class="btn-regular" style="font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 6px;">#${t}</span>`).join('')}
+                            <iconify-icon icon="material-symbols:tag-rounded" class="text-lg opacity-40 mr-1"></iconify-icon>
+                            ${tags.map(t => `<span class="tag-chip scale-animation">#${t}</span>`).join('')}
                         </div>
                     `;
-                    card.onclick = () => showEditor(post);
+                    card.onclick = (e) => {
+                        if (e.target.closest('.scale-animation')) return;
+                        showEditor(post);
+                    };
                     grid.appendChild(card);
                 });
             }
 
-            searchInput.oninput = renderFilteredList;
-            sortSelect.onchange = renderFilteredList;
+            viewGridBtn.onclick = () => {
+                postsContainer.classList.replace('list-mode', 'grid-mode');
+                viewGridBtn.classList.add('active-tab');
+                viewListBtn.classList.remove('active-tab');
+            };
+            viewListBtn.onclick = () => {
+                postsContainer.classList.replace('grid-mode', 'list-mode');
+                viewListBtn.classList.add('active-tab');
+                viewGridBtn.classList.remove('active-tab');
+            };
 
+            const btnNewInDashboard = listNode.querySelector('#btn-new-post');
+            if (btnNewInDashboard) {
+                btnNewInDashboard.onclick = () => showEditor();
+            }
+
+            searchInput.oninput = renderFilteredList;
+            if (sortSelect) sortSelect.onchange = renderFilteredList;
+
+            updateSidebar();
             renderFilteredList();
             contentArea.appendChild(listNode);
         } catch (err) {
@@ -237,13 +364,46 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- Preview Logic ---
             function updatePreview() {
                 const raw = contentInput.value;
-                // Basic Admonition Rendering for Preview
-                let html = marked.parse(raw);
-                html = html.replace(/:::(\w+)\n([\s\S]*?)\n:::/g, (match, type, inner) => {
-                    const icon = { note: 'info-outline', tip: 'lightbulb-outline', warning: 'warning-amber-outline', important: 'priority-high', caution: 'dangerous-outline' }[type] || 'info-outline';
-                    return `<div class="admonition"><div class="admonition-title"><iconify-icon icon="material-symbols:${icon}"></iconify-icon> ${type}</div>${marked.parse(inner)}</div>`;
+                const title = titleInput.value.trim() || 'Sin Título';
+                const date = publishedInput.value ? new Date(publishedInput.value).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Sin fecha';
+                const category = categoryInput.value.trim() || 'Sin categoría';
+                const tags = tagsInput.value.split(',').map(t => t.trim()).filter(t => t);
+
+                // Header section for preview (matching blog's post detail)
+                let html = `
+                    <div class="preview-header">
+                        <div class="preview-title-wrapper">
+                            <h1 class="preview-title">${title}</h1>
+                        </div>
+                        <div class="preview-meta">
+                            <span class="preview-meta-item">
+                                <iconify-icon icon="material-symbols:calendar-today-outline-rounded"></iconify-icon>
+                                ${date}
+                            </span>
+                            <span class="preview-meta-divider">/</span>
+                            <span class="preview-meta-item">
+                                <iconify-icon icon="material-symbols:book-2-outline-rounded"></iconify-icon>
+                                ${category}
+                            </span>
+                            ${tags.length > 0 ? `
+                                <span class="preview-meta-divider">/</span>
+                                <span class="preview-meta-item">
+                                    <iconify-icon icon="material-symbols:tag-rounded"></iconify-icon>
+                                    ${tags.join(', ')}
+                                </span>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+
+                // Content parsing
+                let contentHtml = marked.parse(raw);
+                contentHtml = contentHtml.replace(/:::(\w+)\n([\s\S]*?)\n:::/g, (match, type, inner) => {
+                    const icon = { note: 'info-outline-rounded', tip: 'lightbulb-outline-rounded', warning: 'warning-amber-outline-rounded', important: 'priority-high-rounded', caution: 'dangerous-outline-rounded' }[type] || 'info-outline-rounded';
+                    return `<div class="admonition ${type}"><div class="admonition-title"><iconify-icon icon="material-symbols:${icon}"></iconify-icon> ${type}</div>${marked.parse(inner)}</div>`;
                 });
-                previewArea.innerHTML = html;
+
+                previewArea.innerHTML = html + `<div class="markdown-preview">${contentHtml}</div>`;
             }
 
             // Tabs
@@ -297,7 +457,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 const finalContent = stringifyPost(finalFM, contentInput.value);
                 const filename = filenameInput.value.trim();
-                const path = postInit ? postInit.path : `${POSTS_PATH}/${filename.endsWith('.md') ? filename : filename + '.md'}`;
+                const collectionPath = pathMap[currentContentType] || 'src/content/posts';
+                const path = postInit ? postInit.path : `${collectionPath}/${filename.endsWith('.md') ? filename : filename + '.md'}`;
 
                 saveBtn.disabled = true;
                 saveBtn.innerHTML = '<iconify-icon icon="svg-spinners:ring-resize" class="mr-2"></iconify-icon> Guardando...';
