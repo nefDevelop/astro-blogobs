@@ -106,15 +106,13 @@
                             <input type="text" id="dashboard-search" class="cms-input cms-search-input"
                                 placeholder="Buscar artículos...">
                         </div>
-                        <div class="hidden lg-flex items-center gap-3">
-                            <label class="cms-label mb-0 opacity-50 whitespace-nowrap">Ordenar por:</label>
-                            <select id="dashboard-sort" class="cms-input w-44">
-                                <option value="newest">Fecha Creación (↓)</option>
-                                <option value="oldest">Fecha Creación (↑)</option>
+                        <div class="layout-toggle-container">
+                            <select id="dashboard-sort" class="cms-input cms-sort-select">
+                                <option value="newest">Fecha (↓)</option>
+                                <option value="oldest">Fecha (↑)</option>
                                 <option value="title">Nombre (A-Z)</option>
                             </select>
-                        </div>
-                        <div class="layout-toggle-container">
+                            <div class="cms-v-divider"></div>
                             <button id="view-grid" class="layout-toggle-btn active-tab" title="Vista Cuadrícula">
                                 <iconify-icon icon="material-symbols:grid-view-rounded"></iconify-icon>
                             </button>
