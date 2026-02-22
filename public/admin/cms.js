@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let githubToken = localStorage.getItem('github_pat');
     let allPostsData = []; // Local cache for filtering/sorting
     let currentContentType = 'posts';
+    let currentLayout = localStorage.getItem('cms_layout') || 'grid';
+    let activeCategory = 'all';
+    let activeTag = 'all';
 
     const pathMap = {
         posts: 'src/content/posts',
@@ -31,13 +34,32 @@ document.addEventListener('DOMContentLoaded', () => {
         if (githubToken) {
             loginOverlay.classList.add('hidden');
             navActions.classList.remove('hidden');
-            showDashboard();
+            handleRouting();
         } else {
             loginOverlay.classList.remove('hidden');
             navActions.classList.add('hidden');
             contentArea.innerHTML = '';
         }
     }
+
+    function handleRouting() {
+        const params = new URLSearchParams(window.location.search);
+        const view = params.get('view') || 'dashboard';
+        const type = params.get('type') || 'posts';
+        const path = params.get('path');
+
+        if (view === 'editor' && path) {
+            // If we have a path, we might need to fetch the post first or find it in cache
+            // For simplicity, if it's in allPostsData, we use it, otherwise show empty editor or fetch
+            const post = allPostsData.find(p => p.path === path);
+            if (post) showEditor(post, true);
+            else showEditor(null, true); // New post or not in cache
+        } else {
+            showDashboard(type, false, true);
+        }
+    }
+
+    window.onpopstate = () => handleRouting();
 
     btnLogin.onclick = () => {
         const token = githubTokenInput.value.trim();
@@ -98,38 +120,74 @@ document.addEventListener('DOMContentLoaded', () => {
         return `---\n${yamlStr}\n---\n\n${content}`;
     }
 
+    // --- Helper Functions ---
+    function formatDate(dateStr) {
+        if (!dateStr) return 'Sin fecha';
+        const date = new Date(dateStr);
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
+
+    function updateLayoutUI(layout) {
+        currentLayout = layout;
+        localStorage.setItem('cms_layout', layout);
+        const container = document.getElementById('posts-container');
+        const gridBtn = document.getElementById('view-grid');
+        const listBtn = document.getElementById('view-list');
+
+        if (container) {
+            container.classList.remove('grid-mode', 'list-mode');
+            container.classList.add(`${layout}-mode`);
+        }
+        if (gridBtn) gridBtn.classList.toggle('active-tab', layout === 'grid');
+        if (listBtn) listBtn.classList.toggle('active-tab', layout === 'list');
+    }
+
     // --- Dashboard Logic ---
-    async function showDashboard(contentType = 'posts') {
+    async function showDashboard(contentType = 'posts', skipFilterReset = false, fromHistory = false) {
+        if (!fromHistory) {
+            const url = new URL(window.location);
+            url.searchParams.set('view', 'dashboard');
+            url.searchParams.set('type', contentType);
+            url.searchParams.delete('path');
+            history.pushState({}, '', url);
+        }
         currentContentType = contentType;
+        if (!skipFilterReset) {
+            activeCategory = 'all';
+            activeTag = 'all';
+        }
         contentArea.innerHTML = '<div class="flex justify-center py-20"><iconify-icon icon="svg-spinners:ring-resize" style="color: var(--primary); font-size: 3rem;"></iconify-icon></div>';
 
-        const currentPath = pathMap[contentType] || pathMap.posts;
+        const currentPath = pathMap[contentType];
         let mdFiles = [];
 
         try {
-            const files = await ghFetch(currentPath);
-            mdFiles = files.filter(f => f.name.endsWith('.md') || f.name.endsWith('.mdx'));
+            if (contentType === 'tags') {
+                const allResults = await Promise.all(Object.values(pathMap).map(path =>
+                    ghFetch(path).then(files => files.filter(f => f.name.endsWith('.md') || f.name.endsWith('.mdx'))).catch(() => [])
+                ));
+                mdFiles = allResults.flat();
+            } else if (currentPath) {
+                const files = await ghFetch(currentPath);
+                mdFiles = files.filter(f => f.name.endsWith('.md') || f.name.endsWith('.mdx'));
+            }
         } catch (err) {
-            // Treat 404 (missing folder) as an empty list instead of a fatal error
-            console.warn(`Could not fetch ${contentType} from ${currentPath}:`, err.message);
+            console.warn(`Could not fetch ${contentType}:`, err.message);
             mdFiles = [];
         }
 
         try {
-
             contentArea.innerHTML = '';
             const listNode = tplList.content.cloneNode(true);
             const grid = listNode.querySelector('#posts-grid');
             const searchInput = listNode.querySelector('#dashboard-search');
             const sortSelect = listNode.querySelector('#dashboard-sort');
-            const postsContainer = listNode.querySelector('#posts-container');
-            const viewGridBtn = listNode.querySelector('#view-grid');
-            const viewListBtn = listNode.querySelector('#view-list');
             const sidebarCategories = listNode.querySelector('#sidebar-categories');
             const sidebarTags = listNode.querySelector('#sidebar-tags');
             const mainNavItems = listNode.querySelectorAll('#main-nav .sidebar-item');
-
-            // Mobile Sidebar
             const sidebarToggle = listNode.querySelector('#sidebar-toggle');
             const sidebar = listNode.querySelector('#cms-sidebar');
             const sidebarOverlay = listNode.querySelector('#sidebar-overlay');
@@ -143,10 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 sidebarOverlay.classList.remove('open');
             };
 
-            let activeCategory = 'all';
-            let activeTag = 'all';
-
-            // Set active main nav
             mainNavItems.forEach(item => {
                 const type = item.dataset.type;
                 item.classList.toggle('active', type === contentType);
@@ -159,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             });
 
-            // Load Metadata for all posts
+            // Load Metadata
             allPostsData = await Promise.all(mdFiles.map(async (file) => {
                 try {
                     const data = await ghFetch(file.path);
@@ -171,52 +225,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }));
 
-            function formatDate(dateStr) {
-                if (!dateStr) return 'Sin fecha';
-                const date = new Date(dateStr);
-                const y = date.getFullYear();
-                const m = String(date.getMonth() + 1).padStart(2, '0');
-                const d = String(date.getDate()).padStart(2, '0');
-                return `${y}-${m}-${d}`;
-            }
-
             function updateSidebar() {
                 const categories = {};
-                const tags = {};
+                const tagsGlobal = {};
                 allPostsData.forEach(p => {
                     const cat = p.fm.category || 'Sin categoría';
                     categories[cat] = (categories[cat] || 0) + 1;
                     (p.fm.tags || []).forEach(t => {
-                        tags[t] = (tags[t] || 0) + 1;
+                        tagsGlobal[t] = (tagsGlobal[t] || 0) + 1;
                     });
                 });
 
-                // Categories
-                sidebarCategories.innerHTML = `<div class="sidebar-item ${activeCategory === 'all' ? 'active' : ''}" data-cat="all"><iconify-icon icon="material-symbols:list-alt-outline"></iconify-icon><span>Todos</span> <span class="sidebar-count">${allPostsData.length}</span></div>`;
+                sidebarCategories.innerHTML = `<div class="sidebar-item ${activeCategory === 'all' ? 'active' : ''}" data-cat="all"><iconify-icon icon="material-symbols:list-alt-outline-rounded"></iconify-icon><span>Todos</span> <span class="sidebar-count">${allPostsData.length}</span></div>`;
                 Object.entries(categories).sort().forEach(([cat, count]) => {
-                    sidebarCategories.innerHTML += `<div class="sidebar-item ${activeCategory === cat ? 'active' : ''}" data-cat="${cat}"><iconify-icon icon="material-symbols:folder-outline"></iconify-icon><span>${cat}</span> <span class="sidebar-count">${count}</span></div>`;
+                    sidebarCategories.innerHTML += `<div class="sidebar-item ${activeCategory === cat ? 'active' : ''}" data-cat="${cat}"><iconify-icon icon="material-symbols:folder-outline-rounded"></iconify-icon><span>${cat}</span> <span class="sidebar-count">${count}</span></div>`;
                 });
 
-                // Tags
-                sidebarTags.innerHTML = `<div class="sidebar-item ${activeTag === 'all' ? 'active' : ''}" data-tag="all" style="font-size: 0.7rem;"><iconify-icon icon="material-symbols:label-outline"></iconify-icon><span>#Todos</span></div>`;
-                Object.entries(tags).sort().forEach(([tag, count]) => {
-                    sidebarTags.innerHTML += `<div class="sidebar-item ${activeTag === tag ? 'active' : ''}" data-tag="${tag}" style="font-size: 0.7rem;"><iconify-icon icon="material-symbols:label-outline"></iconify-icon><span>#${tag}</span></div>`;
+                sidebarTags.innerHTML = '';
+                const counts = Object.values(tagsGlobal);
+                const min = Math.min(...counts), max = Math.max(...counts);
+
+                Object.entries(tagsGlobal).sort((a, b) => b[1] - a[1]).forEach(([tag, count]) => {
+                    // Usage-based sizing (0.7rem to 1.1rem)
+                    const size = counts.length > 1 ? (0.7 + (count - min) / (max - min) * 0.4) : 0.85;
+                    const opacity = counts.length > 1 ? (0.5 + (count - min) / (max - min) * 0.5) : 0.8;
+
+                    const span = document.createElement('span');
+                    span.className = `tag-chip scale-animation ${activeTag === tag ? 'active' : ''}`;
+                    span.style.fontSize = `${size}rem`;
+                    span.style.opacity = opacity;
+                    span.innerHTML = tag;
+                    span.onclick = () => {
+                        activeTag = tag;
+                        activeCategory = 'all';
+                        if (currentContentType === 'tags') showDashboard('posts', true);
+                        else { updateSidebar(); renderFilteredList(); }
+                    };
+                    sidebarTags.appendChild(span);
                 });
 
                 sidebarCategories.querySelectorAll('.sidebar-item').forEach(btn => {
                     btn.onclick = () => {
                         activeCategory = btn.dataset.cat;
                         activeTag = 'all';
-                        updateSidebar();
-                        renderFilteredList();
-                    };
-                });
-                sidebarTags.querySelectorAll('.sidebar-item').forEach(btn => {
-                    btn.onclick = () => {
-                        activeTag = btn.dataset.tag;
-                        activeCategory = 'all';
-                        updateSidebar();
-                        renderFilteredList();
+                        if (currentContentType === 'tags') showDashboard('posts', true);
+                        else { updateSidebar(); renderFilteredList(); }
                     };
                 });
             }
@@ -224,9 +277,58 @@ document.addEventListener('DOMContentLoaded', () => {
             function renderFilteredList() {
                 const query = searchInput.value.toLowerCase();
                 const sortMode = sortSelect.value;
+                const gridElem = document.getElementById('posts-grid');
+
+                if (currentContentType === 'tags') {
+                    const tagCounts = {};
+                    allPostsData.forEach(p => {
+                        (p.fm.tags || []).forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; });
+                    });
+                    const filteredTags = Object.entries(tagCounts)
+                        .filter(([tag]) => tag.toLowerCase().includes(query))
+                        .sort((a, b) => b[1] - a[1]);
+
+                    gridElem.innerHTML = `
+                        <div class="col-span-full cms-table-container onload-animation">
+                            <table class="cms-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;"></th>
+                                        <th>Etiqueta</th>
+                                        <th>Uso</th>
+                                        <th style="text-align: right;">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${filteredTags.map(([tag, count]) => `
+                                        <tr>
+                                            <td><iconify-icon icon="material-symbols:tag-rounded" class="tag-table-icon"></iconify-icon></td>
+                                            <td class="font-bold">#${tag}</td>
+                                            <td><span class="opacity-60">${count} artículos</span></td>
+                                            <td>
+                                                <div class="tag-table-actions">
+                                                    <button class="table-btn" title="Ver artículos" onclick="window.cms_filterByTag('${tag}')">
+                                                        <iconify-icon icon="material-symbols:visibility-outline-rounded"></iconify-icon>
+                                                    </button>
+                                                    <button class="table-btn" title="Editar etiqueta" onclick="alert('Funcionalidad de edición en desarrollo')">
+                                                        <iconify-icon icon="material-symbols:edit-outline-rounded"></iconify-icon>
+                                                    </button>
+                                                    <button class="table-btn delete" title="Eliminar" onclick="alert('Funcionalidad de eliminación en desarrollo')">
+                                                        <iconify-icon icon="material-symbols:delete-outline-rounded"></iconify-icon>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                    return;
+                }
 
                 let filtered = allPostsData.filter(p => {
-                    const matchesSearch = (p.fm.title || p.name).toLowerCase().includes(query) || (p.fm.category || '').toLowerCase().includes(query);
+                    const matchesSearch = (p.fm.title || p.name).toLowerCase().includes(query);
                     const matchesCat = activeCategory === 'all' || (p.fm.category || 'Sin categoría') === activeCategory;
                     const matchesTag = activeTag === 'all' || (p.fm.tags || []).includes(activeTag);
                     return matchesSearch && matchesCat && matchesTag;
@@ -236,9 +338,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 else if (sortMode === 'oldest') filtered.sort((a, b) => new Date(a.fm.published || 0) - new Date(b.fm.published || 0));
                 else if (sortMode === 'title') filtered.sort((a, b) => (a.fm.title || a.name).localeCompare(b.fm.title || b.name));
 
-                grid.innerHTML = '';
+                gridElem.innerHTML = '';
                 if (filtered.length === 0) {
-                    grid.innerHTML = '<div class="col-span-full py-20 text-center opacity-50 italic">No se encontraron artículos en esta sección.</div>';
+                    gridElem.innerHTML = '<div class="col-span-full py-20 text-center opacity-50 italic">No se encontraron artículos.</div>';
                     return;
                 }
 
@@ -246,66 +348,53 @@ document.addEventListener('DOMContentLoaded', () => {
                     const card = document.createElement('div');
                     card.className = `post-card-wrapper onload-animation`;
                     card.style.animationDelay = `${(index % 4) * 0.05}s`;
-
                     const tags = Array.isArray(post.fm.tags) ? post.fm.tags : [];
-                    const category = post.fm.category || 'Sin categoría';
-
                     card.innerHTML = `
                         <h3 class="post-card-title">${post.fm.title || post.name}</h3>
                         <div class="post-card-meta">
-                            <div class="post-card-meta-item">
-                                <iconify-icon icon="material-symbols:calendar-today-outline-rounded" class="post-card-meta-icon"></iconify-icon>
-                                <span>${formatDate(post.fm.published)}</span>
-                            </div>
+                            <div class="post-card-meta-item"><iconify-icon icon="material-symbols:calendar-today-outline-rounded" class="post-card-meta-icon"></iconify-icon><span>${formatDate(post.fm.published)}</span></div>
                             <div class="post-card-meta-divider"></div>
-                            <div class="post-card-meta-item">
-                                <iconify-icon icon="material-symbols:book-2-outline-rounded" class="post-card-meta-icon"></iconify-icon>
-                                <span>${category}</span>
-                            </div>
+                            <div class="post-card-meta-item"><iconify-icon icon="material-symbols:book-2-outline-rounded" class="post-card-meta-icon"></iconify-icon><span>${post.fm.category || 'Sin categoría'}</span></div>
                         </div>
-                        <p class="post-card-description">${post.fm.description || 'Sin descripción disponible.'}</p>
-                        <div class="post-card-tags">
-                            <iconify-icon icon="material-symbols:tag-rounded" class="text-lg opacity-40 mr-1"></iconify-icon>
-                            ${tags.map(t => `<span class="tag-chip scale-animation">#${t}</span>`).join('')}
-                        </div>
+                        <p class="post-card-description">${post.fm.description || 'Sin descripción.'}</p>
+                        <div class="post-card-tags"><iconify-icon icon="material-symbols:tag-rounded" class="text-lg opacity-40 mr-1"></iconify-icon>${tags.map(t => `<span class="tag-chip">${t}</span>`).join('')}</div>
                     `;
-                    card.onclick = (e) => {
-                        if (e.target.closest('.scale-animation')) return;
-                        showEditor(post);
-                    };
-                    grid.appendChild(card);
+                    card.onclick = (e) => { if (!e.target.closest('.tag-chip')) showEditor(post); };
+                    gridElem.appendChild(card);
                 });
             }
 
-            viewGridBtn.onclick = () => {
-                postsContainer.classList.replace('list-mode', 'grid-mode');
-                viewGridBtn.classList.add('active-tab');
-                viewListBtn.classList.remove('active-tab');
-            };
-            viewListBtn.onclick = () => {
-                postsContainer.classList.replace('grid-mode', 'list-mode');
-                viewListBtn.classList.add('active-tab');
-                viewGridBtn.classList.remove('active-tab');
-            };
+            contentArea.appendChild(listNode);
 
-            const btnNewInDashboard = listNode.querySelector('#btn-new-post');
-            if (btnNewInDashboard) {
-                btnNewInDashboard.onclick = () => showEditor();
-            }
+            // Re-select elements from DOM for better events
+            const viewGridBtn = document.getElementById('view-grid');
+            const viewListBtn = document.getElementById('view-list');
+            const searchInputDOM = document.getElementById('dashboard-search');
+            const sortSelectDOM = document.getElementById('dashboard-sort');
 
-            searchInput.oninput = renderFilteredList;
-            if (sortSelect) sortSelect.onchange = renderFilteredList;
+            viewGridBtn.onclick = () => updateLayoutUI('grid');
+            viewListBtn.onclick = () => updateLayoutUI('list');
+            searchInputDOM.oninput = renderFilteredList;
+            if (sortSelectDOM) sortSelectDOM.onchange = renderFilteredList;
 
+            updateLayoutUI(currentLayout);
             updateSidebar();
             renderFilteredList();
-            contentArea.appendChild(listNode);
+
         } catch (err) {
-            contentArea.innerHTML = `<div class="float-panel p-9 text-center" style="color: #ef4444;"><h2 class="font-bold mb-2">Error de Dashboard</h2><p class="text-sm">${err.message}</p></div>`;
+            contentArea.innerHTML = `<div class="float-panel p-9 text-center text-red-500"><h2>Error de Dashboard</h2><p>${err.message}</p></div>`;
         }
     }
 
     // --- Editor Logic ---
-    async function showEditor(postInit = null) {
+    async function showEditor(postInit = null, fromHistory = false) {
+        if (!fromHistory) {
+            const url = new URL(window.location);
+            url.searchParams.set('view', 'editor');
+            if (postInit) url.searchParams.set('path', postInit.path);
+            else url.searchParams.delete('path');
+            history.pushState({}, '', url);
+        }
         contentArea.innerHTML = '<div class="flex justify-center py-20"><iconify-icon icon="svg-spinners:ring-resize" style="color: var(--primary); font-size: 3rem;"></iconify-icon></div>';
 
         let fm = postInit ? postInit.fm : {};
@@ -314,18 +403,11 @@ document.addEventListener('DOMContentLoaded', () => {
         let originalPath = postInit ? postInit.path : null;
 
         try {
-            if (postInit && !postInit.sha) {
-                // Fetch content if not already in cache (should be there from dashboard)
+            if (postInit) {
                 const data = await ghFetch(postInit.path);
                 sha = data.sha;
-                const decoded = decodeURIComponent(escape(atob(data.content)));
-                const parsed = parsePost(decoded);
-                fm = parsed.fm;
-                content = parsed.content;
-            } else if (postInit) {
-                // Content needs to be refetched to get the raw body properly
-                const data = await ghFetch(postInit.path);
                 const parsed = parsePost(decodeURIComponent(escape(atob(data.content))));
+                fm = parsed.fm;
                 content = parsed.content;
             }
 
@@ -333,7 +415,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const editorNode = tplEditor.content.cloneNode(true);
             const editor = editorNode.querySelector('div');
 
-            // Selectors
             const filenameInput = editor.querySelector('#post-filename');
             const titleInput = editor.querySelector('#fm-title');
             const publishedInput = editor.querySelector('#fm-published');
@@ -341,18 +422,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const descriptionInput = editor.querySelector('#fm-description');
             const tagsInput = editor.querySelector('#fm-tags');
             const contentInput = editor.querySelector('#post-content');
-
-            const modeVisual = editor.querySelector('#mode-visual');
-            const modeRaw = editor.querySelector('#mode-raw');
-            const modePreview = editor.querySelector('#mode-preview');
-            const fmPanel = editor.querySelector('#fm-panel');
-            const markdownContainer = editor.querySelector('#markdown-container');
-            const previewContainer = editor.querySelector('#preview-container');
             const previewArea = editor.querySelector('#preview-area');
             const saveBtn = editor.querySelector('#btn-save');
             const cancelBtn = editor.querySelector('#btn-cancel');
 
-            // Populate
             filenameInput.value = postInit ? postInit.name : 'nuevo-post.md';
             titleInput.value = fm.title || '';
             publishedInput.value = fm.published ? new Date(fm.published).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
@@ -361,52 +434,44 @@ document.addEventListener('DOMContentLoaded', () => {
             tagsInput.value = Array.isArray(fm.tags) ? fm.tags.join(', ') : (fm.tags || '');
             contentInput.value = content;
 
-            // --- Preview Logic ---
+            const renderer = new marked.Renderer();
+            renderer.code = (code, infostring) => {
+                const lang = (infostring || '').match(/\S*/)[0];
+                const meta = (infostring || '').replace(lang, '').trim();
+                const title = meta.match(/title="([^"]*)"/)?.[1] || meta.match(/title=([^ ]*)/)?.[1] || '';
+                return `<div class="code-frame"><div class="code-header"><span class="code-title">${title || 'Código'}</span><span class="code-lang">${lang || 'text'}</span></div><pre><code class="language-${lang}">${code}</code></pre></div>`;
+            };
+            marked.setOptions({ renderer });
+
             function updatePreview() {
                 const raw = contentInput.value;
-                const title = titleInput.value.trim() || 'Sin Título';
-                const date = publishedInput.value ? new Date(publishedInput.value).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Sin fecha';
-                const category = categoryInput.value.trim() || 'Sin categoría';
                 const tags = tagsInput.value.split(',').map(t => t.trim()).filter(t => t);
-
-                // Header section for preview (matching blog's post detail)
-                let html = `
-                    <div class="preview-header">
-                        <div class="preview-title-wrapper">
-                            <h1 class="preview-title">${title}</h1>
-                        </div>
-                        <div class="preview-meta">
-                            <span class="preview-meta-item">
-                                <iconify-icon icon="material-symbols:calendar-today-outline-rounded"></iconify-icon>
-                                ${date}
-                            </span>
-                            <span class="preview-meta-divider">/</span>
-                            <span class="preview-meta-item">
-                                <iconify-icon icon="material-symbols:book-2-outline-rounded"></iconify-icon>
-                                ${category}
-                            </span>
-                            ${tags.length > 0 ? `
-                                <span class="preview-meta-divider">/</span>
-                                <span class="preview-meta-item">
-                                    <iconify-icon icon="material-symbols:tag-rounded"></iconify-icon>
-                                    ${tags.join(', ')}
-                                </span>
-                            ` : ''}
-                        </div>
-                    </div>
-                `;
-
-                // Content parsing
+                let html = `<div class="preview-header"><h1 class="preview-title">${titleInput.value || 'Sin Título'}</h1><div class="preview-meta"><span>${publishedInput.value}</span> / <span>${categoryInput.value}</span>${tags.length ? ` / <span>${tags.join(', ')}</span>` : ''}</div></div>`;
                 let contentHtml = marked.parse(raw);
                 contentHtml = contentHtml.replace(/:::(\w+)\n([\s\S]*?)\n:::/g, (match, type, inner) => {
-                    const icon = { note: 'info-outline-rounded', tip: 'lightbulb-outline-rounded', warning: 'warning-amber-outline-rounded', important: 'priority-high-rounded', caution: 'dangerous-outline-rounded' }[type] || 'info-outline-rounded';
+                    const icon = { note: 'info-rounded', tip: 'lightbulb-rounded', warning: 'warning-rounded', important: 'priority-high-rounded', caution: 'error-rounded' }[type] || 'info-rounded';
                     return `<div class="admonition ${type}"><div class="admonition-title"><iconify-icon icon="material-symbols:${icon}"></iconify-icon> ${type}</div>${marked.parse(inner)}</div>`;
                 });
-
-                previewArea.innerHTML = html + `<div class="markdown-preview">${contentHtml}</div>`;
+                previewArea.innerHTML = html + `<div class="markdown-preview custom-md">${contentHtml}</div>`;
             }
 
-            // Tabs
+            editor.querySelectorAll('.toolbar-btn').forEach(btn => {
+                btn.onclick = () => {
+                    const type = btn.dataset.type;
+                    const snippet = type === 'github' ? '\n::github{repo="user/repo"}\n' : `\n:::${type}\nEscribe aquí...\n:::\n`;
+                    const start = contentInput.selectionStart;
+                    contentInput.value = contentInput.value.substring(0, start) + snippet + contentInput.value.substring(contentInput.selectionEnd);
+                    contentInput.focus();
+                };
+            });
+
+            const modeVisual = editor.querySelector('#mode-visual');
+            const modeRaw = editor.querySelector('#mode-raw');
+            const modePreview = editor.querySelector('#mode-preview');
+            const fmPanel = editor.querySelector('#fm-panel');
+            const markdownContainer = editor.querySelector('#markdown-container');
+            const previewContainer = editor.querySelector('#preview-container');
+
             function setTab(mode) {
                 [modeVisual, modeRaw, modePreview].forEach(btn => btn.classList.remove('active-tab'));
                 markdownContainer.classList.add('hidden');
@@ -434,18 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modeRaw.onclick = () => setTab('raw');
             modePreview.onclick = () => setTab('preview');
 
-            // Toolbar
-            editor.querySelector('.cms-toolbar').addEventListener('click', (e) => {
-                const btn = e.target.closest('.toolbar-btn');
-                if (!btn) return;
-                const type = btn.dataset.type;
-                let snippet = type === 'github' ? '\n::github{repo="user/repo"}\n' : `\n:::${type}\nEscribe aquí...\n:::\n`;
-                const start = contentInput.selectionStart, end = contentInput.selectionEnd;
-                contentInput.value = contentInput.value.substring(0, start) + snippet + contentInput.value.substring(end);
-                contentInput.focus();
-            });
-
-            cancelBtn.onclick = showDashboard;
+            cancelBtn.onclick = () => showDashboard();
 
             saveBtn.onclick = async () => {
                 const finalFM = {
@@ -483,13 +537,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             contentArea.appendChild(editorNode);
         } catch (err) {
-            contentArea.innerHTML = `<div class="float-panel p-9 text-center" style="color: #ef4444;"><h2 class="font-bold mb-2">Error Editor</h2><p class="text-sm">${err.message}</p></div>`;
+            contentArea.innerHTML = `<div class="float-panel p-9 text-center text-red-500"><h2>Error Editor</h2><p>${err.message}</p></div>`;
         }
     }
 
-    btnDashboard.onclick = showDashboard;
+    btnDashboard.onclick = () => showDashboard();
     btnDashboardLogo.onclick = (e) => { e.preventDefault(); showDashboard(); };
     btnNewPost.onclick = () => showEditor();
+
+    window.cms_filterByTag = (tag) => {
+        activeTag = tag;
+        activeCategory = 'all';
+        showDashboard('posts', true);
+    };
 
     checkAuth();
 });

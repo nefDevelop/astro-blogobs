@@ -23,7 +23,7 @@
             <a href="#" id="btn-dashboard-logo"
                 class="btn-plain scale-animation rounded-lg h-13 px-5 font-bold active:scale-95">
                 <div class="flex items-center gap-3 text-md">
-                    <iconify-icon icon="material-symbols:eco-outline"
+                    <iconify-icon icon="material-symbols:eco-rounded"
                         style="color: var(--primary); font-size: 1.75rem;"></iconify-icon>
                     <span class="font-bold text-lg tracking-tight">Rain and Tea</span>
                 </div>
@@ -32,16 +32,18 @@
             <nav id="nav-actions" class="hidden flex items-center gap-2">
                 <button id="btn-dashboard" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90"
                     title="Dashboard">
-                    <iconify-icon icon="material-symbols:dashboard-outline" class="text-[1.25rem]"></iconify-icon>
+                    <iconify-icon icon="material-symbols:dashboard-outline-rounded"
+                        class="text-[1.25rem]"></iconify-icon>
                 </button>
                 <button id="btn-new-post" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90"
                     title="Nuevo Post">
-                    <iconify-icon icon="material-symbols:add-circle-outline" class="text-[1.25rem]"></iconify-icon>
+                    <iconify-icon icon="material-symbols:add-circle-outline-rounded"
+                        class="text-[1.25rem]"></iconify-icon>
                 </button>
                 <div style="width: 1px; height: 1.5rem; background: var(--line-divider); margin: 0 0.5rem;"></div>
                 <button id="btn-logout" class="btn-plain scale-animation rounded-lg w-11 h-11 active:scale-90"
                     style="color: #ef4444;" title="Cerrar Sesión">
-                    <iconify-icon icon="material-symbols:logout" class="text-[1.25rem]"></iconify-icon>
+                    <iconify-icon icon="material-symbols:logout-rounded" class="text-[1.25rem]"></iconify-icon>
                 </button>
             </nav>
         </div>
@@ -50,7 +52,7 @@
     <!-- Login Overlay -->
     <div id="login-overlay" class="fixed inset-0 z-100 flex items-center justify-center p-4">
         <div class="float-panel p-9 max-w-md w-full text-center onload-animation">
-            <iconify-icon icon="material-symbols:lock-person-outline"
+            <iconify-icon icon="material-symbols:lock-person-outline-rounded"
                 style="font-size: 3.75rem; color: var(--primary); margin-bottom: 1rem;"></iconify-icon>
             <h1 class="text-2xl font-bold mb-2">Acceso al Sistema</h1>
             <p class="text-sm opacity-70 mb-8">Gestiona el contenido de tu blog directamente desde GitHub.</p>
@@ -96,74 +98,80 @@
                         </button>
                         <h2 class="section-header text-3xl">Dashboard</h2>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-6 cms-controls-row">
                         <div class="cms-search-wrapper">
                             <div class="cms-search-icon">
                                 <iconify-icon icon="material-symbols:search-rounded"></iconify-icon>
                             </div>
                             <input type="text" id="dashboard-search" class="cms-input cms-search-input"
-                                placeholder="Buscar...">
+                                placeholder="Buscar artículos...">
                         </div>
-                        <select id="dashboard-sort" class="cms-input w-40 hidden md-block">
-                            <option value="newest">Más recientes</option>
-                            <option value="oldest">Más antiguos</option>
-                            <option value="title">Título (A-Z)</option>
-                        </select>
-                        <div class="hidden md-flex items-center gap-1 bg-white/50 dark:bg-black/20 p-1 rounded-lg">
-                            <button id="view-grid" class="btn-plain layout-toggle-btn active-tab rounded-md"
-                                title="Cuadrícula">
-                                <iconify-icon icon="material-symbols:grid-view-outline-rounded"></iconify-icon>
+                        <div class="hidden lg-flex items-center gap-3">
+                            <label class="cms-label mb-0 opacity-50 whitespace-nowrap">Ordenar por:</label>
+                            <select id="dashboard-sort" class="cms-input w-44">
+                                <option value="newest">Fecha Creación (↓)</option>
+                                <option value="oldest">Fecha Creación (↑)</option>
+                                <option value="title">Nombre (A-Z)</option>
+                            </select>
+                        </div>
+                        <div class="layout-toggle-container">
+                            <button id="view-grid" class="layout-toggle-btn active-tab" title="Vista Cuadrícula">
+                                <iconify-icon icon="material-symbols:grid-view-rounded"></iconify-icon>
                             </button>
-                            <button id="view-list" class="btn-plain layout-toggle-btn rounded-md" title="Lista">
+                            <button id="view-list" class="layout-toggle-btn" title="Vista Lista">
                                 <iconify-icon icon="material-symbols:view-list-rounded"></iconify-icon>
                             </button>
                         </div>
-                        <button id="btn-new-post" class="btn-regular scale-animation rounded-lg">
-                            <iconify-icon icon="material-symbols:add-rounded" class="mr-2"></iconify-icon>
-                            <span class="hidden sm-inline">Nuevo</span>
-                        </button>
                     </div>
                 </div>
 
                 <div class="dashboard-layout">
-                    <!-- Sidebar Filters -->
-                    <aside id="cms-sidebar" class="cms-sidebar onload-animation" style="animation-delay: 0.1s;">
-                        <div class="sidebar-section">
-                            <div class="sidebar-title">Contenido</div>
-                            <div id="main-nav" class="sidebar-list">
-                                <div class="sidebar-item active" data-type="posts">
-                                    <iconify-icon icon="material-symbols:article-outline-rounded"></iconify-icon>
-                                    <span>Posts</span>
-                                </div>
-                                <div class="sidebar-item" data-type="pages">
-                                    <iconify-icon icon="material-symbols:description-outline-rounded"></iconify-icon>
-                                    <span>Páginas</span>
-                                </div>
-                                <div class="sidebar-item" data-type="projects">
-                                    <iconify-icon icon="material-symbols:rocket-launch-outline-rounded"></iconify-icon>
-                                    <span>Proyectos</span>
-                                </div>
-                                <div class="sidebar-item" data-type="events">
-                                    <iconify-icon
-                                        icon="material-symbols:event-available-outline-rounded"></iconify-icon>
-                                    <span>Eventos</span>
-                                </div>
-                                <div class="sidebar-item" data-type="tags">
-                                    <iconify-icon icon="material-symbols:label-outline-rounded"></iconify-icon>
-                                    <span>Etiquetas</span>
+                    <div class="sidebar-column flex flex-col gap-6">
+                        <!-- Sidebar Filters -->
+                        <aside id="cms-sidebar" class="cms-sidebar onload-animation" style="animation-delay: 0.1s;">
+                            <div class="sidebar-section">
+                                <div class="sidebar-title">Contenido</div>
+                                <div id="main-nav" class="sidebar-list">
+                                    <div class="sidebar-item active" data-type="posts">
+                                        <iconify-icon icon="material-symbols:article-outline-rounded"></iconify-icon>
+                                        <span>Posts</span>
+                                    </div>
+                                    <div class="sidebar-item" data-type="pages">
+                                        <iconify-icon
+                                            icon="material-symbols:description-outline-rounded"></iconify-icon>
+                                        <span>Páginas</span>
+                                    </div>
+                                    <div class="sidebar-item" data-type="projects">
+                                        <iconify-icon
+                                            icon="material-symbols:rocket-launch-outline-rounded"></iconify-icon>
+                                        <span>Proyectos</span>
+                                    </div>
+                                    <div class="sidebar-item" data-type="events">
+                                        <iconify-icon
+                                            icon="material-symbols:event-available-outline-rounded"></iconify-icon>
+                                        <span>Eventos</span>
+                                    </div>
+                                    <div class="sidebar-item" data-type="tags">
+                                        <iconify-icon icon="material-symbols:tag-rounded"></iconify-icon>
+                                        <span>Etiquetas</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div id="filters-section" class="sidebar-section">
-                            <div class="sidebar-title">Categorías</div>
-                            <div id="sidebar-categories" class="sidebar-list">
+                            <div class="sidebar-section">
+                                <div class="sidebar-title">Categorías</div>
+                                <div id="sidebar-categories" class="sidebar-list">
+                                </div>
                             </div>
-                            <div class="sidebar-title mt-6">Etiquetas</div>
-                            <div id="sidebar-tags" class="sidebar-list flex-row flex-wrap">
+                        </aside>
+
+                        <!-- Tag Cloud Panel -->
+                        <div class="tag-cloud-panel onload-animation" style="animation-delay: 0.2s;">
+                            <div class="sidebar-title px-4 pt-4 pb-2">Nube de Etiquetas</div>
+                            <div id="sidebar-tags" class="tag-cloud-content flex flex-wrap gap-2 p-4">
                             </div>
                         </div>
-                    </aside>
+                    </div>
 
                     <!-- Post List Area -->
                     <div id="posts-container" class="posts-container grid-mode">
@@ -243,15 +251,17 @@
                         style="min-height: calc(100vh - 280px);">
                         <div class="cms-toolbar">
                             <button class="toolbar-btn" data-type="note" title="Nota"><iconify-icon
-                                    icon="material-symbols:info-outline" class="text-xl"></iconify-icon></button>
+                                    icon="material-symbols:info-rounded" class="text-xl"></iconify-icon></button>
                             <button class="toolbar-btn" data-type="tip" title="Tip"><iconify-icon
-                                    icon="material-symbols:lightbulb-outline" class="text-xl"></iconify-icon></button>
+                                    icon="material-symbols:lightbulb-rounded" class="text-xl"></iconify-icon></button>
                             <button class="toolbar-btn" data-type="warning" title="Aviso"><iconify-icon
-                                    icon="material-symbols:warning-amber-outline"
+                                    icon="material-symbols:warning-rounded" class="text-xl"></iconify-icon></button>
+                            <button class="toolbar-btn" data-type="important" title="Importante"><iconify-icon
+                                    icon="material-symbols:priority-high-rounded"
                                     class="text-xl"></iconify-icon></button>
                             <div class="toolbar-divider"></div>
                             <button class="toolbar-btn" data-type="github" title="Repo"><iconify-icon
-                                    icon="fa7-brands:github" class="text-xl"></iconify-icon></button>
+                                    icon="fa6-brands:github" class="text-xl"></iconify-icon></button>
                         </div>
                         <textarea id="post-content" class="flex-1 w-full p-9 font-mono text-sm"
                             style="background: transparent; resize: none; border: none; outline: none; line-height: 1.8; color: var(--text-primary);"
