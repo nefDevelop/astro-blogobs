@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     ${filteredTags.map(([tag, count]) => `
                                         <tr>
                                             <td><iconify-icon icon="material-symbols:tag-rounded" class="tag-table-icon"></iconify-icon></td>
-                                            <td class="font-bold">#${tag}</td>
+                                            <td class="font-bold">${tag}</td>
                                             <td><span class="opacity-60">${count} artículos</span></td>
                                             <td>
                                                 <div class="tag-table-actions">

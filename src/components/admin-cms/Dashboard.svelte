@@ -195,55 +195,52 @@
   ></div>
 
   <div id="dashboard" class="cms-container">
-    <div class="flex items-center justify-between mb-8 onload-animation">
-      <div class="flex items-center gap-3">
-        <h2 class="section-header text-3xl">Dashboard</h2>
+    <div
+      class="flex items-center gap-6 mb-10 onload-animation mx-auto max-w-7xl"
+    >
+      <div class="cms-search-wrapper flex-1">
+        <div class="cms-search-icon">
+          <iconify-icon
+            icon="material-symbols:search-rounded"
+            style="font-size: 1.5rem;"
+          ></iconify-icon>
+        </div>
+        <input
+          type="text"
+          bind:value={searchTerm}
+          class="cms-input cms-search-input w-full"
+          placeholder="Buscar publicaciones..."
+        />
       </div>
-      <div class="flex items-center gap-4 cms-controls-row">
-        <div class="cms-search-wrapper">
-          <div class="cms-search-icon">
-            <iconify-icon
-              icon="material-symbols:search-rounded"
-              style="font-size: 1.5rem;"
-            ></iconify-icon>
-          </div>
-          <input
-            type="text"
-            bind:value={searchTerm}
-            class="cms-input cms-search-input"
-            placeholder="Buscar..."
-          />
-        </div>
-        <div class="layout-toggle-container">
-          <select bind:value={sortMode} class="cms-input cms-sort-select">
-            <option value="newest">Recientes</option>
-            <option value="oldest">Antiguos</option>
-            <option value="title">A-Z</option>
-          </select>
-          <div class="cms-v-divider"></div>
-          <button
-            onclick={() => updateLayoutUI("grid")}
-            class="layout-toggle-btn"
-            class:active-tab={currentLayout === "grid"}
-            title="Cuadrícula"
-          >
-            <iconify-icon
-              icon="material-symbols:grid-view-rounded"
-              style="font-size: 1.25rem;"
-            ></iconify-icon>
-          </button>
-          <button
-            onclick={() => updateLayoutUI("list")}
-            class="layout-toggle-btn"
-            class:active-tab={currentLayout === "list"}
-            title="Lista"
-          >
-            <iconify-icon
-              icon="material-symbols:view-list-rounded"
-              style="font-size: 1.25rem;"
-            ></iconify-icon>
-          </button>
-        </div>
+      <div class="layout-toggle-container">
+        <select bind:value={sortMode} class="cms-input cms-sort-select">
+          <option value="newest">Recientes</option>
+          <option value="oldest">Antiguos</option>
+          <option value="title">A-Z</option>
+        </select>
+        <div class="cms-v-divider"></div>
+        <button
+          onclick={() => updateLayoutUI("grid")}
+          class="layout-toggle-btn"
+          class:active-tab={currentLayout === "grid"}
+          title="Cuadrícula"
+        >
+          <iconify-icon
+            icon="material-symbols:grid-view-rounded"
+            style="font-size: 1.25rem;"
+          ></iconify-icon>
+        </button>
+        <button
+          onclick={() => updateLayoutUI("list")}
+          class="layout-toggle-btn"
+          class:active-tab={currentLayout === "list"}
+          title="Lista"
+        >
+          <iconify-icon
+            icon="material-symbols:view-list-rounded"
+            style="font-size: 1.25rem;"
+          ></iconify-icon>
+        </button>
       </div>
     </div>
 
@@ -401,7 +398,7 @@
                         class="tag-table-icon"
                       ></iconify-icon></td
                     >
-                    <td class="font-bold">#{tag}</td>
+                    <td class="font-bold">{tag}</td>
                     <td><span class="opacity-60">{count} artículos</span></td>
                     <td>
                       <div class="tag-table-actions">
@@ -478,13 +475,7 @@
                   {post.fm.description || "Sin descripción."}
                 </p>
                 <div class="post-card-tags">
-                  <iconify-icon
-                    icon="material-symbols:tag-rounded"
-                    class="text-lg opacity-40 mr-1"
-
-                  ></iconify-icon>{#each Array.isArray(post.fm.tags) ? post.fm.tags : [] as tag}<span
-                      class="tag-chip">{tag}</span
-                    >{/each}
+                  {#each Array.isArray(post.fm.tags) ? post.fm.tags : [] as tag}{/each}
                 </div>
               </div>
             {/each}

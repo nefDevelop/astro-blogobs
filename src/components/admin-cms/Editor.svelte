@@ -275,7 +275,7 @@
   }
 </script>
 
-<div class="editor-main-wrapper onload-animation">
+<div class="editor-main-wrapper onload-animation mx-auto max-w-7xl">
   <div class="editor-header sticky z-40 py-4">
     <div class="flex items-center gap-6">
       <h2 class="section-header text-xl">Editor {post ? "Post" : "Nuevo"}</h2>
@@ -306,10 +306,16 @@
       {#if post}
         <button
           onclick={handleDelete}
-          class="btn-plain px-5 py-2 text-sm font-bold border rounded-lg"
+          class="btn-plain px-3 py-2 text-sm font-bold border rounded-lg"
           style="color: #ef4444;"
-          disabled={isSaving}>Eliminar</button
+          title="Eliminar publicación"
+          disabled={isSaving}
         >
+          <iconify-icon
+            icon="material-symbols:delete-outline-rounded"
+            style="font-size: 1.25rem;"
+          ></iconify-icon>
+        </button>
       {/if}
       <button onclick={handleSave} class="btn-regular" disabled={isSaving}>
         {#if isSaving}
@@ -328,16 +334,20 @@
     </div>
   {/if}
 
-  <div class="grid grid-cols-1 md-grid-cols-12 gap-8 items-start">
+  <div class="cms-grid-12 items-start">
     <div
-      class="fm-panel"
+      class="fm-panel cms-col-4"
       class:hidden={currentMode === "raw" || currentMode === "preview"}
     >
-      <div class="float-panel p-6 space-y-6">
-        <h3 class="section-header text-sm tracking-widest uppercase opacity-80">
-          Metadata
-        </h3>
-        <div class="flex flex-col gap-4">
+      <div class="float-panel space-y-6">
+        <div class="contrast-header px-6 py-4">
+          <h3
+            class="section-header text-sm tracking-widest uppercase opacity-80"
+          >
+            Metadata
+          </h3>
+        </div>
+        <div class="flex flex-col gap-6 p-6 pt-0">
           <div>
             <label class="cms-label" for="filename-input"
               >Nombre del archivo</label
@@ -405,14 +415,14 @@
 
     <div
       class="content-panel"
-      class:md-col-span-12={currentMode === "raw" || currentMode === "preview"}
-      class:md-col-span-8={currentMode === "visual"}
+      class:cms-col-12={currentMode === "raw" || currentMode === "preview"}
+      class:cms-col-8={currentMode === "visual"}
     >
       <div
         class="markdown-container float-panel flex flex-col overflow-hidden"
         class:hidden={currentMode === "preview"}
       >
-        <div class="cms-toolbar">
+        <div class="cms-toolbar contrast-header">
           <button
             onclick={() => handleToolbarButtonClick("bold")}
             class="toolbar-btn"
@@ -547,7 +557,7 @@
         <textarea
           id="post-content"
           bind:value={contentInput}
-          class="flex-1 w-full p-9 font-mono text-sm"
+          class="flex-1 w-full p-9 font-mono text-sm leading-relaxed"
           placeholder="Escribe tu contenido aquí..."
         ></textarea>
       </div>
@@ -566,147 +576,141 @@
 
 <style>
   .editor-main-wrapper {
-    padding: 2rem 1rem;
+    padding: 1.5rem 1rem;
     max-width: 1200px;
     margin: 0 auto;
+    width: 100%;
   }
+
   .editor-header {
     background: var(--page-bg);
-    border-bottom: 1px solid var(--line-divider);
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 2rem;
     position: sticky;
-    top: 4rem;
+    top: 4.5rem;
     z-index: 40;
+    padding: 1rem 0;
+    backdrop-filter: blur(8px);
   }
+
   .editor-mode-toggle {
     display: flex;
-    background: var(--input-bg);
-    padding: 2px;
-    border-radius: 0.5rem;
+    background: var(--btn-regular-bg);
+    padding: 4px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line-divider);
   }
-  .float-panel {
-    background: var(--float-panel-bg);
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  }
-  .cms-label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    opacity: 0.7;
-    margin-bottom: 0.5rem;
-  }
-  .cms-input,
-  .cms-textarea {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 0.375rem;
-    background: var(--input-bg);
-    color: var(--text-primary);
-    outline: none;
-  }
-  .cms-textarea {
-    resize: vertical;
-  }
+
+  /* Form Elements */
+  /* Toolbar */
   .cms-toolbar {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem;
-    padding: 0.5rem;
-    background: rgba(0, 0, 0, 0.1);
+    gap: 2px;
+    padding: 0.4rem;
+    background: var(--btn-regular-bg);
     border-bottom: 1px solid var(--line-divider);
   }
+
   .toolbar-btn {
     background: none;
     border: none;
-    padding: 0.5rem;
+    width: 2.25rem;
+    height: 2.25rem;
     cursor: pointer;
-    border-radius: 0.25rem;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-secondary);
+    transition: all 0.2s;
   }
+
   .toolbar-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text-primary);
+    background: var(--btn-plain-bg-hover);
+    color: var(--primary);
   }
+
   .toolbar-divider {
     width: 1px;
-    height: 1.5rem;
+    height: 1.25rem;
     background: var(--line-divider);
-    margin: 0 0.25rem;
+    margin: 0 0.5rem;
+    align-self: center;
   }
-  .markdown-container {
-    height: calc(100vh - 300px);
-    min-height: 500px;
-  }
-  #post-content {
-    border: none;
-    background: transparent;
-    color: inherit;
-    line-height: 1.6;
-    outline: none;
-    resize: none;
-  }
+
+  /* Editor Areas */
+  .markdown-container,
   .preview-container {
-    height: calc(100vh - 300px);
+    height: calc(100vh - 280px);
     min-height: 500px;
+    background: var(--card-bg);
+    overflow: hidden;
   }
+
+  .preview-container {
+    overflow-y: auto;
+    padding: 2.25rem;
+  }
+
+  /* Buttons */
   .btn-plain {
     background: none;
-    border: none;
+    border: 1px solid var(--line-divider);
     cursor: pointer;
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-weight: 600;
+    transition: all 0.2s;
+    font-size: 0.85rem;
   }
+
+  .btn-plain:hover {
+    background: var(--btn-plain-bg-hover);
+    border-color: var(--primary);
+  }
+
   .btn-plain.active-tab {
     background: var(--primary);
     color: white;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(var(--primary), 0.2);
   }
+
   .btn-regular {
     background: var(--primary);
     color: white;
-    padding: 0.625rem 1.25rem;
-    border-radius: 0.5rem;
+    padding: 0.625rem 1.5rem;
+    border-radius: var(--radius-lg);
     font-weight: 700;
     cursor: pointer;
     border: none;
     display: flex;
     align-items: center;
-  }
-  .btn-regular:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
+    box-shadow: 0 4px 12px rgba(var(--primary), 0.3);
+    transition: all 0.2s;
   }
 
-  /* Additional grid helpers */
-  .grid {
-    display: grid;
+  .btn-regular:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
   }
-  .grid-cols-1 {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
+
+  .btn-regular:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
   }
-  .gap-8 {
-    gap: 2rem;
-  }
-  @media (min-width: 768px) {
-    .md-grid-cols-12 {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-    }
-    .md-col-span-8 {
-      grid-column: span 8 / span 8;
-    }
-    .md-col-span-12 {
-      grid-column: span 12 / span 12;
-    }
-  }
+
   .hidden {
     display: none;
+  }
+
+  /* Space helpers */
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.5rem;
   }
 </style>
