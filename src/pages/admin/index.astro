@@ -1,0 +1,26 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import CmsApp from "../../components/admin-cms/CmsApp.svelte";
+---
+
+<Layout title="CMS Admin">
+    <div class="cms-page-root">
+        <CmsApp client:only="svelte" />
+    </div>
+</Layout>
+
+<style is:global>
+    /* Ensure the CMS styles are loaded */
+    @import "/admin/cms.css";
+    @import "/admin/firefly.css";
+
+    .cms-page-root {
+        min-height: 100vh;
+        background-color: var(--page-bg);
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+</style>
