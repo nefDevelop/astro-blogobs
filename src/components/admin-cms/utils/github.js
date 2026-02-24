@@ -1,36 +1,38 @@
 // src/components/admin-cms/utils/github.js
-const REPO_OWNER = 'nefDevelop'; // Hardcoded as per original cms.js
-const REPO_NAME = 'astro-blogobs'; // Hardcoded as per original cms.js
+const REPO_OWNER = 'nefDevelop';
+const REPO_NAME = 'astro-blogobs';
 
 /**
  * Fetches data from the GitHub API.
- * @param {string} path - The API path (e.g., 'contents/src/content/posts').
- * @param {string} githubToken - The GitHub Personal Access Token.
- * @param {object} options - Fetch options.
- * @returns {Promise<any>}
  */
 export async function ghFetch(path, githubToken, options = {}) {
   const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/${path}`;
-  const res = await fetch(url, {
-    ...options,
-    headers: {
-      ...options.headers,
-      'Authorization': `token ${githubToken}`,
-      'Accept': 'application/vnd.github.v3+json'
-    }
-  });
+  
+  try {
+    const res = await fetch(url, {
+      ...options,
+      headers: {
+        'Authorization': `Bearer ${githubToken}`,
+        'Accept': 'application/vnd.github.v3+json',
+        ...options.headers
+      }
+    });
 
-  if (!res.ok) {
-    if (res.status === 401) {
-      // In a Svelte component, we would typically dispatch an event
-      // to handle logout, rather than calling alert() and a global function.
-      console.error('GitHub API Error: Session expired. Please re-enter your token.');
-      // For now, re-throwing the error for CmsApp to handle.
+    if (!res.ok) {
+      if (res.status === 401) {
+        console.error('GitHub API Error: Session expired or invalid token.');
+      }
+      const errorData = await res.json().catch(() => ({ message: res.statusText }));
+      throw new Error(errorData.message || `Error ${res.status}`);
     }
-    throw new Error(`GitHub API Error: ${res.statusText} (Status: ${res.status})`);
+    
+    return res.json();
+  } catch (err) {
+    if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
+      throw new Error('Error de red: No se pudo conectar con GitHub. Verifica tu conexión o el estado de la API.');
+    }
+    throw err;
   }
-  return res.json();
 }
 
-// You might also want to export the REPO_OWNER and REPO_NAME if needed elsewhere
 export { REPO_OWNER, REPO_NAME };
