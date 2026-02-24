@@ -46,33 +46,91 @@ header#navbar {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
 }
 .nav-inner {
-    background: var(--card-bg-transparent);
-    backdrop-filter: blur(var(--navbar-glass-blur));
+    background: var(--card-bg);
     border: 1px solid var(--line-divider);
     border-top: none;
     border-radius: 0 0 var(--radius-navbar) var(--radius-navbar);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
     width: 95%; max-width: var(--page-width);
     margin: 0 auto;
     display: flex; justify-content: space-between; align-items: center;
-    height: 3.5rem; padding: 0 1rem;
+    height: 4rem; padding: 0 1.5rem;
 }
+
+.cms-container {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    width: 95%;
+}
+
+/* Botones Globales */
+.cms-btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0 1.25rem;
+    height: 2.75rem;
+    border-radius: var(--radius-lg);
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: 0.2s;
+    font-size: 0.9rem;
+}
+.cms-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.cms-btn-primary:active { transform: scale(0.98); }
+.cms-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.cms-btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--line-divider);
+    padding: 0 1.25rem;
+    height: 2.75rem;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 0.9rem;
+}
+.cms-btn-ghost:hover { background: var(--btn-regular-bg); color: var(--text-primary); }
+
+.cms-btn-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line-divider);
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 1.25rem;
+}
+.cms-btn-icon:hover { border-color: var(--primary); color: var(--primary); background: var(--btn-regular-bg); }
 
 /* Editor Header: mismo ancho que el body pero contenido centrado */
 .cms-editor-header {
-    background: var(--card-bg-transparent); border-bottom: 1px solid var(--line-divider);
-    position: fixed; top: 4.5rem; left: 0; right: 0; z-index: 100;
-    backdrop-filter: blur(var(--navbar-glass-blur));
+    position: fixed; top: 4.5rem; left: 0; right: 0; z-index: 900;
     width: 100%;
 }
 .cms-header-inner {
     max-width: var(--page-width); margin: 0 auto; width: 95%;
     display: flex; justify-content: space-between; align-items: center;
     height: 3.5rem;
+    background: var(--card-bg);
+    border: 1px solid var(--line-divider);
+    border-radius: var(--radius-navbar);
+    padding: 0 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 }
 
 /* Layout Grid y Paneles */
-.cms-editor-content { padding: 6.5rem 0 3rem 0; max-width: var(--page-width); margin: 0 auto; width: 95%; }
+.cms-editor-content { padding: 9.5rem 0 3rem 0; max-width: var(--page-width); margin: 0 auto; width: 95%; }
 .cms-editor-layout-grid { display: grid; grid-template-columns: 400px 1fr; gap: 2rem; align-items: start; }
 .cms-editor-layout-grid.is-full-width { grid-template-columns: 1fr; }
 

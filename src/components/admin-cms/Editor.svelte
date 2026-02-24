@@ -145,7 +145,7 @@
     </div>
   </header>
 
-  <main class="cms-editor-content">
+  <main class="cms-editor-content cms-container">
     <div class="cms-editor-layout-grid" class:is-full-width={currentMode !== 'visual'}>
       {#if currentMode === "visual"}
         <section class="cms-metadata-panel">
@@ -232,10 +232,18 @@
         {#if currentMode !== "preview"}
           <div class="cms-editor-container">
             <div class="cms-editor-toolbar">
-              <button onclick={() => handleToolbar("bold")}>B</button>
-              <button onclick={() => handleToolbar("italic")}>I</button>
-              <button onclick={() => handleToolbar("h2")}>H2</button>
-              <button onclick={() => handleToolbar("link")}>Link</button>
+              <button onclick={() => handleToolbar("bold")} title="Negrita">
+                <iconify-icon icon="material-symbols:format-bold-rounded"></iconify-icon>
+              </button>
+              <button onclick={() => handleToolbar("italic")} title="Cursiva">
+                <iconify-icon icon="material-symbols:format-italic-rounded"></iconify-icon>
+              </button>
+              <button onclick={() => handleToolbar("h2")} title="Título">
+                <iconify-icon icon="material-symbols:format-h2-rounded"></iconify-icon>
+              </button>
+              <button onclick={() => handleToolbar("link")} title="Enlace">
+                <iconify-icon icon="material-symbols:link-rounded"></iconify-icon>
+              </button>
             </div>
             <textarea id="post-content" bind:value={contentInput} class="cms-main-textarea"></textarea>
           </div>
@@ -255,4 +263,62 @@
   .cms-checkbox-group { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
   .cms-check-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer; font-weight: 600; }
   .mt-4 { margin-top: 1.5rem; }
+
+  /* Mode Tabs */
+  .cms-mode-tabs {
+    display: flex;
+    background: var(--btn-regular-bg);
+    padding: 0.25rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line-divider);
+    margin-left: 1.5rem;
+  }
+  .cms-mode-tabs button {
+    padding: 0.4rem 1rem;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: 0.2s;
+  }
+  .cms-mode-tabs button.active {
+    background: var(--card-bg);
+    color: var(--primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  /* Toolbar */
+  .cms-editor-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--toolbar-bg);
+    border-bottom: 1px solid var(--line-divider);
+  }
+  .cms-editor-toolbar button {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-bg);
+    border: 1px solid var(--line-divider);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 1.2rem;
+  }
+  .cms-editor-toolbar button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--btn-regular-bg);
+  }
+
+  .cms-header-left { display: flex; align-items: center; }
+  .cms-header-actions { display: flex; gap: 0.75rem; }
+  .cms-editor-title { font-size: 1.1rem; font-weight: 800; margin: 0; }
 </style>

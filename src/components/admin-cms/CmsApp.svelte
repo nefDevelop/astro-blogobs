@@ -87,22 +87,22 @@
 <header id="navbar">
   <div class="nav-inner">
     <button type="button" onclick={handleDashboardClick} class="btn-plain scale-animation rounded-lg h-13 px-5 font-bold">
-      <div class="flex flex-row items-center text-md dark:text-white text-black">
-        <iconify-icon icon="material-symbols:eco-outline" class="text-[1.75rem] mb-1 mr-2"></iconify-icon>
+      <div class="flex flex-row items-center text-xl dark:text-white text-black">
+        <iconify-icon icon="material-symbols:eco-outline" class="text-[2rem] mb-1 mr-2"></iconify-icon>
         {siteTitle}
       </div>
     </button>
 
     {#if isLoggedIn}
-      <div class="flex relative items-center gap-1">
-        <button onclick={handleDashboardClick} class="btn-plain scale-animation rounded-lg w-11 h-11" title="Dashboard">
-          <iconify-icon icon="material-symbols:dashboard-outline-rounded" style="font-size: 1.25rem;"></iconify-icon>
+      <div class="flex relative items-center gap-2">
+        <button onclick={handleDashboardClick} class="cms-btn-icon" title="Dashboard">
+          <iconify-icon icon="material-symbols:dashboard-outline-rounded"></iconify-icon>
         </button>
-        <button onclick={handleNewPost} class="btn-plain scale-animation rounded-lg w-11 h-11" title="Nuevo Post">
-          <iconify-icon icon="material-symbols:add-circle-outline-rounded" style="font-size: 1.25rem;"></iconify-icon>
+        <button onclick={handleNewPost} class="cms-btn-icon" title="Nuevo Post">
+          <iconify-icon icon="material-symbols:add-circle-outline-rounded"></iconify-icon>
         </button>
-        <button onclick={handleLogout} class="btn-plain scale-animation rounded-lg w-11 h-11" style="color: #ef4444;" title="Cerrar Sesión">
-          <iconify-icon icon="material-symbols:logout-rounded" style="font-size: 1.25rem;"></iconify-icon>
+        <button onclick={handleLogout} class="cms-btn-icon" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2);" title="Cerrar Sesión">
+          <iconify-icon icon="material-symbols:logout-rounded"></iconify-icon>
         </button>
       </div>
     {/if}
