@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import Icon from "../common/Icon.svelte";
   import Login from "./Login.svelte";
   import Dashboard from "./Dashboard.svelte";
   import Editor from "./Editor.svelte";
@@ -20,7 +21,7 @@
       const path = params.get("path");
       if (view === "editor" && path) {
         currentView = "editor";
-        postToEdit = { path, name: path.split('/').pop() };
+        postToEdit = { path, name: path.split("/").pop() };
       }
     } else {
       currentView = "login";
@@ -47,7 +48,11 @@
       if (post) url.searchParams.set("path", post.path);
     }
     // Usamos snapshot para evitar el error de clonación de Proxy
-    window.history.pushState({ view, post: post ? $state.snapshot(post) : null }, "", url);
+    window.history.pushState(
+      { view, post: post ? $state.snapshot(post) : null },
+      "",
+      url,
+    );
   }
 
   function handleLoginSuccess(data) {
@@ -86,23 +91,41 @@
 
 <header id="navbar">
   <div class="nav-inner">
-    <button type="button" onclick={handleDashboardClick} class="btn-plain scale-animation rounded-lg h-13 px-5 font-bold">
-      <div class="flex flex-row items-center text-xl dark:text-white text-black">
-        <iconify-icon icon="material-symbols:eco-outline" class="text-[2rem] mb-1 mr-2"></iconify-icon>
+    <button
+      type="button"
+      onclick={handleDashboardClick}
+      class="btn-plain scale-animation rounded-lg h-13 px-5 font-bold"
+    >
+      <div
+        class="flex flex-row items-center text-xl dark:text-white text-black"
+      >
+        <Icon
+          icon="material-symbols:eco-outline"
+          class="text-[2rem] mb-1 mr-2"
+        />
         {siteTitle}
       </div>
     </button>
 
     {#if isLoggedIn}
       <div class="flex relative items-center gap-2">
-        <button onclick={handleDashboardClick} class="cms-btn-icon" title="Dashboard">
-          <iconify-icon icon="material-symbols:dashboard-outline-rounded"></iconify-icon>
+        <button
+          onclick={handleDashboardClick}
+          class="cms-btn-icon"
+          title="Dashboard"
+        >
+          <Icon icon="material-symbols:dashboard-outline-rounded" />
         </button>
         <button onclick={handleNewPost} class="cms-btn-icon" title="Nuevo Post">
-          <iconify-icon icon="material-symbols:add-circle-outline-rounded"></iconify-icon>
+          <Icon icon="material-symbols:add-circle-outline-rounded" />
         </button>
-        <button onclick={handleLogout} class="cms-btn-icon" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2);" title="Cerrar Sesión">
-          <iconify-icon icon="material-symbols:logout-rounded"></iconify-icon>
+        <button
+          onclick={handleLogout}
+          class="cms-btn-icon"
+          style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2);"
+          title="Cerrar Sesión"
+        >
+          <Icon icon="material-symbols:logout-rounded" />
         </button>
       </div>
     {/if}
@@ -113,9 +136,18 @@
   {#if !isLoggedIn}
     <Login onLoginSuccess={handleLoginSuccess} />
   {:else if currentView === "dashboard"}
-    <Dashboard {githubToken} onEditPost={handleEditPost} onNewPost={handleNewPost} />
+    <Dashboard
+      {githubToken}
+      onEditPost={handleEditPost}
+      onNewPost={handleNewPost}
+    />
   {:else if currentView === "editor"}
-    <Editor {githubToken} post={postToEdit} onPostSaved={handleDashboardClick} onPostCancelled={handleDashboardClick} />
+    <Editor
+      {githubToken}
+      post={postToEdit}
+      onPostSaved={handleDashboardClick}
+      onPostCancelled={handleDashboardClick}
+    />
   {/if}
 </main>
 

@@ -1,4 +1,5 @@
 <script>
+    import Icon from "../common/Icon.svelte";
     let { onLoginSuccess } = $props();
     let githubTokenInput = $state("");
 
@@ -16,10 +17,11 @@
     class="fixed inset-0 z-100 flex items-center justify-center p-4"
 >
     <div class="float-panel p-9 max-w-md w-full text-center onload-animation">
-        <iconify-icon
+        <Icon
             icon="material-symbols:lock-person-outline-rounded"
             style="font-size: 3.75rem; color: var(--primary); margin-bottom: 1rem;"
-        ></iconify-icon>
+        />
+
         <h1 class="text-2xl font-bold mb-2">Acceso al Sistema</h1>
         <p class="text-sm opacity-70 mb-8">
             Gestiona el contenido de tu blog directamente desde GitHub.
@@ -96,9 +98,6 @@
     }
     .text-center {
         text-align: center;
-    }
-    .onload-animation {
-        /* Assuming this refers to some animation, not directly implemented here */
     }
     .text-2xl {
         font-size: 1.5rem;

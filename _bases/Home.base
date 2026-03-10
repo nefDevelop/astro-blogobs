@@ -47,7 +47,7 @@ properties:
   note.title:
     displayName: Title
 views:
-  - type: bases-cms
+  - type: cms
     name: Blog
     filters:
       and:
@@ -72,7 +72,7 @@ views:
     showDraftStatus: true
     draftStatusProperty: note.draft
     draftStatusReverse: false
-  - type: bases-cms
+  - type: cms
     name: Vault CMS Guide
     filters:
       and:
@@ -100,6 +100,6 @@ views:
     dateIncludeTime: false
     descriptionProperty: note.description
     hideQuickEditIcon: true
-  - type: bases-cms
+  - type: cms
     name: Posts
     cardSize: 400
