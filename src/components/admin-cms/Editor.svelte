@@ -40,7 +40,18 @@
     }
   });
 
-  onMount(() => {
+  onMount(async () => {
+    // Carga marked dinámicamente si no está disponible
+    if (!window.marked) {
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
+      script.onload = () => {
+        if (currentMode === "preview") {
+          renderedHTML = window.marked.parse(contentInput);
+        }
+      };
+      document.head.appendChild(script);
+    }
     if (post && githubToken) loadPost();
   });
 
@@ -139,14 +150,49 @@
     const start = el.selectionStart;
     const end = el.selectionEnd;
     const sel = contentInput.substring(start, end);
-    let snip =
-      type === "bold"
-        ? `**${sel || "negrita"}**`
-        : type === "italic"
-          ? `*${sel || "cursiva"}*`
-          : type === "h2"
-            ? `\n## ${sel || "Título"}\n`
-            : `[${sel || "texto"}](https://...)`;
+    let snip = "";
+
+    switch (type) {
+      case "bold":
+        snip = `**${sel || "negrita"}**`;
+        break;
+      case "italic":
+        snip = `*${sel || "cursiva"}*`;
+        break;
+      case "h1":
+        snip = `\n# ${sel || "Título 1"}\n`;
+        break;
+      case "h2":
+        snip = `\n## ${sel || "Título 2"}\n`;
+        break;
+      case "h3":
+        snip = `\n### ${sel || "Título 3"}\n`;
+        break;
+      case "link":
+        snip = `[${sel || "texto"}](https://...)`;
+        break;
+      case "image":
+        snip = `![${sel || "descripción"}](ruta/a/imagen.jpg)`;
+        break;
+      case "list-ul":
+        snip = `\n- ${sel || "elemento"}`;
+        break;
+      case "list-ol":
+        snip = `\n1. ${sel || "elemento"}`;
+        break;
+      case "quote":
+        snip = `\n> ${sel || "cita"}`;
+        break;
+      case "code":
+        snip = sel.includes("\n")
+          ? `\n\`\`\`javascript\n${sel}\n\`\`\`\n`
+          : `\`${sel || "código"}\``;
+        break;
+      case "hr":
+        snip = `\n---\n`;
+        break;
+    }
+
     contentInput =
       contentInput.substring(0, start) + snip + contentInput.substring(end);
     tick().then(() => {
@@ -358,17 +404,50 @@
         {#if currentMode !== "preview"}
           <div class="cms-editor-container">
             <div class="cms-editor-toolbar">
+              <button onclick={() => handleToolbar("h1")} title="Título 1">
+                <Icon icon="material-symbols:format-h1-rounded" />
+              </button>
+              <button onclick={() => handleToolbar("h2")} title="Título 2">
+                <Icon icon="material-symbols:format-h2-rounded" />
+              </button>
+              <button onclick={() => handleToolbar("h3")} title="Título 3">
+                <Icon icon="material-symbols:format-h3-rounded" />
+              </button>
+              <div class="cms-toolbar-divider"></div>
               <button onclick={() => handleToolbar("bold")} title="Negrita">
                 <Icon icon="material-symbols:format-bold-rounded" />
               </button>
               <button onclick={() => handleToolbar("italic")} title="Cursiva">
                 <Icon icon="material-symbols:format-italic-rounded" />
               </button>
-              <button onclick={() => handleToolbar("h2")} title="Título">
-                <Icon icon="material-symbols:format-h2-rounded" />
+              <button onclick={() => handleToolbar("quote")} title="Cita">
+                <Icon icon="material-symbols:format-quote-rounded" />
               </button>
+              <div class="cms-toolbar-divider"></div>
+              <button
+                onclick={() => handleToolbar("list-ul")}
+                title="Lista puntos"
+              >
+                <Icon icon="material-symbols:format-list-bulleted-rounded" />
+              </button>
+              <button
+                onclick={() => handleToolbar("list-ol")}
+                title="Lista números"
+              >
+                <Icon icon="material-symbols:format-list-numbered-rounded" />
+              </button>
+              <div class="cms-toolbar-divider"></div>
               <button onclick={() => handleToolbar("link")} title="Enlace">
                 <Icon icon="material-symbols:link-rounded" />
+              </button>
+              <button onclick={() => handleToolbar("image")} title="Imagen">
+                <Icon icon="material-symbols:image-outline" />
+              </button>
+              <button onclick={() => handleToolbar("code")} title="Código">
+                <Icon icon="material-symbols:code-rounded" />
+              </button>
+              <button onclick={() => handleToolbar("hr")} title="Separador">
+                <Icon icon="material-symbols:horizontal-rule-rounded" />
               </button>
             </div>
             <textarea
@@ -467,6 +546,14 @@
     border-color: var(--primary);
     color: var(--primary);
     background: var(--btn-regular-bg);
+  }
+
+  .cms-toolbar-divider {
+    width: 1px;
+    height: 1.5rem;
+    background: var(--line-divider);
+    align-self: center;
+    margin: 0 0.25rem;
   }
 
   .cms-header-left {
