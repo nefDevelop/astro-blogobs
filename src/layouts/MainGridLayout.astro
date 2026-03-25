@@ -427,12 +427,13 @@ const mobileQuality = Math.round(configQuality * 0.9);
                         <h1 class="sr-only">{siteConfig.title}</h1>
                 )}
 
-                <!-- Announcement - Placed at the top of the main content column -->
-                <Announcement class:list={["onload-animation mb-4", transparentClass]} />
-
-                <div id="content-wrapper" class="onload-animation transition-leaving">
-                    <slot></slot>
-
+                <div class="flex flex-col gap-4 w-full">
+                    <!-- Announcement - Placed at the top of the main content column -->
+                    <Announcement class:list={["onload-animation", transparentClass]} />
+    
+                    <div id="content-wrapper" class="onload-animation transition-leaving">
+                        <slot></slot>
+                    </div>
                 </div>
             </main>
             

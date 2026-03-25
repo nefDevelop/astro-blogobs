@@ -133,6 +133,13 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
       showOnPostPage: true,
     },
     {
+      type: "sidebarToc",
+      enable: true,
+      position: "sticky",
+      showOnPostPage: true,
+      showOnNonPostPage: false,
+    },
+    {
       type: "categories",
       enable: true,
       position: "sticky",
@@ -150,13 +157,6 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
         collapseThreshold: 20,
       },
     },
-    {
-      type: "sidebarToc",
-      enable: true,
-      position: "sticky",
-      showOnPostPage: true,
-      showOnNonPostPage: false,
-    },
   ],
   rightComponents: [],
   mobileBottomComponents: [
@@ -172,6 +172,13 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
       responsive: {
         collapseThreshold: 5,
       },
+    },
+    {
+      type: "sidebarToc",
+      enable: true,
+      position: "sticky",
+      showOnPostPage: true,
+      showOnNonPostPage: false,
     },
     {
       type: "tags",
