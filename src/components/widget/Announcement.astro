@@ -69,17 +69,13 @@ const style = Astro.props.style;
 
 <script>
   function closeAnnouncement() {
-    // 通过data-id属性找到整个widget-layout元素
-    const widgetLayout = document.querySelector(
-      'widget-layout[data-id="announcement"]'
-    ) as HTMLElement | null;
-    if (widgetLayout) {
-      // 隐藏整个widget-layout元素
-      widgetLayout.style.display = "none";
-     
-    }
+    // Busca todos los widgets de anuncio por el atributo data-widget-id en el elemento raíz
+    const widgets = document.querySelectorAll('[data-widget-id="announcement"]');
+    widgets.forEach((widget) => {
+      (widget as HTMLElement).style.display = "none";
+    });
   }
 
-  // 使公告栏函数全局可用
+  // Hacer la función de anuncio globalmente disponible
   window.closeAnnouncement = closeAnnouncement;
 </script>

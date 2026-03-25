@@ -131,7 +131,7 @@ const bottomComponents = isMobileBottom ? filteredComponents : [];
 
 {
 	(topComponents.length > 0 || stickyComponents.length > 0 || bottomComponents.length > 0) && (
-		<div id={`${side}-sidebar`} class:list={[className, "flex flex-col w-full pt-0"]}>
+		<div id={`${side}-sidebar`} class:list={[className, "w-full pt-0"]}>
 			{isMobileBottom ? (
 				<div class="flex flex-col w-full gap-4">
 					{bottomComponents.map((comp, index) => {
