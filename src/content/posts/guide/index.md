@@ -2,11 +2,15 @@
 title: Guía rápida de uso de Firefly
 published: 1970-01-02
 pinned: true
-description: "Cómo utilizar la plantilla de blog Firefly."
-image: "./cover.webp"
-tags: ["Firefly", "Blog", "Markdown", "Guía de uso"]
+description: Cómo utilizar la plantilla de blog Firefly.
+image: ./cover.webp
+tags:
+  - Firefly
+  - Blog
+  - Markdown
+  - Guía de uso
 category: Guía del blog
-draft: false
+draft: true
 ---
 
 Esta plantilla de blog está construida basándose en [Astro](https://astro.build/). Para cualquier contenido no mencionado en esta guía, puedes encontrar respuestas en la [documentación de Astro](https://docs.astro.build/)
