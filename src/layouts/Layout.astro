@@ -405,7 +405,7 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
     <FontManager />
   </head>
   <body
-    class="min-h-screen"
+    class="min-h-screen antialiased"
     class:list={[
       { "lg:is-home": isHomePageCheck, "enable-banner": enableBanner, "enable-card-border": siteConfig.card?.border },
       ...(siteConfig.font?.enable && siteConfig.font?.selected
