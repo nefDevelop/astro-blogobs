@@ -9,7 +9,7 @@ tags:
   - Blog
   - Guía de uso
 category: Guía del Blog
-draft: false
+draft: true
 ---
 
 ## 📖 Resumen
