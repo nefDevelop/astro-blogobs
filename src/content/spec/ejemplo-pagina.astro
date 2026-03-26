@@ -6,7 +6,7 @@ import MainGridLayout from "@/layouts/MainGridLayout.astro";
 const ejemploPagina = await getEntry("spec", "ejemplo-pagina");
 
 if (!ejemploPagina) {
-	throw new Error("Contenido de 'ejemplo-pagina' no encontrado");
+	throw new Error("Contenido de 'ejemplo-pagina' no encontrado. Asegúrate de crear el archivo .md en src/content/spec/");
 }
 
 const { Content } = await render(ejemploPagina);
