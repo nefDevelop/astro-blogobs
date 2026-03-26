@@ -2,9 +2,12 @@
 title: Incrustar videos en artículos
 published: 1970-01-01
 description: Este artículo muestra cómo incrustar videos en los artículos del blog.
-tags: [ejemplo, video, Firefly]
+tags:
+  - ejemplo
+  - video
+  - Firefly
 category: Ejemplo de artículo
-draft: false
+draft: true
 ---
 
 Simplemente copia el código de inserción de YouTube u otra plataforma y pégalo en el archivo markdown.

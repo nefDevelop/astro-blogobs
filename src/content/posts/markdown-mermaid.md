@@ -3,9 +3,13 @@ title: Gráficos Mermaid en Markdown
 published: 1970-01-01
 pinned: false
 description: Un ejemplo sencillo de un artículo de blog con Mermaid en Markdown.
-tags: [Markdown, Blog, Mermaid, Firefly]
+tags:
+  - Markdown
+  - Blog
+  - Mermaid
+  - Firefly
 category: Ejemplo de artículo
-draft: false
+draft: true
 ---
 # Guía completa de gráficos Mermaid en Markdown
 

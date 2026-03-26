@@ -2,9 +2,12 @@
 title: Ejemplo de fórmulas matemáticas KaTeX
 published: 1970-01-02
 description: Demostración del soporte para fórmulas matemáticas KaTeX en el tema Firefly, incluyendo fórmulas en línea, de bloque y símbolos matemáticos complejos.
-tags: [KaTeX, Math, Ejemplo]
+tags:
+  - KaTeX
+  - Math
+  - Ejemplo
 category: Ejemplo de artículo
-draft: false
+draft: true
 image: api
 ---
 

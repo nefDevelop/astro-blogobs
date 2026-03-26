@@ -3,13 +3,13 @@ title: Tutorial de Markdown
 published: 2026-02-16
 pinned: false
 description: Un ejemplo conciso de un blog con Markdown.
-tags: [Ejemplo de artículo]
+tags:
+  - Ejemplo de artículo
 category: Ejemplo de artículo
-licenseName: "Sin licencia"
+licenseName: Sin licencia
 author: emn178
-sourceLink: "https://github.com/emn178/markdown"
-draft: false
-
+sourceLink: https://github.com/emn178/markdown
+draft: true
 ---
 
 Este es un ejemplo que muestra cómo escribir archivos Markdown. Este documento resume la sintaxis principal y las extensiones comunes (GFM).

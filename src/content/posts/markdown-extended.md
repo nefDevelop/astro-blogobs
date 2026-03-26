@@ -2,11 +2,15 @@
 title: Funciones Extendidas de Markdown
 published: 1970-01-01
 updated: 1970-01-01
-description: "Conoce las funciones de Markdown en Firefly"
+description: Conoce las funciones de Markdown en Firefly
 image: ""
-tags: [demostración, ejemplo, Markdown, Firefly]
-category: "Ejemplo de artículo"
-draft: false
+tags:
+  - demostración
+  - ejemplo
+  - Markdown
+  - Firefly
+category: Ejemplo de artículo
+draft: true
 ---
 
 ## Tarjeta de repositorio de GitHub
