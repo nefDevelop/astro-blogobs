@@ -113,7 +113,11 @@ export const profileConfig: ProfileConfig = {
 
 // --- Navigation Bar Configuration ---
 export const navBarConfig: NavBarConfig = {
-  links: [LinkPreset.Archive, LinkPreset.About],
+  links: [
+    LinkPreset.Archive,
+    LinkPreset.About,
+    { name: "Página Ejemplo", url: "/ejemplo-pagina/", icon: "material-symbols:article-outline" },
+  ],
 };
 
 export const navBarSearchConfig: NavBarSearchConfig = {
