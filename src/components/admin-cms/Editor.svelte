@@ -100,6 +100,15 @@
   });
 
   async function handleSave() {
+    if (!titleInput.trim()) {
+      alert("Por favor, ingresa un título. Astro lo requiere.");
+      return;
+    }
+    if (!publishedInput) {
+      alert("Por favor, selecciona una fecha de publicación.");
+      return;
+    }
+
     isSaving = true;
     const finalFM = {
       title: titleInput.trim(),
