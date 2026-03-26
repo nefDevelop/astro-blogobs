@@ -10,6 +10,7 @@ import type {
   CoverImageConfig,
   FooterConfig,
   NavBarSearchConfig,
+  CommentConfig,
 } from "../types/config";
 import { LinkPreset, NavBarSearchMethod } from "../types/config";
 
@@ -24,7 +25,7 @@ export const siteConfig: SiteConfig = {
   themeColor: {
     hue: 165,
     fixed: false,
-    defaultMode: "system",
+    defaultMode: "dark",
   },
   card: {
     border: true,
@@ -51,7 +52,7 @@ export const siteConfig: SiteConfig = {
   showLastModified: true,
   outdatedThreshold: 30,
   sharePoster: true,
-  generateOgImages: false,
+  generateOgImages: true,
   pages: {
     sponsor: false,
   },
@@ -65,10 +66,6 @@ export const siteConfig: SiteConfig = {
   },
   pagination: {
     postsPerPage: 10,
-  },
-  analytics: {
-    googleAnalyticsId: "",
-    microsoftClarityId: "",
   },
   imageOptimization: {
     formats: "webp",
@@ -268,5 +265,23 @@ export const coverImageConfig: CoverImageConfig = {
     apis: [],
     fallback: "assets/images/cover.avif",
     showLoading: false,
+  },
+};
+
+// --- Comment Configuration ---
+export const commentConfig: CommentConfig = {
+  type: "giscus",
+  giscus: {
+    repo: "tu-usuario/tu-repositorio", // REEMPLAZA CON TU REPO
+    repoId: "TU_REPO_ID", // REEMPLAZA ESTO
+    category: "General",
+    categoryId: "TU_CATEGORY_ID", // REEMPLAZA ESTO
+    mapping: "pathname",
+    strict: "0",
+    reactionsEnabled: "1",
+    emitMetadata: "0",
+    inputPosition: "top",
+    lang: "es",
+    loading: "lazy",
   },
 };

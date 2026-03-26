@@ -555,3 +555,21 @@ export type ResponsiveImageLayout = "constrained" | "full-width" | "none";
 
 // 图像格式类型
 export type ImageFormat = "avif" | "webp" | "png" | "jpg" | "jpeg" | "gif";
+
+export type CommentConfig = {
+  type: "giscus" | "none";
+  giscus?: {
+    repo: string;
+    repoId: string;
+    category: string;
+    categoryId: string;
+    mapping: string;
+    strict: string;
+    reactionsEnabled: string;
+    emitMetadata: string;
+    inputPosition: string;
+    theme?: string;
+    lang: string;
+    loading: "lazy" | "eager";
+  };
+};

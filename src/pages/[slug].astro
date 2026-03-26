@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import Markdown from "@components/common/Markdown.astro";
 import { removeFileExtension } from "@utils/url-utils";
+import { Icon } from "astro-icon/components";
 
 export async function getStaticPaths() {
 	// Obtenemos los datos de todas las colecciones (excluyendo borradores)
@@ -22,15 +23,19 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const pageTitle = entry.data.title || "Página";
+const pageIcon = 'icon' in entry.data ? entry.data.icon : null;
 ---
 
 <MainGridLayout title={pageTitle} description={entry.data.description}>
 	<div class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32">
 		<div class="card-base z-10 px-9 py-6 relative w-full onload-animation">
-			<div class="relative mb-6">
-				<h1 class="transition w-full block font-bold text-3xl md:text-[2.25rem]/[2.75rem] text-black/90 dark:text-white/90 md:before:w-1 before:h-5 before:rounded-md before:bg-(--primary) before:absolute before:top-3 before:-left-4.5">
+			<div class="relative mb-6 flex items-center justify-between w-full">
+				<h1 class="transition flex-1 block font-bold text-3xl md:text-[2.25rem]/[2.75rem] text-black/90 dark:text-white/90 md:before:w-1 before:h-5 before:rounded-md before:bg-(--primary) before:absolute before:top-3 before:-left-4.5">
 					{pageTitle}
 				</h1>
+				{pageIcon && (
+					<Icon name={pageIcon as string} class="text-3xl md:text-[2.25rem] text-black/90 dark:text-white/90 ml-4 shrink-0" />
+				)}
 			</div>
 			<Markdown class="mt-2 markdown-content">
 				<Content />

@@ -23,6 +23,8 @@
   let sourceLinkInput = $state("");
   let draftInput = $state(false);
   let commentInput = $state(true);
+  let inNavbarInput = $state(false);
+  let iconInput = $state("");
   let slugInput = $state("");
 
   let filenameInput = $state("");
@@ -30,6 +32,7 @@
   let currentSha = $state(null);
   let isLoading = $state(false);
   let isSaving = $state(false);
+  let isUploading = $state(false);
   let currentMode = $state("visual"); // visual, raw, preview
   let renderedHTML = $state("");
 
@@ -46,9 +49,28 @@
       const script = document.createElement("script");
       script.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
       script.onload = () => {
-        if (currentMode === "preview") {
-          renderedHTML = window.marked.parse(contentInput);
-        }
+        // Cargar Highlight.js para colorear el código en la vista previa
+        const hljsScript = document.createElement("script");
+        hljsScript.src = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js";
+        hljsScript.onload = () => {
+          const hljsCss = document.createElement("link");
+          hljsCss.rel = "stylesheet";
+          hljsCss.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css";
+          document.head.appendChild(hljsCss);
+
+          window.marked.setOptions({
+            highlight: function (code, lang) {
+              const language = window.hljs.getLanguage(lang) ? lang : "plaintext";
+              return window.hljs.highlight(code, { language }).value;
+            },
+            breaks: true,
+            gfm: true
+          });
+          if (currentMode === "preview") {
+            renderedHTML = window.marked.parse(contentInput);
+          }
+        };
+        document.head.appendChild(hljsScript);
       };
       document.head.appendChild(script);
     }
@@ -83,6 +105,8 @@
       sourceLinkInput = fm.sourceLink || "";
       draftInput = !!fm.draft;
       commentInput = fm.comment !== undefined ? fm.comment : true;
+      inNavbarInput = !!fm.inNavbar;
+      iconInput = fm.icon || "";
       slugInput = fm.slug || "";
 
       contentInput = parsed.content;
@@ -129,6 +153,8 @@
       sourceLink: sourceLinkInput.trim() || undefined,
       draft: draftInput || undefined,
       comment: commentInput,
+      inNavbar: inNavbarInput || undefined,
+      icon: iconInput.trim() || undefined,
       slug: slugInput.trim() || undefined,
     };
 
@@ -152,6 +178,44 @@
     } finally {
       isSaving = false;
     }
+  }
+
+  async function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const base64Content = e.target.result.split(',')[1];
+      // Sanitizar nombre y añadir marca de tiempo para evitar duplicados
+      const cleanName = file.name.replace(/[^a-zA-Z0-9.]/g, '-');
+      const fileName = `${Date.now()}-${cleanName}`;
+      const imagePath = `public/assets/images/${fileName}`;
+
+      try {
+        isUploading = true;
+        await ghFetch(`contents/${imagePath}`, githubToken, {
+          method: "PUT",
+          body: JSON.stringify({
+            message: `CMS: Subida de imagen ${fileName}`,
+            content: base64Content,
+          }),
+        });
+
+        const el = document.getElementById("post-content");
+        const start = el.selectionStart;
+        const end = el.selectionEnd;
+        const snip = `\n!${file.name}\n`;
+        contentInput = contentInput.substring(0, start) + snip + contentInput.substring(end);
+        tick().then(() => { el.focus(); el.setSelectionRange(start + snip.length, start + snip.length); });
+      } catch(err) {
+        alert("Error subiendo imagen: " + err.message);
+      } finally {
+        isUploading = false;
+        event.target.value = '';
+      }
+    };
+    reader.readAsDataURL(file);
   }
 
   function handleToolbar(type) {
@@ -179,9 +243,6 @@
         break;
       case "link":
         snip = `[${sel || "texto"}](https://...)`;
-        break;
-      case "image":
-        snip = `![${sel || "descripción"}](ruta/a/imagen.jpg)`;
         break;
       case "list-ul":
         snip = `\n- ${sel || "elemento"}`;
@@ -334,6 +395,15 @@
               />
             </div>
             <div class="cms-form-group">
+              <label class="cms-label" for="cms-icon">Icono (Ej. material-symbols:star)</label>
+              <input
+                type="text"
+                id="cms-icon"
+                bind:value={iconInput}
+                class="cms-input"
+              />
+            </div>
+            <div class="cms-form-group">
               <label class="cms-label" for="cms-image">Imagen Portada</label>
               <input
                 type="text"
@@ -404,6 +474,9 @@
               <label class="cms-check-label"
                 ><input type="checkbox" bind:checked={commentInput} /> Comentarios</label
               >
+              <label class="cms-check-label"
+                ><input type="checkbox" bind:checked={inNavbarInput} /> Mostrar en Menú</label
+              >
             </div>
           </div>
         </section>
@@ -449,8 +522,12 @@
               <button onclick={() => handleToolbar("link")} title="Enlace">
                 <Icon icon="material-symbols:link-rounded" />
               </button>
-              <button onclick={() => handleToolbar("image")} title="Imagen">
-                <Icon icon="material-symbols:image-outline" />
+              <button onclick={() => document.getElementById('cms-image-upload').click()} title="Subir Imagen" disabled={isUploading}>
+                {#if isUploading}
+                  <Icon icon="svg-spinners:ring-resize" />
+                {:else}
+                  <Icon icon="material-symbols:image-outline" />
+                {/if}
               </button>
               <button onclick={() => handleToolbar("code")} title="Código">
                 <Icon icon="material-symbols:code-rounded" />
@@ -459,6 +536,7 @@
                 <Icon icon="material-symbols:horizontal-rule-rounded" />
               </button>
             </div>
+            <input type="file" id="cms-image-upload" accept="image/*" style="display: none;" onchange={handleImageUpload} />
             <textarea
               id="post-content"
               bind:value={contentInput}
@@ -466,9 +544,17 @@
             ></textarea>
           </div>
         {:else}
-          <div class="cms-preview-container markdown-content">
-            <h1 class="preview-title">{titleInput}</h1>
-            {@html renderedHTML}
+          <div class="flex w-full rounded-(--radius-large) overflow-hidden relative">
+            <div class="card-base z-10 px-6 md:px-9 pt-6 pb-8 relative w-full">
+              <div class="relative mb-6">
+                <h1 class="transition w-full block font-bold text-3xl md:text-[2.25rem]/[2.75rem] text-black/90 dark:text-white/90 md:before:w-1 before:h-5 before:rounded-md before:bg-(--primary) before:absolute before:top-3 before:-left-4.5">
+                  {titleInput || "Sin título"}
+                </h1>
+              </div>
+              <div class="markdown-content">
+                {@html renderedHTML}
+              </div>
+            </div>
           </div>
         {/if}
       </section>
@@ -577,5 +663,95 @@
     font-size: 1.1rem;
     font-weight: 800;
     margin: 0;
+  }
+
+  /* Estilos para simular el blog en la vista previa */
+  :global(.cms-editor-content .markdown-content pre) {
+    background-color: #282c34 !important;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  :global(.cms-editor-content .markdown-content p > code) {
+    background-color: var(--btn-regular-bg);
+    color: var(--primary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+    font-size: 0.85em;
+  }
+  :global(.cms-editor-content .markdown-content blockquote) {
+    border-left: 4px solid var(--primary);
+    padding: 0.5rem 1rem;
+    color: var(--text-secondary);
+    background-color: var(--btn-regular-bg);
+    border-radius: 0 0.5rem 0.5rem 0;
+    margin: 1.5rem 0;
+  }
+
+  /* Estilos tipográficos base (Listas, Tablas, Encabezados) para la vista previa */
+  :global(.cms-editor-content .markdown-content h1),
+  :global(.cms-editor-content .markdown-content h2),
+  :global(.cms-editor-content .markdown-content h3),
+  :global(.cms-editor-content .markdown-content h4),
+  :global(.cms-editor-content .markdown-content h5),
+  :global(.cms-editor-content .markdown-content h6) {
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+  :global(.cms-editor-content .markdown-content h1) { font-size: 2.25rem; }
+  :global(.cms-editor-content .markdown-content h2) { font-size: 1.75rem; border-bottom: 1px dashed var(--line-divider); padding-bottom: 0.5rem; }
+  :global(.cms-editor-content .markdown-content h3) { font-size: 1.5rem; }
+  :global(.cms-editor-content .markdown-content h4) { font-size: 1.25rem; }
+  
+  :global(.cms-editor-content .markdown-content p) {
+    margin-bottom: 1.25rem;
+    line-height: 1.75;
+  }
+  :global(.cms-editor-content .markdown-content ul) {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  :global(.cms-editor-content .markdown-content ol) {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  :global(.cms-editor-content .markdown-content li) {
+    margin-bottom: 0.5rem;
+  }
+  :global(.cms-editor-content .markdown-content table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+  }
+  :global(.cms-editor-content .markdown-content th),
+  :global(.cms-editor-content .markdown-content td) {
+    border: 1px solid var(--line-divider);
+    padding: 0.75rem;
+  }
+  :global(.cms-editor-content .markdown-content th) {
+    background-color: var(--btn-regular-bg);
+    font-weight: 700;
+  }
+  :global(.cms-editor-content .markdown-content a) {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  :global(.cms-editor-content .markdown-content img) {
+    max-width: 100%;
+    border-radius: 0.5rem;
+    margin: 1.5rem auto;
+    display: block;
+  }
+  :global(.cms-editor-content .markdown-content hr) {
+    border: 0;
+    border-top: 2px dashed var(--line-divider);
+    margin: 2rem 0;
   }
 </style>

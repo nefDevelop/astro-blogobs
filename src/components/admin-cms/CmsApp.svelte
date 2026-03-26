@@ -91,9 +91,8 @@
 
 <header id="navbar">
   <div class="nav-inner">
-    <button
-      type="button"
-      onclick={handleDashboardClick}
+    <a
+      href="/"
       class="btn-plain scale-animation rounded-lg h-13 px-5 font-bold"
     >
       <div
@@ -105,7 +104,7 @@
         />
         {siteTitle}
       </div>
-    </button>
+    </a>
 
     {#if isLoggedIn}
       <div class="flex relative items-center gap-2">
@@ -115,9 +114,6 @@
           title="Dashboard"
         >
           <Icon icon="material-symbols:dashboard-outline-rounded" />
-        </button>
-        <button onclick={handleNewPost} class="cms-btn-icon" title="Nuevo Post">
-          <Icon icon="material-symbols:add-circle-outline-rounded" />
         </button>
         <button
           onclick={handleLogout}
