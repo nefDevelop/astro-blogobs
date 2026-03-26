@@ -180,7 +180,6 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
     {
       type: "sidebarToc",
       enable: true,
-      position: "sticky",
       showOnPostPage: true,
       showOnNonPostPage: false,
     },
