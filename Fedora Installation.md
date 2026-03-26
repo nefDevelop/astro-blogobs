@@ -4,7 +4,16 @@ draft: false
 tags:
   - Fedora
   - Linux
+published: 2026-03-26
+description: Así instalo Fedora, con todos estos elementos. Cada formateo, reviso esta guia.
+category: Fedora
 ---
+
+
+
+
+
+
 # Guía de Instalación y Configuración para Fedora 43
 
 ## Instalación y Particionado
