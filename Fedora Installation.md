@@ -1,6 +1,6 @@
 ---
 title: Cosas que hago cuando instalo Fedora
-draft: true
+draft: false
 tags:
   - Fedora
   - Linux
