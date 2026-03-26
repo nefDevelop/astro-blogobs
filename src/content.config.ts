@@ -35,6 +35,8 @@ const specCollection = defineCollection({
     title: z.string().optional(),
     description: z.string().optional(),
     published: z.coerce.date().optional(),
+    inNavbar: z.boolean().optional().default(false),
+    icon: z.string().optional(),
   }),
 });
 

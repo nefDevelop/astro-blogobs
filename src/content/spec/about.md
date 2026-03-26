@@ -1,4 +1,11 @@
-# 关于我 / About Me
+---
+title: "Sobre Mi"
+inNavbar: true
+icon: "material-symbols:person-outline"
+---
+
+
+# About Me
 
 你好！我是 **夏叶** ，一个在数字世界中默默无闻的一片叶子。
 

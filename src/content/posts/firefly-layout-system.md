@@ -7,7 +7,6 @@ tags:
   - Firefly
   - Diseño
   - Blog
-  - Guía de uso
 category: Guía del Blog
 draft: true
 ---
