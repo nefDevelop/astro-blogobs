@@ -439,6 +439,25 @@ const bannerOffset = `${BANNER_HEIGHT_EXTEND / 2}vh`;
 >
   @reference "../styles/main.css";
 
+  /* Blindaje total para el Header contra estilos inyectados en los Posts */
+  #navbar, #navbar * {
+    font-family: "Roboto", sans-serif !important;
+    letter-spacing: normal !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+
+  /* Bloquear el renderizado de texto para evitar el bug de grosor con fondos borrosos */
+  html, body, * {
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+  #navbar {
+    transform: translateZ(0); /* Fuerza la aceleración por hardware constante */
+  }
+
   @layer components {
     .enable-banner.lg\:is-home #wallpaper-wrapper {
       height: var(--banner-height-home);
