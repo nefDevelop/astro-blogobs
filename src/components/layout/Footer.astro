@@ -28,8 +28,8 @@ if (footerConfig.enable) {
 ---
 
 
-<footer class="w-full mt-4 pointer-events-auto">
-	<div class="max-w-(--page-width) mx-auto py-4 onload-animation px-2 md:px-4 relative">
+<footer class="w-full mt-4 pointer-events-auto max-w-(--page-width) mx-auto px-0 md:px-4">
+	<div class="w-full mx-auto py-4 onload-animation px-2 md:px-4 relative">
 		<div class="text-center text-sm text-50">
 			<div class="mb-2">
 				{customFooterHtml && <div set:html={customFooterHtml} />}
@@ -94,7 +94,6 @@ if (footerConfig.enable) {
     border-radius: 0.75rem 0.75rem 0 0;
     transition: all var(--duration-medium) var(--ease-standard);
     box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05); /* Shadow upwards */
-    max-width: calc(var(--page-width) - 2rem);
   }
 
   :root.dark footer > div {
@@ -136,4 +135,3 @@ function setupFooterDropdown() {
 setupFooterDropdown();
 document.addEventListener("astro:after-swap", setupFooterDropdown);
 </script>
-
