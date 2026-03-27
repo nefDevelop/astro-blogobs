@@ -1,0 +1,58 @@
+---
+import { getCollection } from "astro:content";
+import PostCard from "@/components/layout/PostCard.astro";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import { url, removeFileExtension } from "@/utils/url-utils";
+
+// 1. Obtener todos los eventos que no son borradores
+const events = (await getCollection("events", ({ data }) => data.draft !== true)) || [];
+
+// 2. Ordenar eventos por fecha de publicación (más reciente primero)
+const sortedEvents = events.sort(
+  (a, b) => b.data.published.getTime() - a.data.published.getTime()
+);
+
+let delay = 0;
+const interval = 50;
+---
+
+<MainGridLayout title="Eventos">
+  <div class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32 mb-6">
+		<div class="card-base z-10 px-9 py-6 relative w-full onload-animation">
+			<div class="relative mb-2">
+				<h1 class="transition w-full block font-bold text-3xl md:text-[2.25rem]/[2.75rem] text-black/90 dark:text-white/90 md:before:w-1 before:h-5 before:rounded-md before:bg-(--primary) before:absolute before:top-3 before:-left-4.5">
+					Eventos
+				</h1>
+			</div>
+      <p class="text-base text-50 leading-relaxed">
+        Aquí encontrarás una lista de todos los eventos.
+      </p>
+		</div>
+	</div>
+
+  <div
+    id="post-list-container"
+    class="transition-all duration-500 ease-in-out mb-4 flex flex-col gap-4 md:gap-4 list-mode"
+  >
+    {
+      sortedEvents.map((entry, index) => (
+        <PostCard
+          entry={entry as any}
+          title={entry.data.title}
+          tags={entry.data.tags}
+          category={entry.data.category}
+          published={entry.data.published}
+          updated={entry.data.updated}
+          url={url('/' + removeFileExtension(entry.id) + '/')}
+          image={entry.data.image}
+          description={entry.data.description}
+          draft={entry.data.draft}
+          pinned={entry.data.pinned}
+          loading={index < 2 ? "eager" : "lazy"}
+          class:list="onload-animation post-card-item"
+          style={`animation-delay: calc(var(--content-delay) + ${delay++ * interval}ms);`}
+        />
+      ))
+    }
+  </div>
+</MainGridLayout>

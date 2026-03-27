@@ -110,7 +110,14 @@ export const profileConfig: ProfileConfig = {
 
 // --- Navigation Bar Configuration ---
 export const navBarConfig: NavBarConfig = {
-  links: [LinkPreset.Archive],
+  links: [
+    LinkPreset.Archive,
+    {
+      name: "Eventos",
+      url: "/events/",
+      icon: "material-symbols:article-outline",
+    },
+  ],
 };
 
 export const navBarSearchConfig: NavBarSearchConfig = {
