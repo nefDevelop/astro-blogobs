@@ -37,7 +37,6 @@ html[data-banner-title-enabled="false"] .banner-text-overlay {
 /* 移动端无侧边栏布局优化 */
 @media (max-width: 768px) {
     .mobile-no-sidebar {
-        display: block !important;
         width: 100% !important;
     }
     

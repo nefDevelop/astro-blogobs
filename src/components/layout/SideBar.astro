@@ -102,6 +102,7 @@ const getComponentProps = (
 	const baseProps: Record<string, unknown> = {
 		class: "onload-animation",
 		style: `animation-delay: ${getAnimationDelay(index)}`,
+		side: side, // 传递当前侧边栏位置
 	};
 
 	if ("showOnPostPage" in config && config.showOnPostPage === false) {

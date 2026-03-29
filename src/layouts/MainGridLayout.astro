@@ -408,7 +408,7 @@ const mobileQuality = Math.round(configQuality * 0.9);
 
 
             {/* 渲染侧边栏 - 769px及以上显示 */}
-            <div id="left-sidebar-wrapper" class="contents" style="contain: layout style paint;">
+            <div id="left-sidebar-wrapper" class="hidden md:contents" style="contain: layout style paint;">
                 {sidebarConfig.hasLeftComponents && (
                     <SideBar
                         side={sidebarConfig.isBothSidebars ? "left" : undefined}

@@ -9,21 +9,31 @@ interface Props {
 	headings: MarkdownHeading[];
 	class?: string;
 	style?: string;
+	side?: string;
 }
 
-const { headings: _headings = [], class: className, style } = Astro.props;
+const {
+	headings: _headings = [],
+	class: className,
+	style,
+	side = "left",
+} = Astro.props;
+
+// 为不同位置的 TOC 生成唯一的 ID
+const tocContentId = `sidebar-toc-content-${side}`;
 ---
 
 <WidgetLayout 
   name={i18n(I18nKey.tableOfContents)} 
-  id="sidebar-toc"
+  id={`sidebar-toc-${side}`}
   class={className}
   style={style}
 >
   <div class="toc-scroll-container custom-scrollbar">
     <div
-      class="toc-content"
-      id="sidebar-toc-content"
+      class="toc-content sidebar-toc-content-common"
+      id={tocContentId}
+      data-side={side}
     >
       <!-- TOC内容将由JavaScript动态生成 -->
     </div>
@@ -41,63 +51,68 @@ const { headings: _headings = [], class: className, style } = Astro.props;
 
   if (typeof window.SidebarTOC === "undefined") {
     window.SidebarTOC = {
-      manager: null
+      managers: []
     };
   }
 
-  async function initSidebarTOC() {
-    const tocContent = document.getElementById("sidebar-toc-content");
-    if (!tocContent) return;
-
-
-    try {
-      // 清理旧实例
-      if (window.SidebarTOC.manager) {
-        window.SidebarTOC.manager.cleanup();
-      }
-
-      // 创建新实例
-      window.SidebarTOC.manager = new TOCManager({
-        contentId: "sidebar-toc-content",
-        indicatorId: "sidebar-active-indicator",
-        maxLevel: 3,
-        scrollOffset: 80,
-      });
-
-      // 初始化
-      window.SidebarTOC.manager.init();
-    } catch (error) {
-      console.error("Failed to load TOCManager for SidebarTOC:", error);
+  async function initAllSidebarTOC() {
+    // 查找页面上所有的 sidebar-toc 容器
+    const tocContainers = document.querySelectorAll(".sidebar-toc-content-common");
+    
+    // 清理旧实例
+    if (window.SidebarTOC.managers) {
+      window.SidebarTOC.managers.forEach(m => m.cleanup());
+      window.SidebarTOC.managers = [];
     }
+
+    tocContainers.forEach((container) => {
+      const side = container.getAttribute("data-side") || "unknown";
+      const contentId = container.id;
+      
+      try {
+        // 创建新实例
+        const manager = new TOCManager({
+          contentId: contentId,
+          indicatorId: `sidebar-active-indicator-${side}`,
+          maxLevel: 3,
+          scrollOffset: 80,
+        });
+
+        // 初始化
+        manager.init();
+        window.SidebarTOC.managers.push(manager);
+      } catch (error) {
+        console.error(`Failed to load TOCManager for SidebarTOC (${side}):`, error);
+      }
+    });
   }
 
   // 初始化
-  // 确保 DOM 准备好后再执行
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initSidebarTOC);
+    document.addEventListener("DOMContentLoaded", initAllSidebarTOC);
   } else {
-    initSidebarTOC();
+    initAllSidebarTOC();
   }
 
   // 页面切换时重新初始化
   document.addEventListener("swup:contentReplaced", () => {
-    setTimeout(initSidebarTOC, 100);
+    setTimeout(initAllSidebarTOC, 150);
   });
   
   // Astro 页面切换事件
   document.addEventListener("astro:page-load", () => {
-    setTimeout(initSidebarTOC, 100);
+    setTimeout(initAllSidebarTOC, 150);
   });
   
   // 浏览器导航事件
   window.addEventListener("popstate", () => {
-    setTimeout(initSidebarTOC, 200);
+    setTimeout(initAllSidebarTOC, 250);
   });
   
   // 监听 hashchange（但排除 TOC 内部导航）
   window.addEventListener("hashchange", () => {
     if (!window.tocInternalNavigation) {
-      setTimeout(initSidebarTOC, 100);
+      setTimeout(initAllSidebarTOC, 150);
     }
     window.tocInternalNavigation = false;
   });
