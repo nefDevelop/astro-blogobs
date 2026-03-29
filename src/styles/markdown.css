@@ -110,5 +110,24 @@
     overflow-x: auto;
     margin: 1em 0;
   }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-large);
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
 }
 

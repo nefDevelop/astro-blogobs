@@ -49,6 +49,17 @@
 /* 确保平滑滚动 */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 /* 页面顶部渐变高光效果 */
