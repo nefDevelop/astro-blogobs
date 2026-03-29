@@ -412,7 +412,7 @@ const mobileQuality = Math.round(configQuality * 0.9);
                 {sidebarConfig.hasLeftComponents && (
                     <SideBar
                         side={sidebarConfig.isBothSidebars ? "left" : undefined}
-                        class={`${sidebarClass} ${transparentClass}`}
+            class={`hidden md:flex ${sidebarClass} ${transparentClass}`}
                         headings={headings}
                     />
                 )}
@@ -450,7 +450,7 @@ const mobileQuality = Math.round(configQuality * 0.9);
                 <>
                     <div id="right-sidebar-static" class="contents">
                         {effectiveIsBothSidebars && effectiveHasRightComponents && (
-                            <SideBar side="right" class={`${rightSidebarClass} ${transparentClass}`} headings={headings}></SideBar>
+                <SideBar side="right" class={`hidden md:flex ${rightSidebarClass} ${transparentClass}`} headings={headings}></SideBar>
                         )}
                     </div>
                     <div id="right-sidebar-dynamic" class="hidden transition-swup-fade"></div>
@@ -458,7 +458,7 @@ const mobileQuality = Math.round(configQuality * 0.9);
             ) : (
                 <div id="right-sidebar-dynamic" class="contents transition-swup-fade">
                     {effectiveIsBothSidebars && effectiveHasRightComponents && (
-                        <SideBar side="right" class={`${rightSidebarClass} ${transparentClass}`} headings={headings}></SideBar>
+            <SideBar side="right" class={`hidden md:flex ${rightSidebarClass} ${transparentClass}`} headings={headings}></SideBar>
                     )}
                 </div>
             )}
