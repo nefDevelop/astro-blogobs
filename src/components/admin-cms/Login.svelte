@@ -47,6 +47,19 @@
             >
                 Iniciar Sesión
             </button>
+            <div class="flex items-center my-2 opacity-30">
+                <hr class="flex-1 border-white/20" />
+                <span class="px-3 text-[10px] font-bold uppercase tracking-wider">O</span>
+                <hr class="flex-1 border-white/20" />
+            </div>
+            <button
+                onclick={() => onLoginSuccess?.({ token: 'mock-token', isMock: true })}
+                class="btn-regular w-full py-3 opacity-80"
+                style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);"
+            >
+                <Icon icon="material-symbols:lab-profile-outline-rounded" class="mr-2" />
+                Probar con datos locales
+            </button>
         </div>
         <p class="mt-8 text-xs opacity-50 italic">
             Tus datos se guardan solo en tu navegador.

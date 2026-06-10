@@ -5,7 +5,36 @@
   import { parsePost } from "./utils/parser";
   import { formatDate } from "./utils/formatter";
 
-  let { githubToken, onEditPost, onNewPost } = $props();
+  let { githubToken, isMock = false, onEditPost, onNewPost } = $props();
+
+  const mockPosts = [
+    {
+      name: "bienvenida.md",
+      path: "src/content/posts/bienvenida.md",
+      sha: "mock-sha-1",
+      fm: {
+        title: "¡Bienvenido a tu nuevo CMS!",
+        published: "2024-04-12",
+        category: "Anuncios",
+        description: "Este es un post de ejemplo cargado en modo prueba para que veas cómo funciona la interfaz.",
+        tags: ["astro", "cms", "test"]
+      },
+      content: "# Hola Mundo\n\nEste es el contenido de prueba."
+    },
+    {
+      name: "proyecto-x.md",
+      path: "src/content/projects/proyecto-x.md",
+      sha: "mock-sha-2",
+      fm: {
+        title: "Proyecto X - Desarrollo Agil",
+        published: "2024-04-10",
+        category: "Proyectos",
+        description: "Detalles sobre la arquitectura del Proyecto X y su implementación con Svelte 5.",
+        tags: ["svelte", "webdev"]
+      },
+      content: "Contenido del proyecto x..."
+    }
+  ];
 
   const pathMap = {
     posts: "src/content/posts",
@@ -63,6 +92,15 @@
   async function loadContent(type) {
     isLoading = true;
     currentContentType = type;
+    
+    if (isMock) {
+      setTimeout(() => {
+        allPostsData = mockPosts.filter(p => p.path.includes(pathMap[type]));
+        isLoading = false;
+      }, 500);
+      return;
+    }
+
     try {
       const files = await ghFetch(`contents/${pathMap[type]}`, githubToken);
       const mdFiles = files.filter(

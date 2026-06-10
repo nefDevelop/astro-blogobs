@@ -6,6 +6,7 @@
   import Editor from "./Editor.svelte";
 
   let githubToken = $state(null);
+  let isMock = $state(false);
   let isLoggedIn = $state(false);
   let currentView = $state("dashboard");
   let postToEdit = $state(null);
@@ -16,6 +17,7 @@
     if (storedToken) {
       githubToken = storedToken;
       isLoggedIn = true;
+      isMock = storedToken === "mock-token";
       const params = new URLSearchParams(window.location.search);
       const view = params.get("view");
       const path = params.get("path");
@@ -57,6 +59,7 @@
 
   function handleLoginSuccess(data) {
     githubToken = data.token;
+    isMock = !!data.isMock;
     isLoggedIn = true;
     currentView = "dashboard";
     updateHistory("dashboard");
@@ -134,12 +137,14 @@
   {:else if currentView === "dashboard"}
     <Dashboard
       {githubToken}
+      isMock={isMock}
       onEditPost={handleEditPost}
       onNewPost={handleNewPost}
     />
   {:else if currentView === "editor"}
     <Editor
       {githubToken}
+      isMock={isMock}
       post={postToEdit}
       onPostSaved={handleDashboardClick}
       onPostCancelled={handleDashboardClick}

@@ -5,7 +5,36 @@
   import { parsePost, stringifyPost } from "./utils/parser";
   import { formatDate } from "./utils/formatter";
 
-  let { githubToken, post = null, onPostSaved, onPostCancelled } = $props();
+  let { githubToken, isMock = false, post = null, onPostSaved, onPostCancelled } = $props();
+
+  const mockPosts = [
+    {
+      name: "bienvenida.md",
+      path: "src/content/posts/bienvenida.md",
+      sha: "mock-sha-1",
+      fm: {
+        title: "¡Bienvenido a tu nuevo CMS!",
+        published: "2024-04-12",
+        category: "Anuncios",
+        description: "Este es un post de ejemplo cargado en modo prueba para que veas cómo funciona la interfaz.",
+        tags: ["astro", "cms", "test"]
+      },
+      content: "# Hola Mundo\n\nEste es el contenido de prueba."
+    },
+    {
+      name: "proyecto-x.md",
+      path: "src/content/projects/proyecto-x.md",
+      sha: "mock-sha-2",
+      fm: {
+        title: "Proyecto X - Desarrollo Agil",
+        published: "2024-04-10",
+        category: "Proyectos",
+        description: "Detalles sobre la arquitectura del Proyecto X y su implementación con Svelte 5.",
+        tags: ["svelte", "webdev"]
+      },
+      content: "# Proyecto X\n\nImplementación robusta..."
+    }
+  ];
 
   // State para todos los campos Frontmatter
   let titleInput = $state("");
@@ -79,6 +108,23 @@
 
   async function loadPost() {
     isLoading = true;
+    
+    if (isMock && post) {
+      setTimeout(() => {
+        const mockPost = mockPosts.find(p => p.path === post.path);
+        if (mockPost) {
+          titleInput = mockPost.fm.title;
+          publishedInput = mockPost.fm.published;
+          categoryInput = mockPost.fm.category;
+          descriptionInput = mockPost.fm.description;
+          tagsInput = mockPost.fm.tags.join(", ");
+          contentInput = mockPost.content;
+        }
+        isLoading = false;
+      }, 500);
+      return;
+    }
+
     try {
       const data = await ghFetch(`contents/${post.path}`, githubToken);
       currentSha = data.sha;
@@ -134,6 +180,16 @@
     }
 
     isSaving = true;
+
+    if (isMock) {
+      setTimeout(() => {
+        alert("Modo Prueba: ¡Guardado simulado con éxito!");
+        isSaving = false;
+        onPostSaved();
+      }, 1000);
+      return;
+    }
+
     const finalFM = {
       title: titleInput.trim(),
       published: publishedInput,
