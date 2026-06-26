@@ -8,303 +8,408 @@ published: 2026-03-26
 description: Así instalo Fedora, con todos estos elementos. Cada formateo, reviso esta guia.
 category: Fedora
 ---
+# Guía de Instalación y Configuración para Fedora 44
 
+## 1. Configuración Inicial del Sistema
 
-
-
-
-
-# Guía de Instalación y Configuración para Fedora 43
-
-## Instalación y Particionado
-
-**Esquema de Particionado (UEFI)**
-
-| Partición | Punto de Montaje | Tamaño | Sistema de Archivos |
-| :--- | :--- | :--- | :--- |
-| EFI | /boot/efi | 1 GB | FAT32 |
-| Boot | /boot | 1 GB | ext4 |
-| Root | / | Restante | btrfs/ext4 |
-| Swap | swap | 2-8 GB (opcional) | swap |
-
-*Nota:* Fedora usa Btrfs por defecto. Para usar ext4, elige "Particionado personalizado" durante la instalación.
-
----
-
-## Repositorios Esenciales
-
-1.  **RPM Fusion**
-    ```bash
-    sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-    sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-    ```
-
-2.  **Terra Repository**
-    ```bash
-    sudo dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra43' terra-release
-    sudo dnf group upgrade core
-    ```
-
-3.  **Habilitar COPR (Opcional)**
-    ```bash
-    sudo dnf install dnf-plugins-core
-    ```
-
----
-
-## Multimedia y Codecs
+### 1.1 RPM Fusion (Repositorios de terceros)
 
 ```bash
-# Grupo multimedia completo
-sudo dnf group install multimedia
+# Habilitar RPM Fusion (necesario para codecs y software no libre)
+sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-# Reemplazar ffmpeg-free con ffmpeg completo
-sudo dnf swap ffmpeg-free ffmpeg --allowerasing
+# Actualizar metadatos del grupo core
+sudo dnf group upgrade core
+```
 
-# Componentes GStreamer
-sudo dnf install gstreamer1-plugins-{bad-*,good-*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=PackageKit-gstreamer-plugin
+### 1.2 Configuración Rápida de DNF
 
-# Paquetes de sonido y video
-sudo dnf group install sound-and-video
+```bash
+# Editar configuración para descargas más rápidas
+sudo micro /etc/dnf/dnf.conf
 
-# Soporte para DVDs cifrados (opcional)
-sudo dnf install libdvdcss
+# Añadir estas líneas:
+cat << EOF | sudo tee -a /etc/dnf/dnf.conf
+[main]
+gpgcheck=1
+installonly_limit=3
+clean_requirements_on_remove=True
+best=False
+skip_if_unavailable=True
+max_parallel_downloads=10
+fastestmirror=True
+EOF
+```
+
+### 1.3 Flatpak (Aplicaciones sandbox)
+
+```bash
+# Habilitar Flathub (repositorio universal de flatpaks)
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+```
+
+### 1.4 AppImage (Soporte para aplicaciones portables)
+
+```bash
+# Instalar fuse para soporte de AppImages
+sudo dnf install -y fuse-libs
 ```
 
 ---
 
-## Optimizaciones del Sistema
-
-1.  **Configuración de DNF**
-    ```bash
-    echo -e "[main]\ngpgcheck=1\ninstallonly_limit=3\nclean_requirements_on_remove=True\nbest=False\nskip_if_unavailable=True\nmax_parallel_downloads=10\nfastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
-    ```
-
-2.  **Deshabilitar Mitigaciones de CPU (Solo para sistemas personales)**
-    ```bash
-    sudo grubby --update-kernel=ALL --args="mitigations=off"
-    ```
-
-3.  **Reducir Tiempo de Arranque**
-    ```bash
-    sudo systemctl disable NetworkManager-wait-online.service
-    ```
-
-4.  **Deshabilitar Inicio Automático de GNOME Software**
-    ```bash
-    sudo rm -f /etc/xdg/autostart/org.gnome.Software.desktop
-    ```
-
-5.  **Suspensión Moderna (Mejor batería en laptops)**
-    ```bash
-    sudo grubby --update-kernel=ALL --args="mem_sleep_default=s2idle"
-    # Verificar: cat /sys/power/mem_sleep
-    ```
-
----
-
-## Drivers AMD
+## 2. Multimedia y Codecs
 
 ```bash
+# Reemplazar ffmpeg-free con ffmpeg completo
+sudo dnf swap ffmpeg-free ffmpeg --allowerasing
+
+# Instalar grupo multimedia completo
+sudo dnf group install -y multimedia
+
+# Instalar componentes GStreamer
+sudo dnf install -y gstreamer1-plugins-{bad-*,good-*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=PackageKit-gstreamer-plugin
+
+# Instalar paquetes de sonido y video
+sudo dnf group install -y sound-and-video
+
+# Soporte para DVDs cifrados (opcional)
+sudo dnf install -y libdvdcss
+```
+
+### 2.1 Drivers AMD (si tienes tarjeta gráfica AMD)
+
+```bash
+# Drivers VA-API y VDPAU
 sudo dnf swap mesa-va-drivers mesa-va-drivers-freeworld
 sudo dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld
 ```
 
 ---
 
-# Configuración del Sistema
+## 3. Optimizaciones del Sistema
 
-*   **Hostname**
-    ```bash
-    sudo hostnamectl set-hostname mi-equipo-fedora
-    ```
+### 3.1 Configuración de Red y Arranque
 
-*   **Hora UTC (Doble Boot con Windows)**
-    ```bash
-    timedatectl set-local-rtc 1 --adjust-system-clock
-    timedatectl  # Verificar
-    ```
+```bash
+# Reducir tiempo de arranque (deshabilitar espera de red)
+sudo systemctl disable NetworkManager-wait-online.service
 
-*   **Teclado US Internacional**
-    ```bash
-    # Configuración temporal
-    setxkbmap -layout us -variant altgr-intl
-    # Configuración permanente
-    sudo localectl set-x11-keymap us altgr-intl
-    ```
+# Deshabilitar Gnome Software del inicio automático (ahorra RAM)
+sudo rm -f /etc/xdg/autostart/org.gnome.Software.desktop
+```
 
-*   **Automontar Discos al Inicio**
-    ```bash
-    # 1. Obtener UUID: lsblk -f
-    # 2. Crear punto de montaje: sudo mkdir -p /media/mi_disco
-    # 3. Editar /etc/fstab: Añadir línea: UUID=tu-uuid /media/mi_disco ntfs-3g defaults 0 2
-    # 4. Probar montaje: sudo mount -a
-    ```
+### 3.2 Optimizaciones de CPU (Opcional - Solo sistemas personales)
+
+```bash
+# Deshabilitar mitigaciones de CPU (aumenta rendimiento 5-30%)
+# ⚠️ No recomendado para servidores o VMs
+sudo grubby --update-kernel=ALL --args="mitigations=off"
+```
+
+### 3.3 Suspensión Moderna (Laptops)
+
+```bash
+# Mejorar duración de batería en suspensión
+sudo grubby --update-kernel=ALL --args="mem_sleep_default=s2idle"
+
+# Verificar configuración
+cat /sys/power/mem_sleep
+```
 
 ---
 
-## Aplicaciones Esenciales
+## 4. Configuración del Sistema
 
-**Herramientas Base**
+### 4.1 Hostname y Hora
+
 ```bash
-sudo dnf install -y git wget curl micro rsync htop btop neofetch unzip gcc make fuse fuse-libs perl-Image-ExifTool clutter zenity dialog yazi fish
+# Establecer nombre del equipo
+sudo hostnamectl set-hostname mi-equipo-fedora
+
+# Configurar hora UTC (para dual boot con Windows)
+timedatectl set-local-rtc 1 --adjust-system-clock
+timedatectl  # Verificar
 ```
 
-**Aplicaciones Gráficas**
+### 4.2 Teclado US Internacional
+
 ```bash
-# Visual Studio Code
+# Configurar teclado como en Windows (altgr-intl)
+setxkbmap -layout us -variant altgr-intl
+sudo localectl set-x11-keymap us altgr-intl
+```
+
+### 4.3 Automontar Discos al Inicio
+
+```bash
+# Obtener UUID de la partición
+lsblk -f
+
+# Crear punto de montaje
+sudo mkdir -p /media/mi_disco
+
+# Editar fstab
+sudo micro /etc/fstab
+# Añadir: UUID=tu-uuid /media/mi_disco ntfs-3g defaults 0 2
+
+# Probar montaje
+sudo mount -a
+```
+
+---
+
+## 5. Instalación de Aplicaciones Base
+
+### 5.1 Herramientas Esenciales
+
+```bash
+sudo dnf install -y \
+    git wget curl micro rsync htop btop neofetch unzip \
+    gcc make fuse fuse-libs perl-Image-ExifTool clutter \
+    zenity dialog yazi fish helix
+```
+
+### 5.2 Visual Studio Code
+
+```bash
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
-sudo dnf install code
-
-# Calibre
-sudo dnf install calibre
-
-# LocalSend
-flatpak install flathub org.localsend.localsend_app
+sudo dnf install -y code
 ```
 
-**Navegadores Web**
+### 5.3 Calibre (Gestor de libros electrónicos)
+
 ```bash
-# Zen Browser
+sudo dnf install -y calibre
+```
+
+---
+
+## 6. Navegadores Web
+
+### 6.1 Zen Browser (Recomendado - Firefox-based)
+
+```bash
 flatpak install flathub app.zen_browser.zen
 ```
 
+### 6.2 Brave Browser (Alternativa)
+
+```bash
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+sudo dnf install -y brave-browser
+```
+
 ---
 
-## Desarrollo y Herramientas CLI
+## 7. Desarrollo y Herramientas CLI
 
-**Git**
+### 7.1 Git Configuración
+
 ```bash
+# Configurar identidad
 git config --global user.name "tu_usuario"
 git config --global user.email "tu_email@example.com"
 git config --global init.defaultBranch main
-git config --global credential.helper store  # Almacena token/password (texto plano) peligroso
+
+# Almacenar credenciales
+git config --global credential.helper store
 ```
 
-**Starship (Prompt)**
+### 7.2 Rust y Cargo
+
 ```bash
+# Instalar Rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Recargar PATH
+source ~/.bashrc
+
+# Agregar Cargo al PATH (si no está)
+echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
+export PATH="$HOME/.cargo/bin:$PATH"
+```
+
+### 7.3 Herramientas en Rust
+
+```bash
+# Instalar herramientas útiles
+cargo install xcp macchina bottom --locked typst-cli
+cargo install --locked yazi-fm yazi-cli
+cargo install atuin
+```
+
+### 7.4 Starship (Prompt personalizado)
+
+```bash
+# Opción 1: Script oficial
 curl -sS https://starship.rs/install.sh | sh
+
+# Opción 2: Desde COPR
+# sudo dnf copr enable atim/starship
+# sudo dnf install -y starship
+
+# Configurar para Fish
 echo 'starship init fish | source' >> ~/.config/fish/config.fish
 ```
 
-**Herramientas en Rust**
+### 7.5 Otras Herramientas CLI
+
 ```bash
-# Instalar Rust primero (ver sección Rust)
-cargo install xcp macchina bottom --locked typst-cli
-```
+# YADM (Gestor de dotfiles)
+sudo curl -fLo /usr/local/bin/yadm https://github.com/yadm-dev/yadm/raw/master/yadm
+sudo chmod a+x /usr/local/bin/yadm
 
-**YADM (Gestor de dotfiles)**
-```bash
-sudo curl -fLo /usr/local/bin/yadm https://github.com/yadm-dev/yadm/raw/master/yadm && sudo chmod a+x /usr/local/bin/yadm
-```
+# SPF (Superfile - gestor de archivos TUI)
+bash -c "$(wget -qO- https://superfile.netlify.app/install.sh)"
 
----
-
-## Rust y Cargo
-
-**Instalación**
-```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-source ~/.bashrc  # o ~/.config/fish/config.fish para Fish
-```
-
-**Agregar Cargo al PATH (si es necesario)**
-```bash
-echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
-# Para Fish: echo 'set -gx PATH $HOME/.cargo/bin $PATH' >> ~/.config/fish/config.fish
+# mnamer (Renombrador de películas)
+pip3 install --user mnamer
 ```
 
 ---
 
-## Flatpak
+## 8. Docker
 
-**Habilitar Flathub**
+### 8.1 Instalación
+
 ```bash
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-```
-
-**Aplicaciones Recomendadas**
-```bash
-flatpak install flathub com.mattjakeman.ExtensionManager net.codelogistics.webapps app.zen_browser.zen org.localsend.localsend_app
-```
-
----
-
-## Docker
-
-**Instalación**
-```bash
-# 1. Eliminar versiones antiguas
+# Eliminar versiones antiguas
 sudo dnf remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine
 
-# 2. Agregar repositorio
+# Instalar repositorio y Docker
 sudo dnf -y install dnf-plugins-core
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# 3. Instalar Docker Engine
-sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-# 4. Iniciar Docker
+# Iniciar y verificar
 sudo systemctl start docker
 sudo docker run hello-world
 ```
 
-**Docker sin sudo**
+### 8.2 Docker sin sudo
+
 ```bash
+# Crear grupo y agregar usuario
 sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
+
+# Verificar
+docker run hello-world
 ```
 
-**Docker al inicio del sistema**
+### 8.3 Docker al inicio del sistema
+
 ```bash
-# Habilitar
-sudo systemctl enable docker.service containerd.service
-# Deshabilitar (opcional)
-# sudo systemctl disable docker.service containerd.service
+# Habilitar auto-inicio
+sudo systemctl enable docker.service
+sudo systemctl enable containerd.service
 ```
 
 ---
 
-## Personalización
+## 9. Aplicaciones Flatpak
 
-1.  **Tema Dracula para Micro Editor**
-    ```bash
-    mkdir -p ~/.config/micro/colorschemes
-    curl -o ~/.config/micro/colorschemes/dracula.micro https://raw.githubusercontent.com/dracula/micro/master/dracula.micro
-    echo 'export MICRO_TRUECOLOR=1' >> ~/.bashrc  # o config.fish
-    # En micro: Ctrl+E > set colorscheme dracula
-    ```
+### 9.1 Aplicaciones Recomendadas
 
-2.  **Fondo de pantalla dinámico (Waypaper)**
-    ```bash
-    sudo dnf copr enable solopasha/hyprland
-    sudo dnf install waypaper
-    ```
+```bash
+# Gestor de extensiones GNOME
+flatpak install flathub com.mattjakeman.ExtensionManager
 
-3.  **Niri (Compositor Wayland)**
-    ```bash
-    sudo dnf copr enable yopito/niri
-    sudo dnf install niri
-    ```
+# Web Apps (convertir sitios en apps)
+flatpak install flathub net.codelogistics.webapps
 
+# LocalSend (compartir archivos en red local)
+flatpak install flathub org.localsend.localsend_app
+```
 
 ---
 
-## Mantenimiento
+## 10. Personalización
 
-**Actualizaciones Automáticas**
+### 10.1 Tema Dracula para Micro Editor
+
 ```bash
-sudo dnf install dnf-automatic
-# Configurar en /etc/dnf/automatic.conf
+# Instalar tema
+mkdir -p ~/.config/micro/colorschemes
+curl -o ~/.config/micro/colorschemes/dracula.micro https://raw.githubusercontent.com/dracula/micro/master/dracula.micro
+
+# Habilitar true color
+echo 'export MICRO_TRUECOLOR=1' >> ~/.bashrc
+```
+
+### 10.2 Waypaper (Fondo de pantalla dinámico)
+
+```bash
+# Desde COPR (recomendado)
+sudo dnf copr enable solopasha/hyprland
+sudo dnf install -y waypaper
+
+# O con pipx
+# pipx install waypaper
+```
+
+### 10.3 Niri (Compositor Wayland - Opcional)
+
+```bash
+sudo dnf copr enable yopito/niri
+sudo dnf install -y niri
+```
+
+### 10.4 Nerd Fonts
+
+```bash
+# Buscar fuentes disponibles
+sudo dnf search nerd-fonts
+
+# Instalar ejemplo (Cascadia Code con Nerd Fonts)
+sudo dnf install -y nerd-fonts-cascadia-code
+```
+
+---
+
+## 11. Mantenimiento
+
+### 11.1 Actualizaciones Automáticas
+
+```bash
+# Instalar dnf-automatic
+sudo dnf install -y dnf-automatic
+
+# Configurar (editar /etc/dnf/automatic.conf)
+sudo micro /etc/dnf/automatic.conf
+# Para solo notificar:
+# upgrade_type = default
+# emit_via = motd
+#
+# Para aplicar automáticamente:
+# upgrade_type = security
+# apply_updates = yes
+
+# Habilitar servicio
 sudo systemctl enable --now dnf-automatic.timer
+systemctl status dnf-automatic.timer
 ```
 
-**Limpieza Periódica**
+### 11.2 Limpieza Periódica
+
 ```bash
+# Limpiar caché de DNF
 sudo dnf clean all
+
+# Eliminar paquetes huérfanos
 sudo dnf autoremove
 ```
 
 ---
+
+### 12.2 Problemas con Codecs
+
+```bash
+sudo dnf swap ffmpeg-free ffmpeg --allowerasing
+sudo dnf install -y ffmpeg-libs
+```
+
