@@ -37,7 +37,6 @@ clean_requirements_on_remove=True
 best=False
 skip_if_unavailable=True
 max_parallel_downloads=10
-fastestmirror=True
 EOF
 ```
 
@@ -52,7 +51,7 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 
 ```bash
 # Instalar fuse para soporte de AppImages
-sudo dnf install -y fuse-libs
+sudo dnf install -y fuse3
 ```
 
 ---
@@ -84,6 +83,11 @@ sudo dnf swap mesa-va-drivers mesa-va-drivers-freeworld
 sudo dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld
 ```
 
+```
+Falta de otros repositorios
+```
+
+
 ---
 
 ## 3. Optimizaciones del Sistema
@@ -95,10 +99,10 @@ sudo dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld
 sudo systemctl disable NetworkManager-wait-online.service
 
 # Deshabilitar Gnome Software del inicio automático (ahorra RAM)
-sudo rm -f /etc/xdg/autostart/org.gnome.Software.desktop
+systemctl --user mask org.gnome.Software.service
 ```
 
-### 3.2 Optimizaciones de CPU (Opcional - Solo sistemas personales)
+### 3.2 Optimizaciones de CPU (Solo sistemas personales)
 
 ```bash
 # Deshabilitar mitigaciones de CPU (aumenta rendimiento 5-30%)
@@ -134,8 +138,8 @@ timedatectl  # Verificar
 ### 4.2 Teclado US Internacional
 
 ```bash
-# Configurar teclado como en Windows (altgr-intl)
-setxkbmap -layout us -variant altgr-intl
+# Configurar teclado como en Windows (altgr-intl) para Wayland y X11
+gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us+altgr-intl')]"
 sudo localectl set-x11-keymap us altgr-intl
 ```
 
@@ -150,7 +154,7 @@ sudo mkdir -p /media/mi_disco
 
 # Editar fstab
 sudo micro /etc/fstab
-# Añadir: UUID=tu-uuid /media/mi_disco ntfs-3g defaults 0 2
+# Añadir: UUID=tu-uuid /media/mi_disco ntfs3 defaults 0 2
 
 # Probar montaje
 sudo mount -a
@@ -164,8 +168,8 @@ sudo mount -a
 
 ```bash
 sudo dnf install -y \
-    git wget curl micro rsync htop btop neofetch unzip \
-    gcc make fuse fuse-libs perl-Image-ExifTool clutter \
+    git wget curl micro rsync htop btop fastfetch unzip \
+    gcc make fuse perl-Image-ExifTool clutter pipx \
     zenity dialog yazi fish helix
 ```
 
@@ -196,10 +200,11 @@ flatpak install flathub app.zen_browser.zen
 ### 6.2 Brave Browser (Alternativa)
 
 ```bash
-sudo dnf install -y dnf-plugins-core
-sudo dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
-sudo dnf install -y brave-browser
+sudo dnf install dnf-plugins-core
+
+sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+
+sudo dnf install brave-origin
 ```
 
 ---
@@ -236,9 +241,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 ```bash
 # Instalar herramientas útiles
-cargo install xcp macchina bottom --locked typst-cli
-cargo install --locked yazi-fm yazi-cli
-cargo install atuin
+cargo install macchina bottom --locked typst-cli
 ```
 
 ### 7.4 Starship (Prompt personalizado)
@@ -266,7 +269,7 @@ sudo chmod a+x /usr/local/bin/yadm
 bash -c "$(wget -qO- https://superfile.netlify.app/install.sh)"
 
 # mnamer (Renombrador de películas)
-pip3 install --user mnamer
+pipx install mnamer
 ```
 
 ---
@@ -355,11 +358,57 @@ sudo dnf install -y waypaper
 ### 10.3 Niri (Compositor Wayland - Opcional)
 
 ```bash
-sudo dnf copr enable yopito/niri
-sudo dnf install -y niri
+# COPR oficial (mantenido por el desarrollador de niri)
+sudo dnf copr enable yalter/niri
+sudo dnf install niri
+
+# Nightly (opcional, para últimas features)
+# sudo dnf copr enable yalter/niri-git
+# sudo dnf install niri
 ```
 
-### 10.4 Nerd Fonts
+Niri no incluye shell de escritorio (barra, lanzador, notificaciones). Se recomienda combinarlo con Noctalia (sección 10.4) o usar componentes sueltos como Waybar + fuzzel + mako.
+
+### 10.4 Noctalia (Desktop Shell para Wayland)
+
+[Noctalia](https://docs.noctalia.dev) es un shell de escritorio nativo Wayland que unifica barra, dock, lanzador, notificaciones, lock screen, wallpaper, centro de control y más en un solo paquete coherente.
+
+```bash
+# Habilitar COPR e instalar
+sudo dnf copr enable lionheartp/Hyprland
+sudo dnf install noctalia-git
+```
+
+Configuración adicional para Niri: [docs.noctalia.dev/v5/compositor-settings/niri/](https://docs.noctalia.dev/v5/compositor-settings/niri/)
+
+### 10.5 Noctalia + Niri: activar/desactivar el shell
+
+Para que Noctalia inicie automáticamente con Niri:
+
+```bash
+# Activar (desde el próximo login)
+systemctl --user add-wants niri.service noctalia
+
+# Desactivar (vuelve a Niri limpio)
+systemctl --user disable noctalia
+```
+
+También puedes iniciar/detener Noctalia en caliente sin cerrar sesión:
+
+```bash
+# Iniciar ahora
+systemctl --user start noctalia
+
+# Detener ahora (vuelve a Niri solo)
+systemctl --user stop noctalia
+
+# Ver estado
+systemctl --user status noctalia
+```
+
+**Alternativa:** Si prefieres tener dos sesiones separadas en el gestor de inicio de sesión (GDM/SDDM), puedes copiar el archivo `.desktop` de Niri y crear una variante que lance `niri-session` con Noctalia preconfigurado. Pregúntame si quieres ayuda con eso.
+
+### 10.6 Nerd Fonts
 
 ```bash
 # Buscar fuentes disponibles
@@ -406,9 +455,11 @@ sudo dnf autoremove
 
 ---
 
-### 12.2 Problemas con Codecs
+## 12. Solución de Problemas
 
-```bash
+### 12.1 Problemas con Codecs
+
+```sh
 sudo dnf swap ffmpeg-free ffmpeg --allowerasing
 sudo dnf install -y ffmpeg-libs
 ```
